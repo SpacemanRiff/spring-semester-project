@@ -1,0 +1,46 @@
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.7
+version = '0.1'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Argument Parser', 
+                   'Implementation-Version': version, 
+                   'Main-Class': 'edu.jsu.mcis.ArgumentParser'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', 
+                name: 'junit', 
+                version: '4.+'
+}
+
+jacocoTestReport {
+    group = 'Reporting'
+    description = 'Generate Jacoco coverage reports after running tests.'
+    additionalSourceDirs = files(sourceSets.main.allJava.srcDirs)
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+if(hasProperty("Xlint:unchecked")) {
+    tasks.withType(JavaCompile) { 
+        options.compilerArgs << "-Xlint:unchecked" 
+    }
+}
