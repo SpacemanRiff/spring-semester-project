@@ -9,4 +9,8 @@ public class ArgumentParserTest{
         ArgumentParser a = new ArgumentParser();
         //yeah
     }
+	@Test
+    public void testGetArguments2(){
+        ArgumentParser a = new ArgumentParser();
+    }
 }
