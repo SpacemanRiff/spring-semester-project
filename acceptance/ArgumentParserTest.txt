@@ -1,0 +1,18 @@
+*** Test Cases ***
+Start Program With Arguments  7  5  2
+${length}=  Get Length
+Should Be Equal  7  ${length}
+${width}=  Get Width
+Should Be Equal  5  ${width}
+${height}=  Get Height
+Should Be Equal  2  ${height}
+
+Start Program With Arguments  dog  2  true  3.5
+${pet}=  Get Pet
+Should Be Equal  dog  ${pet}
+${number}=  Get Number
+Should Be Equal  2  ${number}
+${rainy}=  Get Rainy
+Should Be Equal  true  ${rainy}
+${bathrooms}=  Get Bathrooms
+Should Be Equal  3.5  ${bathrooms}
