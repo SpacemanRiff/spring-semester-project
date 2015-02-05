@@ -5,9 +5,9 @@ sourceCompatibility = 1.7
 version = '0.1'
 jar {
     manifest {
-        attributes 'Implementation-Title': 'Argument Parser', 
+        attributes 'Implementation-Title': 'Volume Calculator', 
                    'Implementation-Version': version, 
-                   'Main-Class': 'edu.jsu.mcis.ArgumentParser'
+                   'Main-Class': 'edu.jsu.mcis.VolumeCalculator'
     }
 }
 
