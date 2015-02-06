@@ -1,3 +1,7 @@
+***Settings***
+Library     ArgumentParserKeywords
+
+
 *** Test Cases ***
 Start Program With Arguments  7  5  2
 ${length}=  Get Length
