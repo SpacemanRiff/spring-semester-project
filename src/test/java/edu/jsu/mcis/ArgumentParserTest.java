@@ -3,19 +3,35 @@ package edu.jsu.mcis;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class ArgumentParserTest{
-    @Test
-    public void testAddArguments(){
+public class ArgumentParserTest
+{
+    //@Test
+    public void TestGetFirstInput()
+	{
         ArgumentParser a = new ArgumentParser();
-        String[] arguments = new String[3];
+        String arguments = "1 2 3";
+		
+		String expectedFirst = "1";
+		
+		a.sendArguments(arguments);
+		String first = a.getArgumentAt(0);
+
         
-        arguments[0] = "1";
-        arguments[1] = "4";
-        arguments[2] = "7";
-        a.addArguments(arguments);
+		assertEquals(expectedFirst, first);
+    }
+	
+	@Test
+	public void TestGetFirstInput()
+	{
+        ArgumentParser a = new ArgumentParser();
+        String arguments = "1 2 3";
+		
+		
+		a.sendArguments(arguments);
+		String returnedArgs = a.getArguments();
+		
+
         
-        for(int i = 0; i < arguments.size(), i++){
-            assertEquals(arguments[i], a.getArguments(i));
-        }
+		assertEquals("1 2 3", returnedArgs);
     }
 }
