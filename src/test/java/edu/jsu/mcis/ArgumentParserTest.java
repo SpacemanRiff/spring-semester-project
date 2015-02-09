@@ -6,33 +6,57 @@ import static org.junit.Assert.*;
 public class ArgumentParserTest
 {
     @Test
-    public void TestGetFirstInputUsingStringName(){
-        String[] argumentNames = new String[] {"length","width","height"};
-        
-        ArgumentParser a = new ArgumentParser(argumentNames);
-        String arguments = "1 2 3";
+    public void TestInitialLabelArrayIsEmpty()
+	{
+		ArgumentParser p = new ArgumentParser();
 		
-		int expectedFirst = 1;
 		
-		a.sendArguments(arguments);
-        a.splitArguments();
-		int first = a.getArgumentAt("length");
-        
-		assertEquals(expectedFirst, first);
+		assertEquals("", p.labels[0]);
+		assertEquals("", p.labels[1]);
+		assertEquals("", p.labels[2]);
+ 
     }
-    
-    @Test
-    public void TestGetFirstInputUsingIndexValue(){
-        String[] argumentNames = new String[] {"length","width","height"};
-        
-        ArgumentParser a = new ArgumentParser(argumentNames);
-        String arguments = "1 2 3";
+	
+	@Test
+    public void TestAddArgFillsLabelArray()
+	{
+		ArgumentParser p = new ArgumentParser();
 		
-		int expectedFirst = 1;
+		p.addArg("Length");
+		p.addArg("Width");
+		p.addArg("Height");
 		
-		a.sendArguments(arguments);
-		int first = a.getArgumentAt(0);
-        
-		assertEquals(expectedFirst, first);
+		assertEquals("Length", p.labels[0]);
+		assertEquals("Width", p.labels[1]);
+		assertEquals("Height", p.labels[2]);
+ 
     }
+	
+	@Test
+    public void testGetValueReturnsCorrectValue()
+	{
+		ArgumentParser p = new ArgumentParser();
+		
+		p.addArg("Length");
+		p.addArg("Width");
+		p.addArg("Height");
+				
+		String[] args = {"1", "2", "3"};
+		p.parse(args);
+		
+		assertEquals("1", p.getValue("Length"));
+		assertEquals("2", p.getValue("Width"));
+		assertEquals("3", p.getValue("Height"));
+	}
+	
+	@Test(expected=SomeException.class)
+	public void testGetValueOfUnknownArgumentThrowsException()
+	{
+		ArgumentParser p = new ArgumentParser();
+		p.addArg("something");
+		String[] args = {"7"};
+		p.parse(args);
+		p.getValue("other");
+	}
+
 }
