@@ -9,12 +9,8 @@ public class ArgumentParserTest
     public void TestInitialLabelArrayIsEmpty()
 	{
 		ArgumentParser p = new ArgumentParser();
-		
-		
-		assertEquals("", p.labels[0]);
-		assertEquals("", p.labels[1]);
-		assertEquals("", p.labels[2]);
- 
+        
+        assertEquals(0, p.getNumberOfArguments())
     }
 	
 	@Test
@@ -22,14 +18,12 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
 		
-		p.addArg("Length");
-		p.addArg("Width");
-		p.addArg("Height");
+        String[] argumentNames = {"Length", "Width", "Height"};        
+		p.addArgumentNames(argumentNames);
 		
-		assertEquals("Length", p.labels[0]);
-		assertEquals("Width", p.labels[1]);
-		assertEquals("Height", p.labels[2]);
- 
+		assertEquals("Length", p.getName(0));
+		assertEquals("Width", p.getName(1));
+		assertEquals("Height", p.getName(2)); 
     }
 	
 	@Test
@@ -37,9 +31,8 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
 		
-		p.addArg("Length");
-		p.addArg("Width");
-		p.addArg("Height");
+        String[] argumentNames = {"Length", "Width", "Height"};        
+		p.addArgumentNames(argumentNames);
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
@@ -53,7 +46,10 @@ public class ArgumentParserTest
 	public void testGetValueOfUnknownArgumentThrowsException()
 	{
 		ArgumentParser p = new ArgumentParser();
-		p.addArg("something");
+		
+        String[] argumentNames = {"something"};        
+		p.addArgumentNames(argumentNames);
+        
 		String[] args = {"7"};
 		p.parse(args);
 		p.getValue("other");
