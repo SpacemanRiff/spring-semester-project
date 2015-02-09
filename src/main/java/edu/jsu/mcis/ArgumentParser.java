@@ -1,29 +1,28 @@
 package edu.jsu.mcis;
 
-public class ArgumentParser
-{
+public class ArgumentParser{
 	private String mainInput;
+    private String[] argumentNames;
+    private int[] parsedValues;
 	
-	public ArgumentParser(){
-        /*thinking we should have the constructor take in an array of strings
-        * that are the names of the arguments he wants to take in, which
-        * in turn will also tell us the number of integer/float/double valued
-        * arguments to take in (this is not including flags like --type sphere or whatever)
-        *
-        * for instance, {"length","width","height"}
-        */
+	public ArgumentParser(String[] argumentNames){
+        this.argumentNames = argumentNames;
+        parsedValues = new int[argumentNames.length];
     }
 	
-	public String getArguments(){
-		return mainInput;
+	public int getArgumentAt(String requestedValue){
+		return 1;
+	}
+	
+	public int getArgumentAt(int requestedPosition){
+		return 1;
 	}
 	
 	public void sendArguments(String arguments){
-		String mainInput = arguments;
+		mainInput = arguments;
 	}
     
-    public static void main(String[] args){
-	
+    public void splitArguments(){
+        //needs implementation
     }
-    
 }
