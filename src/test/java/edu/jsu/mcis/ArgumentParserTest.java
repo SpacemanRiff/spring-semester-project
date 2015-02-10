@@ -10,7 +10,7 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        assertEquals(0, p.getNumberOfArguments())
+        assertEquals(0, p.getNumberOfArguments());
     }
 	
 	@Test
