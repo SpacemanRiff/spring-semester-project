@@ -42,17 +42,17 @@ public class ArgumentParserTest
 		assertEquals("3", p.getValue("Height"));
 	}
 	
-	@Test(expected=SomeException.class)
+	@Test(expected=UnknownArgumentException.class)
 	public void testGetValueOfUnknownArgumentThrowsException()
 	{
 		ArgumentParser p = new ArgumentParser();
 		
-        String[] argumentNames = {"something"};        
+        String[] argumentNames = {"Argument1"};        
 		p.addArgumentNames(argumentNames);
         
 		String[] args = {"7"};
 		p.parse(args);
-		p.getValue("other");
+		p.getValue("8");
 	}
 
 }
