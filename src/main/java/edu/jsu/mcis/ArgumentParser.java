@@ -1,28 +1,27 @@
-//package edu.jsu.mcis;
+package edu.jsu.mcis;
 
 
 public class ArgumentParser
 {
-	public String[] labels;
-	public String[] values;
-	public int numberOfArgs;
+	private String[] name;
+	private String[] values;
+	public int numberOfArgs;	
 	
-	
-	public String getLabel(int p)
+	public String getName(int p)
 	{
-		return labels[p];
+		return name[p];
 	}
 	
 	public ArgumentParser()
 	{
 		numberOfArgs = 3;
 		
-		labels = new String[numberOfArgs];
+		name = new String[numberOfArgs];
 		values = new String[numberOfArgs];
 		
 		for(int i = 0; i < numberOfArgs; i++)
 		{
-			labels[i] = "";
+			name[i] = "";
 		}
     }
 	
@@ -35,28 +34,27 @@ public class ArgumentParser
 		}
 	}
 	
-	public void addArg(String newArgLabel)
+	public void addArg(String newArgName)
 	{
 		for(int i = 0; i < numberOfArgs; i++)
 		{
-			if(labels[i] == "")
+			if(name[i] == "")
 			{
-				labels[i] = newArgLabel;
+				name[i] = newArgName;
 				break;
 			}	
 		}
 	}
 	
-	public String get(String argLabel)
+	public String getValue(String argName)
 	{
 		for(int i = 0; i < numberOfArgs; i++)
 		{
-			if(labels[i] == argLabel)
+			if(name[i] == argName)
 			{
 				return values[i];
 			}
-		}
-		
+		}		
 		return "Unknown Label";
 	}
     
@@ -74,9 +72,9 @@ public class ArgumentParser
 		String w = p.get("Width");
 		String h = p.get("Height");
 
-        System.out.println(p.getLabel(0) + " is " + l);
-		System.out.println(p.getLabel(1) + " is " + w);
-		System.out.println(p.getLabel(2) + " is " + h);
+        System.out.println(p.getName(0) + " is " + l);
+		System.out.println(p.getName(1) + " is " + w);
+		System.out.println(p.getName(2) + " is " + h);
 		
     }
 }
