@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 public class ArgumentParserTest
 {
-    //@Test
+    @Test
     public void testInitialLabelArrayIsEmpty()
 	{
 		ArgumentParser p = new ArgumentParser();
@@ -27,7 +27,8 @@ public class ArgumentParserTest
     }
     
     @Test
-    public void testAddArgIndividually(){
+    public void testAddArgIndividually()
+    {
 		ArgumentParser p = new ArgumentParser();
         
         p.addArg("Length");

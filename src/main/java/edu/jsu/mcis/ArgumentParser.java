@@ -1,69 +1,60 @@
 package edu.jsu.mcis;
 
+import java.util.ArrayList;
 
 public class ArgumentParser
 {
-	private String[] name;
-	private String[] values;
-	public int numberOfArgs;	
+    private ArrayList<String> argumentNames;
+    private ArrayList<String> argumentValues;
 	
-	public String getName(int p)
-	{
-		return name[p];
-	}
 	
 	public ArgumentParser()
 	{
-		numberOfArgs = 3;
-		
-		name = new String[numberOfArgs];
-		values = new String[numberOfArgs];
-		
-		for(int i = 0; i < numberOfArgs; i++)
-		{
-			name[i] = "";
-		}
+		argumentNames = new ArrayList<String>();
+        argumentValues = new ArrayList<String>();
     }
 	
+	public String getName(int p)
+	{
+		return argumentNames.get(p);
+	}
 	
 	public void parse(String[] args)
 	{
-		for(int i = 0; i < numberOfArgs; i++)
+		for(int i = 0; i < args.length; i++)
 		{
-			values[i] = args[i];
+			argumentValues.add(args[i]);
 		}
 	}
 	
 	public void addArg(String newArgName)
 	{
-		for(int i = 0; i < numberOfArgs; i++)
-		{
-			if(name[i] == "")
-			{
-				name[i] = newArgName;
-				break;
-			}	
-		}
+		argumentNames.add(newArgName);
 	}
 	
 	public String getValue(String argName)
 	{
-		for(int i = 0; i < numberOfArgs; i++)
+		for(int i = 0; i < argumentNames.size(); i++)
 		{
-			if(name[i] == argName)
+			if(argumentNames.get(i) == argName)
 			{
-				return values[i];
+				return argumentValues.get(i);
 			}
-		}		
+		}
 		return "Unknown Label";
 	}
     
-    public void addArgumentNames(String [] names){
-        name = names;
+    public void addArgumentNames(String [] names)
+    {
+        for(int i = 0; i < names.length; i++)
+        {
+            argumentNames.add(names[i]);
+        }
     }
     
-    public int getNumberOfArguments(){
-        return numberOfArgs;
+    public int getNumberOfArguments()
+    {
+        return argumentNames.size();
     }
     
     public static void main(String[] args)
