@@ -58,6 +58,14 @@ public class ArgumentParser
 		return "Unknown Label";
 	}
     
+    public void addArgumentNames(String [] names){
+        name = names;
+    }
+    
+    public int getNumberOfArguments(){
+        return numberOfArgs;
+    }
+    
     public static void main(String[] args)
 	{
 		ArgumentParser p = new ArgumentParser();
@@ -68,9 +76,9 @@ public class ArgumentParser
 		
 		p.parse(args);
 		
-		String l = p.get("Length");
-		String w = p.get("Width");
-		String h = p.get("Height");
+		String l = p.getValue("Length");
+		String w = p.getValue("Width");
+		String h = p.getValue("Height");
 
         System.out.println(p.getName(0) + " is " + l);
 		System.out.println(p.getName(1) + " is " + w);
