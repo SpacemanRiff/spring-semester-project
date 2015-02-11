@@ -3,9 +3,11 @@ package edu.jsu.mcis;
 
 public class ArgumentParser
 {
+    private String description;
 	private String[] name;
 	private String[] values;
-	public int numberOfArgs;	
+	public int numberOfArgs;
+	
 	
 	public String getName(int p)
 	{
@@ -15,6 +17,7 @@ public class ArgumentParser
 	public ArgumentParser()
 	{
 		numberOfArgs = 3;
+        description = "";
 		
 		name = new String[numberOfArgs];
 		values = new String[numberOfArgs];
@@ -66,7 +69,8 @@ public class ArgumentParser
         return numberOfArgs;
     }
     
-    public void lookForHelp(String[] args){
+    public void lookForHelp(String[] args)
+    {
         boolean isHelpNeeded = false;
         
         for(int i = 0; i < args.length; i++){
@@ -81,6 +85,11 @@ public class ArgumentParser
         }
     }
 
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+    
     public static void main(String[] args)
 	{
 		ArgumentParser p = new ArgumentParser();
