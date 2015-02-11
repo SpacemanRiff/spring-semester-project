@@ -66,6 +66,21 @@ public class ArgumentParser
         return numberOfArgs;
     }
     
+    public void lookForHelp(String[] args){
+        boolean isHelpNeeded = false;
+        
+        for(int i = 0; i < args.length; i++){
+            if(args[i].equals("-h")){
+                isHelpNeeded = true;
+            }
+        }
+        if(isHelpNeeded){
+            for(int i = 0; i < name.length; i++){
+                System.out.println(name[i]);
+            }
+        }
+    }
+
     public static void main(String[] args)
 	{
 		ArgumentParser p = new ArgumentParser();
