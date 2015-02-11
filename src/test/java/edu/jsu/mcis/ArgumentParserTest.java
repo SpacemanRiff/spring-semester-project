@@ -21,9 +21,9 @@ public class ArgumentParserTest
         String[] argumentNames = {"Length", "Width", "Height"};        
 		p.addArgumentNames(argumentNames);
 		
-		assertEquals("Length", p.getName(0));
-		assertEquals("Width", p.getName(1));
-		assertEquals("Height", p.getName(2)); 
+		assertEquals("Length", p.getArgumentName(0));
+		assertEquals("Width", p.getArgumentName(1));
+		assertEquals("Height", p.getArgumentName(2)); 
     }
     
     @Test
@@ -31,13 +31,13 @@ public class ArgumentParserTest
     {
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArg("Length");
-        p.addArg("Width");
-        p.addArg("Height");
+        p.addArgumentName("Length");
+        p.addArgumentName("Width");
+        p.addArgumentName("Height");
 		
-		assertEquals("Length", p.getName(0));
-		assertEquals("Width", p.getName(1));
-		assertEquals("Height", p.getName(2));         
+		assertEquals("Length", p.getArgumentName(0));
+		assertEquals("Width", p.getArgumentName(1));
+		assertEquals("Height", p.getArgumentName(2));         
     }
 	
 	@Test
@@ -51,9 +51,9 @@ public class ArgumentParserTest
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
 		
-		assertEquals("1", p.getValue("Length"));
-		assertEquals("2", p.getValue("Width"));
-		assertEquals("3", p.getValue("Height"));
+		assertEquals("1", p.getValueOf("Length"));
+		assertEquals("2", p.getValueOf("Width"));
+		assertEquals("3", p.getValueOf("Height"));
 	}
 	
 	//@Test(expected=UnknownArgumentException.class)
@@ -66,7 +66,7 @@ public class ArgumentParserTest
         
 		String[] args = {"7"};
 		p.parse(args);
-		p.getValue("8");
+		p.getValueOf("8");
 	}
 
 }
