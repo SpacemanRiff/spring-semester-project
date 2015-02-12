@@ -18,9 +18,9 @@ public class ArgumentParserTest
     {
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
-        p.addArgument("Width", "The width of the box");
-        p.addArgument("Height", "The height of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
 		
 		assertEquals("Length", p.getArgumentName(0));
 		assertEquals("Width", p.getArgumentName(1));
@@ -28,7 +28,11 @@ public class ArgumentParserTest
 		
 		assertEquals("The length of the box", p.getArgumentDescription(0));
 		assertEquals("The width of the box", p.getArgumentDescription(1));
-		assertEquals("The height of the box", p.getArgumentDescription(2));       
+		assertEquals("The height of the box", p.getArgumentDescription(2)); 
+        
+        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(0));
+        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(1));
+        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(2));
     }
     
     @Test
@@ -46,9 +50,9 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
-        p.addArgument("Width", "The width of the box");
-        p.addArgument("Height", "The height of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
@@ -63,7 +67,7 @@ public class ArgumentParserTest
     {        
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
 		String[] args = {"7"};
 		p.parse(args);
@@ -75,7 +79,7 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
 		String[] args = {"7"};
 		p.parse(args);

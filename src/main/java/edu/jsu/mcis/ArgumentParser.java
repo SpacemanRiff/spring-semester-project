@@ -7,6 +7,7 @@ public class ArgumentParser
     private ArrayList<ArgumentInformation> argumentNames;
     private ArrayList<String> argumentValues;
     private String programDescription;
+    public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser()
 	{
@@ -15,7 +16,7 @@ public class ArgumentParser
         programDescription = "";
     }
 	
-	public void addArgument(String argName, String argDescription)
+	public void addArgument(String argName, String argDescription, Types type)
 	{
 		argumentNames.add(new ArgumentInformation(argName,argDescription));
 	}
@@ -33,6 +34,11 @@ public class ArgumentParser
     public String getArgumentDescription(int p)
     {
         return argumentNames.get(p).getDescription();
+    }
+    
+    public Types getArgumentTypes(int p)
+    {
+        return argumentNames.get(p).getType();
     }
 	
 	public void parse(String[] args)
@@ -120,6 +126,10 @@ public class ArgumentParser
         private String getDescription()
         {
             return description;
+        }
+        private Types getType()
+        {
+            return Types.BOOLEAN;
         }
     }
 }
