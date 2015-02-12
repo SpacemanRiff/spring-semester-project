@@ -12,15 +12,28 @@ public class ArgumentParserTest
         
         assertEquals(0, p.getNumberOfArguments());
     }
+	
+	//@Test
+    /*public void testAddArgFillsLabelArray()
+	{
+		ArgumentParser p = new ArgumentParser();
+		
+        String[] argumentNames = {"Length", "Width", "Height"};        
+		p.addArguments(argumentNames);
+		
+		assertEquals("Length", p.getArgumentName(0));
+		assertEquals("Width", p.getArgumentName(1));
+		assertEquals("Height", p.getArgumentName(2)); 
+    }*/
     
     @Test
     public void testAddArgIndividually()
     {
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Length", "The length of the box");
+        p.addArgument("Width", "The width of the box");
+        p.addArgument("Height", "The height of the box");
 		
 		assertEquals("Length", p.getArgumentName(0));
 		assertEquals("Width", p.getArgumentName(1));
@@ -28,11 +41,7 @@ public class ArgumentParserTest
 		
 		assertEquals("The length of the box", p.getArgumentDescription(0));
 		assertEquals("The width of the box", p.getArgumentDescription(1));
-		assertEquals("The height of the box", p.getArgumentDescription(2)); 
-        
-        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(0));
-        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(1));
-        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(2));
+		assertEquals("The height of the box", p.getArgumentDescription(2));       
     }
     
     @Test
@@ -50,11 +59,15 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Length", "The length of the box");
+        p.addArgument("Width", "The width of the box");
+        p.addArgument("Height", "The height of the box");
+		
+        //String[] argumentNames = {"Length", "Width", "Height"};        
+		//p.addArguments(argumentNames);
 				
 		String[] args = {"1", "2", "3"};
+		
 		p.parse(args);
 		
 		assertEquals("1", p.getValueOf("Length"));
@@ -67,7 +80,7 @@ public class ArgumentParserTest
     {        
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Length", "The length of the box");
         
 		String[] args = {"7"};
 		p.parse(args);
@@ -79,11 +92,28 @@ public class ArgumentParserTest
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Length", "The length of the box");
+		
+        //String[] argumentNames = {"Argument1"};        
+		//p.addArguments(argumentNames);
         
 		String[] args = {"7"};
+
 		p.parse(args);
 		p.getValueOf("8");
+		
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void testNotEnoughArgumentsThrowsException()
+	{
+		ArgumentParser p = new ArgumentParser();
+		
+		p.addArgument("Length", "The length of the box");
+		p.addArgument("Width", "The width of the box");
+		
+		String[] args = {"7"};
+		p.parse(args);
 	}
 
 }
