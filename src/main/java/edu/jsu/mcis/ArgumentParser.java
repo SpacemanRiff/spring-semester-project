@@ -44,7 +44,7 @@ public class ArgumentParser
 		}
 	}
     
-    public void lookForHelp(String[] args)
+    private void lookForHelp(String[] args)
     {
         boolean isHelpNeeded = false;
         

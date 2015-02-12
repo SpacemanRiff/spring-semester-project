@@ -49,9 +49,6 @@ public class ArgumentParserTest
         p.addArgument("Length", "The length of the box");
         p.addArgument("Width", "The width of the box");
         p.addArgument("Height", "The height of the box");
-		
-        //String[] argumentNames = {"Length", "Width", "Height"};        
-		//p.addArguments(argumentNames);
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
@@ -79,9 +76,6 @@ public class ArgumentParserTest
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box");
-		
-        //String[] argumentNames = {"Argument1"};        
-		//p.addArguments(argumentNames);
         
 		String[] args = {"7"};
 		p.parse(args);
