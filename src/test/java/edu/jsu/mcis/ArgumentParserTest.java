@@ -13,40 +13,58 @@ public class ArgumentParserTest
         assertEquals(0, p.getNumberOfArguments());
     }
 	
-	@Test
-    public void testAddArgFillsLabelArray()
+	//@Test
+    /*public void testAddArgFillsLabelArray()
 	{
 		ArgumentParser p = new ArgumentParser();
 		
         String[] argumentNames = {"Length", "Width", "Height"};        
-		p.addArgumentNames(argumentNames);
+		p.addArguments(argumentNames);
 		
 		assertEquals("Length", p.getArgumentName(0));
 		assertEquals("Width", p.getArgumentName(1));
 		assertEquals("Height", p.getArgumentName(2)); 
-    }
+    }*/
     
     @Test
     public void testAddArgIndividually()
     {
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgumentName("Length");
-        p.addArgumentName("Width");
-        p.addArgumentName("Height");
+        p.addArgument("Length", "The length of the box");
+        p.addArgument("Width", "The width of the box");
+        p.addArgument("Height", "The height of the box");
 		
 		assertEquals("Length", p.getArgumentName(0));
 		assertEquals("Width", p.getArgumentName(1));
-		assertEquals("Height", p.getArgumentName(2));         
+		assertEquals("Height", p.getArgumentName(2));       
+		
+		assertEquals("The length of the box", p.getArgumentDescription(0));
+		assertEquals("The width of the box", p.getArgumentDescription(1));
+		assertEquals("The height of the box", p.getArgumentDescription(2));       
+    }
+    
+    @Test
+    public void testAddProgramDescription()
+    {        
+		ArgumentParser p = new ArgumentParser();
+        
+        p.setProgramDescription("This is simply a test.");
+        
+        assertEquals("This is simply a test.", p.getProgramDescription()); 
     }
 	
 	@Test
     public void testGetValueReturnsCorrectValue()
 	{
 		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box");
+        p.addArgument("Width", "The width of the box");
+        p.addArgument("Height", "The height of the box");
 		
-        String[] argumentNames = {"Length", "Width", "Height"};        
-		p.addArgumentNames(argumentNames);
+        //String[] argumentNames = {"Length", "Width", "Height"};        
+		//p.addArguments(argumentNames);
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
@@ -55,14 +73,28 @@ public class ArgumentParserTest
 		assertEquals("2", p.getValueOf("Width"));
 		assertEquals("3", p.getValueOf("Height"));
 	}
+    
+    @Test
+    public void testGetValueOfUnknownArgument()
+    {        
+		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box");
+        
+		String[] args = {"7"};
+		p.parse(args);
+		assertEquals("Unknown Label", p.getValueOf("8"));
+    }
 	
 	//@Test(expected=UnknownArgumentException.class)
 	public void testGetValueOfUnknownArgumentThrowsException()
 	{
 		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box");
 		
-        String[] argumentNames = {"Argument1"};        
-		p.addArgumentNames(argumentNames);
+        //String[] argumentNames = {"Argument1"};        
+		//p.addArguments(argumentNames);
         
 		String[] args = {"7"};
 		p.parse(args);
