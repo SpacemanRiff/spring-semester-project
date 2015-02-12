@@ -30,9 +30,9 @@ public class ArgumentParserTest
 		assertEquals("The width of the box", p.getArgumentDescription(1));
 		assertEquals("The height of the box", p.getArgumentDescription(2)); 
         
-        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(0));
-        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(1));
-        assertEquals(ArgumentParser.Types.INT, p.getArgumentType(2));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(0));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(1));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(2));
     }
     
     @Test

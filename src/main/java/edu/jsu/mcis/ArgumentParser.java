@@ -18,7 +18,7 @@ public class ArgumentParser
 	
 	public void addArgument(String argName, String argDescription, Types type)
 	{
-		argumentNames.add(new ArgumentInformation(argName,argDescription));
+		argumentNames.add(new ArgumentInformation(argName, argDescription, type));
 	}
     
     public int getNumberOfArguments()
@@ -36,7 +36,7 @@ public class ArgumentParser
         return argumentNames.get(p).getDescription();
     }
     
-    public Types getArgumentTypes(int p)
+    public Types getArgumentType(int p)
     {
         return argumentNames.get(p).getType();
     }
@@ -94,9 +94,9 @@ public class ArgumentParser
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
-        p.addArgument("Width", "The width of the box");
-        p.addArgument("Height", "The height of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
 		
 		p.parse(args);
 		
@@ -112,10 +112,12 @@ public class ArgumentParser
     private class ArgumentInformation
     {
         String name, description;
-        private ArgumentInformation(String name, String description)
+        Types type;
+        private ArgumentInformation(String name, String description, Types type)
         {
             this.name = name;
             this.description = description;
+            this.type = type;
         }
         
         private String getName()
@@ -129,7 +131,7 @@ public class ArgumentParser
         }
         private Types getType()
         {
-            return Types.BOOLEAN;
+            return type;
         }
     }
 }
