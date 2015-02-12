@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: Argument Parser
+Implementation-Version: 0.1
+Main-Class: edu.jsu.mcis.ArgumentParser
+

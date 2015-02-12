@@ -1,0 +1,23 @@
+
+	
+	//@Test
+    /*public void testAddArgFillsLabelArray()
+	{
+		ArgumentParser p = new ArgumentParser();
+		
+        String[] argumentNames = {"Length", "Width", "Height"};        
+		p.addArguments(argumentNames);
+		
+		assertEquals("Length", p.getArgumentName(0));
+		assertEquals("Width", p.getArgumentName(1));
+		assertEquals("Height", p.getArgumentName(2)); 
+    }*/
+    
+    /*we may just remove this    
+    public void addArguments(String [] names)
+    {
+        for(int i = 0; i < names.length; i++)
+        {
+            argumentNames.add(names[i]);
+        }
+    }*/

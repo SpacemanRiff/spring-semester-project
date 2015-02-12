@@ -73,15 +73,6 @@ public class ArgumentParser
 		}
 		return "Unknown Label";
 	}
-    
-    /*we may just remove this    
-    public void addArguments(String [] names)
-    {
-        for(int i = 0; i < names.length; i++)
-        {
-            argumentNames.add(names[i]);
-        }
-    }*/
 
     public void setProgramDescription(String programDescription)
     {

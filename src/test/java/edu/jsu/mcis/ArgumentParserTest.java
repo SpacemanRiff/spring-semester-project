@@ -12,19 +12,6 @@ public class ArgumentParserTest
         
         assertEquals(0, p.getNumberOfArguments());
     }
-	
-	//@Test
-    /*public void testAddArgFillsLabelArray()
-	{
-		ArgumentParser p = new ArgumentParser();
-		
-        String[] argumentNames = {"Length", "Width", "Height"};        
-		p.addArguments(argumentNames);
-		
-		assertEquals("Length", p.getArgumentName(0));
-		assertEquals("Width", p.getArgumentName(1));
-		assertEquals("Height", p.getArgumentName(2)); 
-    }*/
     
     @Test
     public void testAddArgIndividually()
