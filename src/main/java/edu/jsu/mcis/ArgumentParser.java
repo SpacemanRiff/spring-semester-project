@@ -7,6 +7,7 @@ public class ArgumentParser
     private ArrayList<ArgumentInformation> argumentNames;
     private ArrayList<String> argumentValues;
     private String programDescription;
+    public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser()
 	{
@@ -15,9 +16,9 @@ public class ArgumentParser
         programDescription = "";
     }
 	
-	public void addArgument(String argName, String argDescription)
+	public void addArgument(String argName, String argDescription, Types type)
 	{
-		argumentNames.add(new ArgumentInformation(argName,argDescription));
+		argumentNames.add(new ArgumentInformation(argName, argDescription, type));
 	}
     
     public int getNumberOfArguments()
@@ -33,6 +34,11 @@ public class ArgumentParser
     public String getArgumentDescription(int p)
     {
         return argumentNames.get(p).getDescription();
+    }
+    
+    public Types getArgumentType(int p)
+    {
+        return argumentNames.get(p).getType();
     }
 	
 	public void parse(String[] args) throws RuntimeException
@@ -77,15 +83,6 @@ public class ArgumentParser
 		}
 		return "Unknown Label";
 	}
-    
-    /*we may just remove this    
-    public void addArguments(String [] names)
-    {
-        for(int i = 0; i < names.length; i++)
-        {
-            argumentNames.add(names[i]);
-        }
-    }*/
 
     public void setProgramDescription(String programDescription)
     {
@@ -101,9 +98,9 @@ public class ArgumentParser
 	{
 		ArgumentParser p = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box");
-        p.addArgument("Width", "The width of the box");
-        p.addArgument("Height", "The height of the box");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
 		
 		p.parse(args);
 		
@@ -113,16 +110,19 @@ public class ArgumentParser
 
         System.out.println(p.getArgumentName(0) + " is " + l);
 		System.out.println(p.getArgumentName(1) + " is " + w);
-		System.out.println(p.getArgumentName(2) + " is " + h);
+		System.out.println(p.getArgumentName(2) + " is " + h);		
     }
     
     private class ArgumentInformation
     {
         String name, description;
-        private ArgumentInformation(String name, String description)
+        Types type;
+        
+        private ArgumentInformation(String name, String description, Types type)
         {
             this.name = name;
             this.description = description;
+            this.type = type;
         }
         
         private String getName()
@@ -133,6 +133,11 @@ public class ArgumentParser
         private String getDescription()
         {
             return description;
+        }
+        
+        private Types getType()
+        {
+            return type;
         }
     }
 }
