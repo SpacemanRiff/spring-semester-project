@@ -88,7 +88,7 @@ public class ArgumentParserTest
 		
 	}
 	
-	@Test(expected=RuntimeException.class)
+	@Test(expected = IncorrectNumberOfArgumentsException.class)
 	public void testNotEnoughArgumentsThrowsException()
 	{
 		ArgumentParser p = new ArgumentParser();
@@ -99,5 +99,17 @@ public class ArgumentParserTest
 		String[] args = {"7"};
 		p.parse(args);
 	}
-
+	
+	@Test(expected = IncorrectNumberOfArgumentsException.class)
+	public void testToManyArgumentsThrowsException()
+	{
+		ArgumentParser p = new ArgumentParser();
+		
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+		
+		String[] args = {"7", "4", "8"};
+		p.parse(args);
+	}
+	
 }

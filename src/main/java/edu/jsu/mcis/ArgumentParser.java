@@ -41,13 +41,21 @@ public class ArgumentParser
         return argumentNames.get(p).getType();
     }
 	
-	public void parse(String[] args) throws RuntimeException
+	public void parse(String[] args) throws IncorrectNumberOfArgumentsException
 	{
+		lookForHelp(args);
+		
 		if(args.length < getNumberOfArguments())
 		{
-			throw new RuntimeException("Too few arguments.");
+			throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n\n");
 		}
-        lookForHelp(args);
+
+		else if(args.length > getNumberOfArguments())
+		{
+			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n\n");
+		}
+        
+		
 		for(int i = 0; i < args.length; i++)
 		{
 			argumentValues.add(args[i]);
