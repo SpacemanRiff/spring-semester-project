@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class ArgumentParser
 {
     private ArrayList<ArgumentInformation> argumentNames;
-    private ArrayList<String> argumentValues;
+    private ArrayList<Object> argumentValues;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser()
 	{
 		argumentNames = new ArrayList<ArgumentInformation>();
-        argumentValues = new ArrayList<String>();
+        argumentValues = new ArrayList<Object>();
         programDescription = "";
     }
 	
@@ -43,7 +43,7 @@ public class ArgumentParser
 	
 	public void parse(String[] args) throws IncorrectNumberOfArgumentsException
 	{
-		lookForHelp(args);
+		getHelp(args);
 		
 		if(args.length < getNumberOfArguments())
 		{
@@ -53,16 +53,29 @@ public class ArgumentParser
 		else if(args.length > getNumberOfArguments())
 		{
 			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n\n");
-		}
-        
+		}        
 		
 		for(int i = 0; i < args.length; i++)
 		{
-			argumentValues.add(args[i]);
+            switch(getArgumentType(i))
+            {
+                case INTEGER:
+                    argumentValues.add(Integer.parseInt(args[i]));
+                    break;
+                case FLOAT:
+                    argumentValues.add(Float.parseFloat(args[i]));
+                    break;
+                case BOOLEAN:
+                    argumentValues.add(Boolean.parseBoolean(args[i]));
+                    break;
+                default:
+                    argumentValues.add(args[i]);
+                    break;
+            }
 		}
 	}
     
-    public void lookForHelp(String[] args)
+    public void getHelp(String[] args)
     {
         boolean isHelpNeeded = false;
         
@@ -80,7 +93,7 @@ public class ArgumentParser
         }
     }
 	
-	public String getValueOf(String argName)
+	public Object getValueOf(String argName)
 	{
 		for(int i = 0; i < argumentNames.size(); i++)
 		{
@@ -102,7 +115,7 @@ public class ArgumentParser
         return programDescription;
     }
     
-    public static void main(String[] args)
+    /*public static void main(String[] args)
 	{
 		ArgumentParser p = new ArgumentParser();
         
@@ -119,7 +132,7 @@ public class ArgumentParser
         System.out.println(p.getArgumentName(0) + " is " + l);
 		System.out.println(p.getArgumentName(1) + " is " + w);
 		System.out.println(p.getArgumentName(2) + " is " + h);		
-    }
+    }*/
     
     private class ArgumentInformation
     {

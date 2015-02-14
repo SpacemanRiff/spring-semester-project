@@ -56,10 +56,29 @@ public class ArgumentParserTest
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
+        
+		assertEquals(1, p.getValueOf("Length"));
+		assertEquals(2, p.getValueOf("Height"));
+		assertEquals(3, p.getValueOf("Width"));
+	}
+	
+	@Test
+    public void testGetValueReturnsCorrectValueType()
+	{
+		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Temperature", "The current air temperature", ArgumentParser.Types.INTEGER);
+        p.addArgument("Current Month", "The current month", ArgumentParser.Types.STRING);
+        p.addArgument("Raining", "Whether or not it is raining", ArgumentParser.Types.BOOLEAN);
+        p.addArgument("Precipitation", "The amount of precipitation in the last week", ArgumentParser.Types.FLOAT);
+				
+		String[] args = {"32", "January", "false", "2.0f"};
+		p.parse(args);
 		
-		assertEquals("1", p.getValueOf("Length"));
-		assertEquals("2", p.getValueOf("Width"));
-		assertEquals("3", p.getValueOf("Height"));
+		assertEquals(32, p.getValueOf("Temperature"));
+		assertEquals("cool", p.getValueOf("Current Month"));
+		assertEquals(false, p.getValueOf("Raining"));
+		assertEquals(2.0f, p.getValueOf("Precipitation"));
 	}
     
     @Test
