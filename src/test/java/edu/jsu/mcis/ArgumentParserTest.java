@@ -57,9 +57,13 @@ public class ArgumentParserTest
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
         
-		assertEquals(1, p.getValueOf("Length"));
-		assertEquals(2, p.getValueOf("Height"));
-		assertEquals(3, p.getValueOf("Width"));
+        int length = p.getValueOf("Length");
+        int width = p.getValueOf("Width");
+        int height = p.getValueOf("Height");
+        
+		assertEquals(1, length);
+		assertEquals(2, width);
+		assertEquals(3, height);
 	}
 	
 	@Test
@@ -74,11 +78,16 @@ public class ArgumentParserTest
 				
 		String[] args = {"32", "January", "false", "2.0f"};
 		p.parse(args);
+        
+        int temperature = p.getValueOf("Temperature");
+        String month = p.getValueOf("Current Month");
+        boolean isRaining = p.getValueOf("Raining");
+        float precipiation = p.getValueOf("Precipitation");
 		
-		assertEquals(32, p.getValueOf("Temperature"));
-		assertEquals("cool", p.getValueOf("Current Month"));
-		assertEquals(false, p.getValueOf("Raining"));
-		assertEquals(2.0f, p.getValueOf("Precipitation"));
+		assertEquals(32, temperature);
+		assertEquals("January", month);
+		assertEquals(false, isRaining);
+		assertEquals(2.0f, precipiation, 0.1f);
 	}
     
     @Test

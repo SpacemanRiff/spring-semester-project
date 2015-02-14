@@ -93,16 +93,17 @@ public class ArgumentParser
         }
     }
 	
-	public Object getValueOf(String argName)
+    @SuppressWarnings("unchecked") //talk to Dr. Garrett about this
+	public <T> T getValueOf(String argName)
 	{
 		for(int i = 0; i < argumentNames.size(); i++)
 		{
 			if(argumentNames.get(i).getName() == argName)
 			{
-				return argumentValues.get(i);
+				return (T)argumentValues.get(i);
 			}
 		}
-		return "Unknown Label";
+        return (T)"Unknown Label";
 	}
 
     public void setProgramDescription(String programDescription)
@@ -115,7 +116,7 @@ public class ArgumentParser
         return programDescription;
     }
     
-    /*public static void main(String[] args)
+    public static void main(String[] args)
 	{
 		ArgumentParser p = new ArgumentParser();
         
@@ -132,7 +133,7 @@ public class ArgumentParser
         System.out.println(p.getArgumentName(0) + " is " + l);
 		System.out.println(p.getArgumentName(1) + " is " + w);
 		System.out.println(p.getArgumentName(2) + " is " + h);		
-    }*/
+    }
     
     private class ArgumentInformation
     {
