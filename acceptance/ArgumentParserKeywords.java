@@ -3,7 +3,7 @@ import edu.jsu.mcis.*;
 public class ArgumentParserKeywords{
     ArgumentParser a;
     
-    public void startProgram(String [] args)
+    public void startProgramWithArguments(String [] args)
     {
         a = new ArgumentParser();
         
@@ -33,5 +33,12 @@ public class ArgumentParserKeywords{
         int height = a.getValueOf("Height");
         
         return height;
+    }
+    
+    public int getVolume()
+    {        
+        int volume = a.getValueOf("Length") * int width = a.getValueOf("Width"); * a.getValueOf("Height");
+        
+        return volume;
     }
 }

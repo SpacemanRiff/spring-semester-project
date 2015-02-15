@@ -1,13 +1,13 @@
-***Settings***
+*** Settings ***
 Library     ArgumentParserKeywords
 
-
 *** Test Cases ***
-${scalar}=  Create List  7  5  2
-Start Program With Arguments  ${scalar}
-${length}=  Get Length
-Should Be Equal  7  ${length}
-${width}=  Get Width
-Should Be Equal  5  ${width}
-${height}=  Get Height
-Should Be Equal  2  ${height}
+Create Shape With Volume 42
+    ${scalar}=  Create List  7  5  2
+    Start Program With Arguments  ${scalar}
+    ${length}=  Get Length
+    Should Be Equal  7  ${length}
+    ${width}=  Get Width
+    Should Be Equal  5  ${width}
+    ${height}=  Get Height
+    Should Be Equal  2  ${height}
