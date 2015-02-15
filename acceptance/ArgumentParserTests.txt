@@ -3,7 +3,8 @@ Library     ArgumentParserKeywords
 
 
 *** Test Cases ***
-Start Program With Arguments  7 5 2
+${scalar}=  Create List  7  5  2
+Start Program With Arguments  ${scalar}
 ${length}=  Get Length
 Should Be Equal  7  ${length}
 ${width}=  Get Width

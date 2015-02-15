@@ -40,37 +40,49 @@ public class ArgumentParser
     {
         return argumentNames.get(p).getType();
     }
+    
+    public String getArgumentTypeAsString(int p)
+    {
+        return argumentNames.get(p).getTypeAsString();
+    }
 	
-	public void parse(String[] args) throws IncorrectNumberOfArgumentsException
+	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException
 	{
 		getHelp(args);
 		
 		if(args.length < getNumberOfArguments())
 		{
-			throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n\n");
+			throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n");
 		}
 
 		else if(args.length > getNumberOfArguments())
 		{
-			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n\n");
+			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
 		}        
 		
 		for(int i = 0; i < args.length; i++)
 		{
-            switch(getArgumentType(i))
+            try
             {
-                case INTEGER:
-                    argumentValues.add(Integer.parseInt(args[i]));
-                    break;
-                case FLOAT:
-                    argumentValues.add(Float.parseFloat(args[i]));
-                    break;
-                case BOOLEAN:
-                    argumentValues.add(Boolean.parseBoolean(args[i]));
-                    break;
-                default:
-                    argumentValues.add(args[i]);
-                    break;
+                switch(getArgumentType(i))
+                {
+                    case INTEGER:
+                        argumentValues.add(Integer.parseInt(args[i]));
+                        break;
+                    case FLOAT:
+                        argumentValues.add(Float.parseFloat(args[i]));
+                        break;
+                    case BOOLEAN:
+                        argumentValues.add(Boolean.parseBoolean(args[i]));
+                        break;
+                    default:
+                        argumentValues.add(args[i]);
+                        break;
+                }
+            }
+            catch(IllegalArgumentException ex)
+            {
+                throw new InvalidArgumentException("\n\nInvalid argument \"" + args[i] + "\"\n");
             }
 		}
 	}
@@ -87,23 +99,30 @@ public class ArgumentParser
         if(isHelpNeeded){
             System.out.println(programDescription);
             for(int i = 0; i < argumentNames.size(); i++){
-                System.out.println(argumentNames.get(i).getName() + "\t" + argumentNames.get(i).getDescription());
+                System.out.println(argumentNames.get(i).getName() 
+                        + "\t" + argumentNames.get(i).getTypeAsString() 
+                        + "\t" + argumentNames.get(i).getDescription());
             }
             System.exit(0);
         }
     }
 	
-    @SuppressWarnings("unchecked") //talk to Dr. Garrett about this
-	public <T> T getValueOf(String argName)
+    @SuppressWarnings("unchecked") //we should talk to Dr. Garrett about this
+	public <T> T getValueOf(String argName) throws UnknownArgumentException
 	{
+        boolean argumentFound = true;
 		for(int i = 0; i < argumentNames.size(); i++)
 		{
 			if(argumentNames.get(i).getName() == argName)
 			{
 				return (T)argumentValues.get(i);
 			}
+            if(i == argumentNames.size()-1)
+            {
+                argumentFound = false;
+            }
 		}
-        return (T)"Unknown Label";
+        throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
 	}
 
     public void setProgramDescription(String programDescription)
@@ -126,13 +145,14 @@ public class ArgumentParser
 		
 		p.parse(args);
 		
-		String l = p.getValueOf("Length");
-		String w = p.getValueOf("Width");
-		String h = p.getValueOf("Height");
+		int l = p.getValueOf("Length");
+		int w = p.getValueOf("Width");
+		int h = p.getValueOf("Height");
 
         System.out.println(p.getArgumentName(0) + " is " + l);
 		System.out.println(p.getArgumentName(1) + " is " + w);
-		System.out.println(p.getArgumentName(2) + " is " + h);		
+		System.out.println(p.getArgumentName(2) + " is " + h);	
+		System.out.println("The volume of this shape is " + (l * w * h));		
     }
     
     private class ArgumentInformation
@@ -160,6 +180,21 @@ public class ArgumentParser
         private Types getType()
         {
             return type;
+        }
+        
+        private String getTypeAsString()
+        {            
+            switch(type)
+            {
+                case INTEGER:
+                    return "INTEGER";
+                case FLOAT:
+                    return "FLOAT";
+                case BOOLEAN:
+                    return "BOOLEAN";
+                default:
+                    return "STRING";
+            }
         }
     }
 }

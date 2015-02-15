@@ -2,20 +2,36 @@ import edu.jsu.mcis.*;
 
 public class ArgumentParserKeywords{
     ArgumentParser a;
-    String arguments;
     
-    public void startProgramWithArguments(String args){
+    public void startProgram(String [] args)
+    {
         a = new ArgumentParser();
-        arguments = args;
-        a.sendArguments(arguments);
+        
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        a.parse(args);
     }
-    public float getLength(){
-        a.getArgumentAt(0);
+    
+    public int getLength()
+    {
+        int length = a.getValueOf("Length");
+        
+        return length;
     }
-    public float getWidth(){
-        a.getArgumentAt(1);
+    
+    public int getWidth()
+    {
+        int width = a.getValueOf("Width");
+        
+        return width;
     }
-    public float getHeight(){
-        a.getArgumentAt(2);
+    
+    public int getHeight()
+    {        
+        int height = a.getValueOf("Height");
+        
+        return height;
     }
 }

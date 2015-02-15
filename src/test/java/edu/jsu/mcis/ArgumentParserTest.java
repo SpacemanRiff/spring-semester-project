@@ -33,6 +33,10 @@ public class ArgumentParserTest
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(0));
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(1));
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType(2));
+        
+        assertEquals("INTEGER", p.getArgumentTypeAsString(0));
+        assertEquals("INTEGER", p.getArgumentTypeAsString(1));
+        assertEquals("INTEGER", p.getArgumentTypeAsString(2));
     }
     
     @Test
@@ -79,6 +83,11 @@ public class ArgumentParserTest
 		String[] args = {"32", "January", "false", "2.0f"};
 		p.parse(args);
         
+        assertEquals("INTEGER", p.getArgumentTypeAsString(0));
+        assertEquals("STRING", p.getArgumentTypeAsString(1));
+        assertEquals("BOOLEAN", p.getArgumentTypeAsString(2));
+        assertEquals("FLOAT", p.getArgumentTypeAsString(3));
+        
         int temperature = p.getValueOf("Temperature");
         String month = p.getValueOf("Current Month");
         boolean isRaining = p.getValueOf("Raining");
@@ -89,21 +98,9 @@ public class ArgumentParserTest
 		assertEquals(false, isRaining);
 		assertEquals(2.0f, precipiation, 0.1f);
 	}
-    
-    @Test
-    public void testGetValueOfUnknownArgument()
-    {        
-		ArgumentParser p = new ArgumentParser();
-        
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        
-		String[] args = {"7"};
-		p.parse(args);
-		assertEquals("Unknown Label", p.getValueOf("8"));
-    }
 	
-	//@Test(expected=UnknownArgumentException.class)
-	public void testGetValueOfUnknownArgumentThrowsException()
+	@Test(expected=UnknownArgumentException.class)
+	public void testGetValueOfUnknownArgumentThrowsException() throws UnknownArgumentException
 	{
 		ArgumentParser p = new ArgumentParser();
         
@@ -112,8 +109,19 @@ public class ArgumentParserTest
 		String[] args = {"7"};
 
 		p.parse(args);
-		p.getValueOf("8");
-		
+		p.getValueOf("8");		
+	}
+	
+	@Test(expected=InvalidArgumentException.class)
+	public void testSendInvalidArgumentThrowsException()
+	{
+		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        
+		String[] args = {"nice"};
+
+		p.parse(args);	
 	}
 	
 	@Test(expected = IncorrectNumberOfArgumentsException.class)

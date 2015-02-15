@@ -1,11 +1,9 @@
-public class UnknownArgumentException extends Exception{
-    public UnknownArgumentException()
+package edu.jsu.mcis;
+
+public class UnknownArgumentException extends RuntimeException 
+{    
+    public UnknownArgumentException(String error)
     {
-    
-    }
-    
-    public UnknownArgumentException(String message)
-    {
-        super(message);
+        super(error);
     }
 }
