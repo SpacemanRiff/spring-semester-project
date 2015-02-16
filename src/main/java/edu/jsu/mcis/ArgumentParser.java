@@ -2,70 +2,56 @@ package edu.jsu.mcis;
 
 import java.util.ArrayList;
 
-public class ArgumentParser
-{
+public class ArgumentParser{
     private ArrayList<ArgumentInformation> argumentNames;
     private ArrayList<Object> argumentValues;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
-	public ArgumentParser()
-	{
+	public ArgumentParser(){
 		argumentNames = new ArrayList<ArgumentInformation>();
         argumentValues = new ArrayList<Object>();
         programDescription = "";
     }
 	
-	public void addArgument(String argName, String argDescription, Types type)
-	{
+	public void addArgument(String argName, String argDescription, Types type){
 		argumentNames.add(new ArgumentInformation(argName, argDescription, type));
 	}
     
-    public int getNumberOfArguments()
-    {
+    public int getNumberOfArguments(){
         return argumentNames.size();
     }
 	
-	public String getArgumentName(int p)
-	{
+	public String getArgumentName(int p){
 		return argumentNames.get(p).getName();
 	}
     
-    public String getArgumentDescription(int p)
-    {
+    public String getArgumentDescription(int p){
         return argumentNames.get(p).getDescription();
     }
     
-    public Types getArgumentType(int p)
-    {
+    public Types getArgumentType(int p){
         return argumentNames.get(p).getType();
     }
     
-    public String getArgumentTypeAsString(int p)
-    {
+    public String getArgumentTypeAsString(int p){
         return argumentNames.get(p).getTypeAsString();
     }
 	
-	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException
-	{
+	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
 		getHelp(args);
 		
-		if(args.length < getNumberOfArguments())
-		{
+		if(args.length < getNumberOfArguments()){
 			throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n");
 		}
 
-		else if(args.length > getNumberOfArguments())
-		{
+		else if(args.length > getNumberOfArguments()){
 			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
 		}        
 		
-		for(int i = 0; i < args.length; i++)
-		{
-            try
-            {
-                switch(getArgumentType(i))
-                {
+		for(int i = 0; i < args.length; i++){
+            try{
+                switch(getArgumentType(i)){
                     case INTEGER:
                         argumentValues.add(Integer.parseInt(args[i]));
                         break;
@@ -79,16 +65,13 @@ public class ArgumentParser
                         argumentValues.add(args[i]);
                         break;
                 }
-            }
-            catch(IllegalArgumentException ex)
-            {
+            }catch(IllegalArgumentException ex){
                 throw new InvalidArgumentException("\n\nInvalid argument \"" + args[i] + "\"\n");
             }
 		}
 	}
     
-    private void getHelp(String[] args)
-    {
+    private void getHelp(String[] args){
         boolean isHelpNeeded = false;
         
         for(int i = 0; i < args.length; i++){
@@ -96,6 +79,7 @@ public class ArgumentParser
                 isHelpNeeded = true;
             }
         }
+        
         if(isHelpNeeded){
             System.out.println("\n" + programDescription);
             for(int i = 0; i < argumentNames.size(); i++){
@@ -108,30 +92,24 @@ public class ArgumentParser
     }
 	
     @SuppressWarnings("unchecked") //we should talk to Dr. Garrett about this
-	public <T> T getValueOf(String argName) throws UnknownArgumentException
-	{
-		for(int i = 0; i < argumentNames.size(); i++)
-		{
-			if(argumentNames.get(i).getName() == argName)
-			{
+	public <T> T getValueOf(String argName) throws UnknownArgumentException{
+		for(int i = 0; i < argumentNames.size(); i++){
+			if(argumentNames.get(i).getName() == argName){
 				return (T)argumentValues.get(i);
 			}
 		}
         throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
 	}
 
-    public void setProgramDescription(String programDescription)
-    {
+    public void setProgramDescription(String programDescription){
         this.programDescription = programDescription;
     }
     
-    public String getProgramDescription()
-    {
+    public String getProgramDescription(){
         return programDescription;
     }
     
-    public static void main(String[] args)
-	{
+    public static void main(String[] args){
 		ArgumentParser p = new ArgumentParser();
         
         p.setProgramDescription("Calculates the volume of a box.");
@@ -151,37 +129,30 @@ public class ArgumentParser
 		System.out.println("The volume of this shape is " + (l * w * h));		
     }
     
-    private class ArgumentInformation
-    {
+    private class ArgumentInformation{
         String name, description;
         Types type;
         
-        private ArgumentInformation(String name, String description, Types type)
-        {
+        private ArgumentInformation(String name, String description, Types type){
             this.name = name;
             this.description = description;
             this.type = type;
         }
         
-        private String getName()
-        {
+        private String getName(){
             return name;
         }
         
-        private String getDescription()
-        {
+        private String getDescription(){
             return description;
         }
         
-        private Types getType()
-        {
+        private Types getType(){
             return type;
         }
         
-        private String getTypeAsString()
-        {            
-            switch(type)
-            {
+        private String getTypeAsString(){            
+            switch(type){
                 case INTEGER:
                     return "INTEGER";
                 case FLOAT:

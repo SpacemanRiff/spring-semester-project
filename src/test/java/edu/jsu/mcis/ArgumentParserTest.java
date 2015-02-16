@@ -3,19 +3,16 @@ package edu.jsu.mcis;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class ArgumentParserTest
-{
+public class ArgumentParserTest{
     @Test
-    public void testInitialLabelArrayIsEmpty()
-	{
+    public void testInitialLabelArrayIsEmpty(){
 		ArgumentParser p = new ArgumentParser();
         
         assertEquals(0, p.getNumberOfArguments());
     }
     
     @Test
-    public void testAddArgIndividually()
-    {
+    public void testAddArgIndividually(){
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
@@ -40,8 +37,7 @@ public class ArgumentParserTest
     }
     
     @Test
-    public void testAddProgramDescription()
-    {        
+    public void testAddProgramDescription(){        
 		ArgumentParser p = new ArgumentParser();
         
         p.setProgramDescription("This is simply a test.");
@@ -50,8 +46,7 @@ public class ArgumentParserTest
     }
 	
 	@Test
-    public void testGetValueReturnsCorrectValue()
-	{
+    public void testGetValueReturnsCorrectValue(){
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
@@ -71,8 +66,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test
-    public void testGetValueReturnsCorrectValueType()
-	{
+    public void testGetValueReturnsCorrectValueType(){
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Temperature", "The current air temperature", ArgumentParser.Types.INTEGER);
@@ -100,8 +94,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test(expected=UnknownArgumentException.class)
-	public void testGetValueOfUnknownArgumentThrowsException() throws UnknownArgumentException
-	{
+	public void testGetValueOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
@@ -113,8 +106,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test(expected=InvalidArgumentException.class)
-	public void testSendInvalidArgumentThrowsException()
-	{
+	public void testSendInvalidArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
@@ -125,8 +117,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test(expected = IncorrectNumberOfArgumentsException.class)
-	public void testNotEnoughArgumentsThrowsException()
-	{
+	public void testNotEnoughArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
@@ -137,8 +128,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test(expected = IncorrectNumberOfArgumentsException.class)
-	public void testTooManyArgumentsThrowsException()
-	{
+	public void testTooManyArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
