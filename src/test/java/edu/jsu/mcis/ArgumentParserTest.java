@@ -137,7 +137,7 @@ public class ArgumentParserTest
 	}
 	
 	@Test(expected = IncorrectNumberOfArgumentsException.class)
-	public void testToManyArgumentsThrowsException()
+	public void testTooManyArgumentsThrowsException()
 	{
 		ArgumentParser p = new ArgumentParser();
 		

@@ -87,7 +87,7 @@ public class ArgumentParser
 		}
 	}
     
-    public void getHelp(String[] args)
+    private void getHelp(String[] args)
     {
         boolean isHelpNeeded = false;
         
@@ -97,7 +97,7 @@ public class ArgumentParser
             }
         }
         if(isHelpNeeded){
-            System.out.println(programDescription);
+            System.out.println("\n" + programDescription);
             for(int i = 0; i < argumentNames.size(); i++){
                 System.out.println(argumentNames.get(i).getName() 
                         + "\t" + argumentNames.get(i).getTypeAsString() 
@@ -110,17 +110,12 @@ public class ArgumentParser
     @SuppressWarnings("unchecked") //we should talk to Dr. Garrett about this
 	public <T> T getValueOf(String argName) throws UnknownArgumentException
 	{
-        boolean argumentFound = true;
 		for(int i = 0; i < argumentNames.size(); i++)
 		{
 			if(argumentNames.get(i).getName() == argName)
 			{
 				return (T)argumentValues.get(i);
 			}
-            if(i == argumentNames.size()-1)
-            {
-                argumentFound = false;
-            }
 		}
         throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
 	}
@@ -139,6 +134,7 @@ public class ArgumentParser
 	{
 		ArgumentParser p = new ArgumentParser();
         
+        p.setProgramDescription("Calculates the volume of a box.");
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
