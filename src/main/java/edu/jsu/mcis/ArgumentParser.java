@@ -1,44 +1,47 @@
 package edu.jsu.mcis;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class ArgumentParser{
+    private Map<String, ArgumentInformation> argumentMap;
     private ArrayList<ArgumentInformation> argumentNames;
     private ArrayList<Object> argumentValues;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
+        argumentMap = new HashMap<String, ArgumentInformation>();
 		argumentNames = new ArrayList<ArgumentInformation>();
         argumentValues = new ArrayList<Object>();
         programDescription = "";
     }
 	
 	public void addArgument(String argName, String argDescription, Types type){
-		argumentNames.add(new ArgumentInformation(argName, argDescription, type));
+        argumentMap.put(argName, new ArgumentInformation(argDescription, type));
+		//argumentNames.add(new ArgumentInformation(argName, argDescription, type));
 	}
     
     public int getNumberOfArguments(){
-        return argumentNames.size();
+        return argumentMap.size();
     }
 	
-	public String getArgumentName(int p){
-		return argumentNames.get(p).getName();
-	}
+	/*public String getArgumentName(String p){
+		return argumentMap.getKey(p);
+	}*/
     
-    public String getArgumentDescription(int p){
-        return argumentNames.get(p).getDescription();
+    public String getArgumentDescription(String p){
+        return argumentMap.get(p).getDescription();
     }
     
-    public Types getArgumentType(int p){
-        return argumentNames.get(p).getType();
+    public Types getArgumentType(String p){
+        return argumentMap.get(p).getType();
     }
     
-    public String getArgumentTypeAsString(int p){
-        return argumentNames.get(p).getTypeAsString();
+    public String getArgumentTypeAsString(String p){
+        return argumentMap.get(p).getTypeAsString();
     }
 	
-	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
+/*	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
 		getHelp(args);
 		
 		if(args.length < getNumberOfArguments()){
@@ -70,7 +73,7 @@ public class ArgumentParser{
             }
 		}
 	}
-    
+ */   
     private void getHelp(String[] args){
         boolean isHelpNeeded = false;
         
@@ -108,7 +111,7 @@ public class ArgumentParser{
     public String getProgramDescription(){
         return programDescription;
     }
-    
+ /*   
     public static void main(String[] args){
 		ArgumentParser p = new ArgumentParser();
         
@@ -128,13 +131,12 @@ public class ArgumentParser{
 		System.out.println(p.getArgumentName(2) + " is " + h);	
 		System.out.println("The volume of this shape is " + (l * w * h));		
     }
-    
+*/    
     private class ArgumentInformation{
         String name, description;
         Types type;
         
-        private ArgumentInformation(String name, String description, Types type){
-            this.name = name;
+        private ArgumentInformation(String description, Types type){
             this.description = description;
             this.type = type;
         }
