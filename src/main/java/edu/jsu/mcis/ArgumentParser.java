@@ -17,8 +17,9 @@ public class ArgumentParser{
     }
 	
 	public void addArgument(String argName, String argDescription, Types type){
+        int position = argumentMap.size();
         argumentMap.put(argName, new ArgumentInformation(argDescription, type));
-		//argumentNames.add(new ArgumentInformation(argName, argDescription, type));
+        argumentMap.get(argName).setPosition(position);
 	}
     
     public int getNumberOfArguments(){
@@ -41,7 +42,7 @@ public class ArgumentParser{
         return argumentMap.get(p).getTypeAsString();
     }
 	
-/*	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
+	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
 		getHelp(args);
 		
 		if(args.length < getNumberOfArguments()){
@@ -51,29 +52,31 @@ public class ArgumentParser{
 		else if(args.length > getNumberOfArguments()){
 			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
 		}        
-		
-		for(int i = 0; i < args.length; i++){
+		int i = 0;
+		for(Map.Entry<String, ArgumentInformation> entry : argumentMap.entrySet()){
             try{
-                switch(getArgumentType(i)){
+                switch(entry.getValue().getType()){
                     case INTEGER:
-                        argumentValues.add(Integer.parseInt(args[i]));
+                        entry.getValue().setValue(Integer.parseInt(args[entry.getValue().getPosition()]));
                         break;
                     case FLOAT:
-                        argumentValues.add(Float.parseFloat(args[i]));
+                        entry.getValue().setValue(Float.parseFloat(args[entry.getValue().getPosition()]));
                         break;
                     case BOOLEAN:
-                        argumentValues.add(Boolean.parseBoolean(args[i]));
+                        entry.getValue().setValue(Boolean.parseBoolean(args[entry.getValue().getPosition()]));
                         break;
                     default:
-                        argumentValues.add(args[i]);
+                        entry.getValue().setValue(args[entry.getValue().getPosition()]);
                         break;
                 }
+                i++;
             }catch(IllegalArgumentException ex){
                 throw new InvalidArgumentException("\n\nInvalid argument \"" + args[i] + "\"\n");
             }
+            
 		}
 	}
- */   
+ 
     private void getHelp(String[] args){
         boolean isHelpNeeded = false;
         
@@ -96,13 +99,13 @@ public class ArgumentParser{
 	
     @SuppressWarnings("unchecked") //we should talk to Dr. Garrett about this
 	public <T> T getValueOf(String argName) throws UnknownArgumentException{
-		for(int i = 0; i < argumentNames.size(); i++){
-			if(argumentNames.get(i).getName() == argName){
-				return (T)argumentValues.get(i);
-			}
-		}
-        throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
-	}
+		if(argumentMap.get(argName) != null){
+            return (T)argumentMap.get(argName).getValue();
+        }
+        else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }
+    }
 
     public void setProgramDescription(String programDescription){
         this.programDescription = programDescription;
@@ -135,10 +138,28 @@ public class ArgumentParser{
     private class ArgumentInformation{
         String name, description;
         Types type;
+        Object value;
+        int position;
         
         private ArgumentInformation(String description, Types type){
             this.description = description;
             this.type = type;
+        }
+        
+        private void setPosition(int i){
+            position = i;
+        }
+        
+        private void setValue(Object value){
+            this.value = value;
+        }
+        
+        private Object getValue(){
+            return value;
+        }
+        
+        private int getPosition(){
+            return position;
         }
         
         private String getName(){

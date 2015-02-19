@@ -58,7 +58,7 @@ public class ArgumentParserTest{
         assertEquals("This is simply a test.", p.getProgramDescription()); 
     }
 	
-	/*@Test
+	@Test
     public void testGetValueReturnsCorrectValue(){
 		ArgumentParser p = new ArgumentParser();
         
@@ -74,11 +74,11 @@ public class ArgumentParserTest{
         int height = p.getValueOf("Height");
         
 		assertEquals(1, length);
-		assertEquals(2, width);
+		//assertEquals(2, width);
 		assertEquals(3, height);
 	}
 	
-	//@Test
+	@Test
     public void testGetValueReturnsCorrectValueType(){
 		ArgumentParser p = new ArgumentParser();
         
@@ -90,10 +90,10 @@ public class ArgumentParserTest{
 		String[] args = {"32", "January", "false", "2.0f"};
 		p.parse(args);
         
-        assertEquals("INTEGER", p.getArgumentTypeAsString(0));
-        assertEquals("STRING", p.getArgumentTypeAsString(1));
-        assertEquals("BOOLEAN", p.getArgumentTypeAsString(2));
-        assertEquals("FLOAT", p.getArgumentTypeAsString(3));
+        assertEquals("INTEGER", p.getArgumentTypeAsString("Temperature"));
+        assertEquals("STRING", p.getArgumentTypeAsString("Current Month"));
+        assertEquals("BOOLEAN", p.getArgumentTypeAsString("Raining"));
+        assertEquals("FLOAT", p.getArgumentTypeAsString("Precipitation"));
         
         int temperature = p.getValueOf("Temperature");
         String month = p.getValueOf("Current Month");
@@ -106,7 +106,7 @@ public class ArgumentParserTest{
 		assertEquals(2.0f, precipiation, 0.1f);
 	}
 	
-	//@Test(expected=UnknownArgumentException.class)
+	@Test(expected=UnknownArgumentException.class)
 	public void testGetValueOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
         
@@ -118,7 +118,7 @@ public class ArgumentParserTest{
 		p.getValueOf("8");		
 	}
 	
-	//@Test(expected=InvalidArgumentException.class)
+	@Test(expected=InvalidArgumentException.class)
 	public void testSendInvalidArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
         
@@ -129,7 +129,7 @@ public class ArgumentParserTest{
 		p.parse(args);	
 	}
 	
-	//@Test(expected = IncorrectNumberOfArgumentsException.class)
+	@Test(expected = IncorrectNumberOfArgumentsException.class)
 	public void testNotEnoughArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		
@@ -140,7 +140,7 @@ public class ArgumentParserTest{
 		p.parse(args);
 	}
 	
-	//@Test(expected = IncorrectNumberOfArgumentsException.class)
+	@Test(expected = IncorrectNumberOfArgumentsException.class)
 	public void testTooManyArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		
@@ -150,5 +150,4 @@ public class ArgumentParserTest{
 		String[] args = {"7", "4", "8"};
 		p.parse(args);
 	}
-	*/
 }
