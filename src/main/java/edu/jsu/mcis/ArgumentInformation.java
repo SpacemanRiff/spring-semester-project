@@ -6,15 +6,10 @@ public class ArgumentInformation{
     private String description;
     private Types type;
     private Object value;
-    private int position;
     
     public ArgumentInformation(String description, Types type){
         this.description = description;
         this.type = type;
-    }
-    
-    public void setPosition(int i){
-        position = i;
     }
     
     public void setValue(String value){
@@ -36,10 +31,6 @@ public class ArgumentInformation{
     
     public Object getValue(){
         return value;
-    }
-    
-    public int getPosition(){
-        return position;
     }
     
     public String getDescription(){

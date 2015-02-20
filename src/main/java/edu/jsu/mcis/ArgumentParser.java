@@ -15,10 +15,8 @@ public class ArgumentParser{
     }
 	
 	public void addArgument(String argName, String argDescription, Types type){
-        int position = argumentMap.size();
         argumentMap.put(argName, new ArgumentInformation(argDescription, type));
         argumentNames.add(argName);
-        argumentMap.get(argName).setPosition(position);
 	}
     
     public int getNumberOfArguments(){
