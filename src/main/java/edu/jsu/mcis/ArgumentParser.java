@@ -4,15 +4,11 @@ import java.util.*;
 
 public class ArgumentParser{
     private Map<String, ArgumentInformation> argumentMap;
-    private ArrayList<ArgumentInformation> argumentNames;
-    private ArrayList<Object> argumentValues;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
         argumentMap = new HashMap<String, ArgumentInformation>();
-		argumentNames = new ArrayList<ArgumentInformation>();
-        argumentValues = new ArrayList<Object>();
         programDescription = "";
     }
 	
@@ -25,10 +21,6 @@ public class ArgumentParser{
     public int getNumberOfArguments(){
         return argumentMap.size();
     }
-	
-	/*public String getArgumentName(String p){
-		return argumentMap.getKey(p);
-	}*/
     
     public String getArgumentDescription(String p){
         return argumentMap.get(p).getDescription();
@@ -88,10 +80,9 @@ public class ArgumentParser{
         
         if(isHelpNeeded){
             System.out.println("\n" + programDescription);
-            for(int i = 0; i < argumentNames.size(); i++){
-                System.out.println(argumentNames.get(i).getName() 
-                        + "\t" + argumentNames.get(i).getTypeAsString() 
-                        + "\t" + argumentNames.get(i).getDescription());
+            for(Map.Entry<String, ArgumentInformation> entry : argumentMap.entrySet()){
+                System.out.println(entry.getKey() + "\t" + entry.getValue().getTypeAsString() 
+                        + "\t" + entry.getValue().getDescription());
             }
             System.exit(0);
         }
@@ -136,7 +127,7 @@ public class ArgumentParser{
     }
 */    
     private class ArgumentInformation{
-        String name, description;
+        String description;
         Types type;
         Object value;
         int position;
@@ -160,10 +151,6 @@ public class ArgumentParser{
         
         private int getPosition(){
             return position;
-        }
-        
-        private String getName(){
-            return name;
         }
         
         private String getDescription(){

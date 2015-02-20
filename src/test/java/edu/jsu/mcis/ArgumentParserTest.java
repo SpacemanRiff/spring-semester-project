@@ -74,7 +74,7 @@ public class ArgumentParserTest{
         int height = p.getValueOf("Height");
         
 		assertEquals(1, length);
-		//assertEquals(2, width);
+		assertEquals(2, width);
 		assertEquals(3, height);
 	}
 	
