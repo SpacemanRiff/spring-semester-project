@@ -4,17 +4,20 @@ import java.util.*;
 
 public class ArgumentParser{
     private Map<String, ArgumentInformation> argumentMap;
+    private List<String> argumentNames;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
         argumentMap = new HashMap<String, ArgumentInformation>();
+        argumentNames = new ArrayList<String>();
         programDescription = "";
     }
 	
 	public void addArgument(String argName, String argDescription, Types type){
         int position = argumentMap.size();
         argumentMap.put(argName, new ArgumentInformation(argDescription, type));
+        argumentNames.add(argName);
         argumentMap.get(argName).setPosition(position);
 	}
     
@@ -44,24 +47,10 @@ public class ArgumentParser{
 		else if(args.length > getNumberOfArguments()){
 			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
 		}        
-		int i = 0;
-		for(Map.Entry<String, ArgumentInformation> entry : argumentMap.entrySet()){
+
+		for(int i = 0; i < args.length; i++){
             try{
-                switch(entry.getValue().getType()){
-                    case INTEGER:
-                        entry.getValue().setValue(Integer.parseInt(args[entry.getValue().getPosition()]));
-                        break;
-                    case FLOAT:
-                        entry.getValue().setValue(Float.parseFloat(args[entry.getValue().getPosition()]));
-                        break;
-                    case BOOLEAN:
-                        entry.getValue().setValue(Boolean.parseBoolean(args[entry.getValue().getPosition()]));
-                        break;
-                    default:
-                        entry.getValue().setValue(args[entry.getValue().getPosition()]);
-                        break;
-                }
-                i++;
+                argumentMap.get(argumentNames.get(i)).setValue(args[i]); 
             }catch(IllegalArgumentException ex){
                 throw new InvalidArgumentException("\n\nInvalid argument \"" + args[i] + "\"\n");
             }
@@ -105,27 +94,7 @@ public class ArgumentParser{
     public String getProgramDescription(){
         return programDescription;
     }
- /*   
-    public static void main(String[] args){
-		ArgumentParser p = new ArgumentParser();
-        
-        p.setProgramDescription("Calculates the volume of a box.");
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
-		
-		p.parse(args);
-		
-		int l = p.getValueOf("Length");
-		int w = p.getValueOf("Width");
-		int h = p.getValueOf("Height");
-
-        System.out.println(p.getArgumentName(0) + " is " + l);
-		System.out.println(p.getArgumentName(1) + " is " + w);
-		System.out.println(p.getArgumentName(2) + " is " + h);	
-		System.out.println("The volume of this shape is " + (l * w * h));		
-    }
-*/    
+    
     private class ArgumentInformation{
         String description;
         Types type;
@@ -141,8 +110,21 @@ public class ArgumentParser{
             position = i;
         }
         
-        private void setValue(Object value){
-            this.value = value;
+        private void setValue(String value){
+            switch(type){
+                case INTEGER:
+                    this.value = Integer.parseInt(value);
+                    break;
+                case FLOAT:
+                    this.value = Float.parseFloat(value);
+                    break;
+                case BOOLEAN:
+                    this.value = Boolean.parseBoolean(value);
+                    break;
+                default:
+                    this.value = value;
+                    break;
+            }
         }
         
         private Object getValue(){

@@ -9,7 +9,7 @@ public class ArgumentParserTest{
 		ArgumentParser p = new ArgumentParser();
         
         assertEquals(0, p.getNumberOfArguments());
-    }
+    }    
     
     @Test
     public void testAddArgAndTestDescription(){
@@ -31,6 +31,19 @@ public class ArgumentParserTest{
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Length"));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Width"));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Height"));
+    }
+    
+    @Test
+    public void testAddArgAndTestTypeUsingValueOf(){
+		ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.valueOf("INTEGER"));
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.valueOf("INTEGER"));
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.valueOf("INTEGER"));
         
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Length"));
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Width"));
