@@ -74,21 +74,21 @@ public class ArgumentParser{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getDescription();
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }    
     public Types getOptionalArgumentType(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getType();
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }    
     public String getOptionalArgumentTypeAsString(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getTypeAsString();
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }	
     @SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ public class ArgumentParser{
 		if(optionalArgumentMap.get(argName) != null){
             return (T)optionalArgumentMap.get(argName).getValue();
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }
 	
