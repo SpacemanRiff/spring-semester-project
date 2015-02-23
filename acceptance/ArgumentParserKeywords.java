@@ -3,17 +3,17 @@ import edu.jsu.mcis.*;
 public class ArgumentParserKeywords{
     ArgumentParser a;
     
-    public void startProgramWithArguments(String [] args){
+    public void startProgramWithArguments(String[] args){
         a = new ArgumentParser();
         
-        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        a.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        a.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        a.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         a.parse(args);
     }
     
-    public int getLength(){
+    public int getLengthOf(){
         int length = a.getValueOf("Length");
         
         return length;
@@ -32,7 +32,7 @@ public class ArgumentParserKeywords{
     }
     
     public int getVolume(){        
-        int volume = a.getValueOf("Length") * int width = a.getValueOf("Width"); * a.getValueOf("Height");
+        int volume = (int)a.getValueOf("Length") * (int)a.getValueOf("Width") * (int)a.getValueOf("Height");
         
         return volume;
     }
