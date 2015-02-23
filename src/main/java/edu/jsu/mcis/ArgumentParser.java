@@ -179,4 +179,23 @@ public class ArgumentParser{
             System.exit(0);
         }
     }
+	
+	public static void main(String[] args){
+		
+		ArgumentParser p = new ArgumentParser();
+		
+		p.setProgramDescription("Pizza Creator");
+		
+		p.addArgument("Size", "The size of the pizza (Small, Medium, or Large)", ArgumentParser.Types.STRING);
+		p.addArgument("Crust Style", "The style of pizza crust", ArgumentParser.Types.STRING);
+		p.addArgument("Number of toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
+		p.addOptionalArgument("Quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
+		p.addOptionalArgument("Drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
+		
+		p.parse(args);
+	
+		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity") + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust Style") + " crust and " + p.getValueOf("Number of toppings") + " topping(s)");
+		System.out.println("\nDrink: " + p.getOptionalArgumentValueOf("Drink"));
+	}
+	
 }
