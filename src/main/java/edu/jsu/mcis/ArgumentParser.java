@@ -138,6 +138,15 @@ public class ArgumentParser{
                         }catch(IndexOutOfBoundsException ex){
                             throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
                         }
+                    }else if(optionalArgumentMap.get(lookUpString.substring(0,1).toUpperCase() + lookUpString.substring(1)) != null){
+                        try{
+                            optionalArgumentMap.get(lookUpString.substring(0,1).toUpperCase() + lookUpString.substring(1)).setValue(args.get(i+1));
+                            args.remove(i);
+                            args.remove(i);
+                            i--;
+                        }catch(IndexOutOfBoundsException ex){
+                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                        }
                     }else{
                         throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
                     }
