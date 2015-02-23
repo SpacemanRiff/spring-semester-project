@@ -12,21 +12,25 @@ public class ArgumentInformation{
         this.type = type;
     }
     
-    public void setValue(String value){
-        switch(type){
-            case INTEGER:
-                this.value = Integer.parseInt(value);
-                break;
-            case FLOAT:
-                this.value = Float.parseFloat(value);
-                break;
-            case BOOLEAN:
-                this.value = Boolean.parseBoolean(value);
-                break;
-            default:
-                this.value = value;
-                break;
-        }
+    public void setValue(String value) throws InvalidArgumentException{
+        try{
+            switch(type){
+                case INTEGER:
+                    this.value = Integer.parseInt(value);
+                    break;
+                case FLOAT:
+                    this.value = Float.parseFloat(value);
+                    break;
+                case BOOLEAN:
+                    this.value = Boolean.parseBoolean(value);
+                    break;
+                default:
+                    this.value = value;
+                    break;
+            }
+        }catch(IllegalArgumentException ex){
+            throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n");
+        }   
     }
     
     public Object getValue(){

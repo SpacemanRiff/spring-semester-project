@@ -100,39 +100,72 @@ public class ArgumentParser{
         }
     }
 	
-	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{
-		getHelp(args);
+	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{           
+		getHelp(args);     
+        
+        List<String> argumentValuesList = new ArrayList<String>();
+        
+        for(int i = 0; i < args.length; i++){
+            argumentValuesList.add(args[i]);
+        }
+        
+        pullOptionalArguments(argumentValuesList);
 		
-		if(args.length < getNumberOfArguments()){
-			throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n");
-		}else if(args.length > getNumberOfArguments()){
-			throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
+		if(argumentValuesList.size() < getNumberOfArguments()){
+			//throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n");
+			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
+		}else if(argumentValuesList.size() > getNumberOfArguments()){
+			//throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
+			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
 		}        
 
-		for(int i = 0; i < args.length; i++){
-            try{
-                argumentMap.get(argumentNames.get(i)).setValue(args[i]); 
-            }catch(IllegalArgumentException ex){
-                throw new InvalidArgumentException("\n\nInvalid argument \"" + args[i] + "\"\n");
-            }            
+		for(int i = 0; i < argumentValuesList.size(); i++){
+            argumentMap.get(argumentNames.get(i)).setValue(argumentValuesList.get(i));          
 		}
 	}
+    
+    public void pullOptionalArguments(List<String> args){
+        for(int i = 0; i < args.size(); i++){
+            if(args.get(i).length() > 1){
+                if(args.get(i).substring(0,2).equals("--")){
+                    String lookUpString = args.get(i).substring(2);
+                    if(optionalArgumentMap.get(lookUpString) != null){
+                        try{
+                            optionalArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                            args.remove(i);
+                            args.remove(i);
+                            i--;
+                        }catch(IndexOutOfBoundsException ex){
+                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                        }
+                    }else{
+                        throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
+                    }
+                }
+            }
+        }
+    }
  
     private void getHelp(String[] args){
         boolean isHelpNeeded = false;
         
         for(int i = 0; i < args.length; i++){
-            if(args[i].equals("-h")){
+            if(args[i].equals("-h") || args[i].equals("--help")){
                 isHelpNeeded = true;
             }
         }
         
         if(isHelpNeeded){
             System.out.println("\n" + programDescription);
-            for(int i = 0; i < args.length; i++){
+            for(int i = 0; i < argumentNames.size(); i++){
                 System.out.println(argumentNames.get(i)
                     + "\t" + argumentMap.get(argumentNames.get(i)).getTypeAsString() 
                     + "\t" + argumentMap.get(argumentNames.get(i)).getDescription());
+            }
+            for(int i = 0; i < optionalArgumentNames.size(); i++){
+                System.out.println("--" + optionalArgumentNames.get(i)
+                    + "\t" + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() 
+                    + "\t" + optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
             }
             System.exit(0);
         }
