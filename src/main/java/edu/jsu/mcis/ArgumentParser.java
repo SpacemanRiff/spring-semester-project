@@ -165,16 +165,28 @@ public class ArgumentParser{
         }
         
         if(isHelpNeeded){
-            System.out.println("\n" + programDescription);
+            System.out.println("\n" + programDescription + "\n");
+            
             for(int i = 0; i < argumentNames.size(); i++){
-                System.out.println(argumentNames.get(i)
-                    + "\t" + argumentMap.get(argumentNames.get(i)).getTypeAsString() 
-                    + "\t" + argumentMap.get(argumentNames.get(i)).getDescription());
-            }
+                System.out.print(argumentNames.get(i).toLowerCase() + "  ");
+            }            
             for(int i = 0; i < optionalArgumentNames.size(); i++){
-                System.out.println("--" + optionalArgumentNames.get(i)
-                    + "\t" + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() 
-                    + "\t" + optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
+                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + " " + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() + "] ");
+            }
+            
+            System.out.println("\n\n***Required Arguments***");
+            System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description");   
+            System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------");           
+            for(int i = 0; i < argumentNames.size(); i++){
+                System.out.printf("%-15s %-10s %-30s \n", argumentNames.get(i), argumentMap.get(argumentNames.get(i)).getTypeAsString(), argumentMap.get(argumentNames.get(i)).getDescription());
+            }
+            System.out.println("\n***Optional Arguments***");
+            System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
+            System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
+            for(int i = 0; i < optionalArgumentNames.size(); i++){
+                System.out.printf("%-15s %-10s %-30s \n", optionalArgumentNames.get(i), 
+                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString(), 
+                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
             }
             System.exit(0);
         }
@@ -187,8 +199,8 @@ public class ArgumentParser{
 		p.setProgramDescription("Pizza Creator");
 		
 		p.addArgument("Size", "The size of the pizza (Small, Medium, or Large)", ArgumentParser.Types.STRING);
-		p.addArgument("Crust Style", "The style of pizza crust", ArgumentParser.Types.STRING);
-		p.addArgument("Number of toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
+		p.addArgument("Crust", "The style of pizza crust", ArgumentParser.Types.STRING);
+		p.addArgument("Toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
 		p.addOptionalArgument("Quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
 		p.addOptionalArgument("Drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
 		
