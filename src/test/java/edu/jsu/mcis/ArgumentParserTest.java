@@ -177,6 +177,8 @@ public class ArgumentParserTest{
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        p.printProgramInformation();
 				
 		String[] args = {"1", "2", "3"};
 		p.parse(args);
@@ -199,6 +201,8 @@ public class ArgumentParserTest{
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
+        
+        p.printProgramInformation();
 				
 		String[] args = {"1", "2", "3", "--Color", "red"};
 		p.parse(args);
@@ -390,6 +394,8 @@ public class ArgumentParserTest{
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        p.printProgramInformation();
         
         String[] args = {"--Raining", "1", "2" , "3"};
         p.parse(args);

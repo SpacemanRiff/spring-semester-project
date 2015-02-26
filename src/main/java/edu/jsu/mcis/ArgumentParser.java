@@ -180,30 +180,54 @@ public class ArgumentParser{
         }
         
         if(isHelpNeeded){
-            System.out.println("\n" + programDescription + "\n");
-            
-            for(int i = 0; i < argumentNames.size(); i++){
-                System.out.print(argumentNames.get(i).toLowerCase() + "  ");
-            }            
-            for(int i = 0; i < optionalArgumentNames.size(); i++){
-                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + " " + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() + "] ");
-            }
-            
-            System.out.println("\n\n***Required Arguments***");
-            System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description");   
-            System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------");           
-            for(int i = 0; i < argumentNames.size(); i++){
-                System.out.printf("%-15s %-10s %-30s \n", argumentNames.get(i), argumentMap.get(argumentNames.get(i)).getTypeAsString(), argumentMap.get(argumentNames.get(i)).getDescription());
-            }
-            System.out.println("\n***Optional Arguments***");
-            System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
-            System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
-            for(int i = 0; i < optionalArgumentNames.size(); i++){
-                System.out.printf("%-15s %-10s %-30s \n", optionalArgumentNames.get(i), 
-                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString(), 
-                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
-            }
+            printProgramInformation();
             System.exit(0);
+        }
+    }
+    
+    public void printProgramInformation(){
+        System.out.println("\n" + programDescription + "\n");     
+        int numberOfFlags = 0;
+        
+        for(int i = 0; i < argumentNames.size(); i++){
+            System.out.print(argumentNames.get(i).toLowerCase() + "  ");
+        }            
+        for(int i = 0; i < optionalArgumentNames.size(); i++){
+            if(!optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + " " + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() + "] ");
+            }else{
+                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + "] ");
+                numberOfFlags++;
+            }
+        }
+        
+        System.out.println("\n\n***Required Arguments***");
+        System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description");   
+        System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------");           
+        for(int i = 0; i < argumentNames.size(); i++){
+            System.out.printf("%-15s %-10s %-30s \n", argumentNames.get(i), argumentMap.get(argumentNames.get(i)).getTypeAsString(), argumentMap.get(argumentNames.get(i)).getDescription());
+        }
+        System.out.println("\n***Optional Arguments***");
+        System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
+        System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
+        for(int i = 0; i < optionalArgumentNames.size(); i++){
+            if(!optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+                System.out.printf("%-15s %-10s %-30s \n", optionalArgumentNames.get(i), 
+                optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString(), 
+                optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
+            }
+        }
+        
+        if(numberOfFlags > 0){            
+            System.out.println("\n***Optional Flags***");
+            System.out.printf("%-15s %-30s \n", "Name", "Description"); 
+            System.out.printf("%-15s %-30s \n", "----", "-----------"); 
+            for(int i = 0; i < optionalArgumentNames.size(); i++){
+                if(optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+                    System.out.printf("%-15s %-30s \n", optionalArgumentNames.get(i), 
+                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
+                }
+            }
         }
     }
 	
@@ -218,11 +242,19 @@ public class ArgumentParser{
 		p.addArgument("Toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
 		p.addOptionalArgument("Quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
 		p.addOptionalArgument("Drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
+        p.addOptionalFlag("Togo", "Is the order to go?");
 		
 		p.parse(args);
-	
-		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity") + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust Style") + " crust and " + p.getValueOf("Number of toppings") + " topping(s)");
-		System.out.println("\nDrink: " + p.getOptionalArgumentValueOf("Drink"));
+        
+        boolean toGo = p.getOptionalArgumentValueOf("Togo");
+        
+		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity") + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust") + " crust and " + p.getValueOf("Toppings") + " topping(s)");
+		System.out.println("Drink: " + p.getOptionalArgumentValueOf("Drink"));
+        if(toGo){
+            System.out.println("This order is to-go");
+        }else{
+            System.out.println("This order is for here");
+        }
 	}
 	
 }
