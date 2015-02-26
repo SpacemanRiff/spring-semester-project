@@ -26,34 +26,49 @@ public class ArgumentParser{
         return programDescription;
     }
 	
+    public void addOptionalArgument(String argName, String argDescription){
+        optionalArgumentNames.add(argName);
+        optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, Types.BOOLEAN, false));
+    }
+    
+    public void addOptionalArgument(String argName, String argDescription, Types type, Object defaultValue){
+        optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, type, defaultValue));
+        optionalArgumentNames.add(argName);        
+    }
+    
 	public void addArgument(String argName, String argDescription, Types type){
         argumentMap.put(argName, new ArgumentInformation(argDescription, type));
         argumentNames.add(argName);
-	}    
+	}
+    
     public int getNumberOfArguments(){
         return argumentMap.size();
-    }    
+    }
+    
     public String getArgumentDescription(String argName) throws UnknownArgumentException{
 		if(argumentMap.get(argName) != null){
             return argumentMap.get(argName).getDescription();
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
-    }    
+    }
+    
     public Types getArgumentType(String argName) throws UnknownArgumentException{
 		if(argumentMap.get(argName) != null){
             return argumentMap.get(argName).getType();
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
-    }    
+    }
+    
     public String getArgumentTypeAsString(String argName) throws UnknownArgumentException{
 		if(argumentMap.get(argName) != null){
             return argumentMap.get(argName).getTypeAsString();
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
-    }	
+    }
+	
     @SuppressWarnings("unchecked")
 	public <T> T getValueOf(String argName) throws UnknownArgumentException{
 		if(argumentMap.get(argName) != null){
@@ -63,13 +78,18 @@ public class ArgumentParser{
         }
     }
     
-    public void addOptionalArgument(String argName, String argDescription, Types type, Object defaultValue){
-        optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, type, defaultValue));
-        optionalArgumentNames.add(argName);        
-    }    
     public int getNumberOfOptionalArguments(){
         return optionalArgumentMap.size();
     }    
+    
+    public boolean getOptionalFlagStatus(String argName) throws UnknownArgumentException{
+        if(optionalArgumentMap.get(argName) != null){
+            return optionalArgumentMap.get(argName).getFlagStatus();
+        } else {
+            throw new UnknownArgumentException("\n\nCould not find optional argument \""+ argName + "\"\n");
+        }
+    }
+    
     public String getOptionalArgumentDescription(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getDescription();
@@ -77,6 +97,7 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }    
+    
     public Types getOptionalArgumentType(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getType();
@@ -84,6 +105,7 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }    
+    
     public String getOptionalArgumentTypeAsString(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
             return optionalArgumentMap.get(argName).getTypeAsString();
@@ -91,6 +113,7 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
     }	
+    
     @SuppressWarnings("unchecked")
 	public <T> T getOptionalArgumentValueOf(String argName) throws UnknownArgumentException{
 		if(optionalArgumentMap.get(argName) != null){
@@ -104,18 +127,19 @@ public class ArgumentParser{
 		getHelp(args);     
         
         List<String> argumentValuesList = new ArrayList<String>();
+        List<String> argumentFlagList = new ArrayList<String>();
         
         for(int i = 0; i < args.length; i++){
             argumentValuesList.add(args[i]);
+            argumentFlagList.add(args[i]);
         }
         
         pullOptionalArguments(argumentValuesList);
-		
+		setOptionalFlags(argumentFlagList);
+        
 		if(argumentValuesList.size() < getNumberOfArguments()){
-			//throw new IncorrectNumberOfArgumentsException("\n\nToo few arguments.\n");
 			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
 		}else if(argumentValuesList.size() > getNumberOfArguments()){
-			//throw new IncorrectNumberOfArgumentsException("\n\nToo many arguments.\n");
 			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
 		}        
 
@@ -155,6 +179,35 @@ public class ArgumentParser{
         }
     }
  
+    public void setOptionalFlags(List<String> args){
+        for(int i = 0; i < args.size(); i++){
+            if(args.get(i).length() > 1){
+                if(args.get(i).substring(0,2).equals("--")){
+                    String flagString = args.get(i).substring(2);
+                    if(optionalArgumentMap.get(flagString) != null){
+                        try{
+                            optionalArgumentMap.get(flagString).setFlagStatus(true);
+                            args.remove(i);
+                            i--;
+                        } catch(IndexOutOfBoundsException e){
+                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                        }
+                    }else if(optionalArgumentMap.get(flagString.substring(0,1).toUpperCase() + flagString.substring(1)) != null){
+                        try{
+                            optionalArgumentMap.get(flagString.substring(0,1).toUpperCase() + flagString.substring(1)).setFlagStatus(true);
+                            args.remove(i);
+                            i--;
+                        } catch(IndexOutOfBoundsException ee){
+                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                            }
+                        }
+                    else
+                        throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"");
+                }
+            }
+        }
+    }
+    
     private void getHelp(String[] args){
         boolean isHelpNeeded = false;
         

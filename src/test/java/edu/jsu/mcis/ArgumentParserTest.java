@@ -9,7 +9,8 @@ public class ArgumentParserTest{
 		ArgumentParser p = new ArgumentParser();
         
         assertEquals(0, p.getNumberOfArguments());
-    }        
+    }   
+    
     @Test
     public void testAddArgAndTestDescription(){
 		ArgumentParser p = new ArgumentParser();
@@ -21,7 +22,8 @@ public class ArgumentParserTest{
 		assertEquals("The length of the box", p.getArgumentDescription("Length"));
 		assertEquals("The width of the box", p.getArgumentDescription("Width"));
 		assertEquals("The height of the box", p.getArgumentDescription("Height")); 
-    }    
+    }   
+    
     @Test
     public void testAddArgAndTestType(){
         ArgumentParser p = new ArgumentParser();
@@ -34,6 +36,7 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Width"));
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Height"));
     }    
+    
     @Test
     public void testAddArgAndTestTypeUsingValueOf(){
 		ArgumentParser p = new ArgumentParser();
@@ -46,6 +49,7 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Width"));
         assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Height"));
     }    
+    
     @Test
     public void testAddArgAndTestTypeAsString(){
         ArgumentParser p = new ArgumentParser();
@@ -65,6 +69,7 @@ public class ArgumentParserTest{
         
         assertEquals(0, p.getNumberOfOptionalArguments());
     }     
+    
     @Test
     public void testAddOptionalArgAndTestDescription(){
         ArgumentParser p = new ArgumentParser();
@@ -81,6 +86,7 @@ public class ArgumentParserTest{
         assertEquals("Optional Argument Description 3", p.getOptionalArgumentDescription("Optional Argument Name 3"));  
         assertEquals("Optional Argument Description 4", p.getOptionalArgumentDescription("Optional Argument Name 4"));
     }    
+    
     @Test
     public void testAddOptionalArgAndTestType(){
         ArgumentParser p = new ArgumentParser();
@@ -97,6 +103,7 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Optional Argument Name 3"));    
         assertEquals(ArgumentParser.Types.FLOAT, p.getOptionalArgumentType("Optional Argument Name 4"));
     }    
+    
     @Test
     public void testAddOptionalArgAndTestTypeUsingValueOf(){
         ArgumentParser p = new ArgumentParser();
@@ -113,6 +120,7 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Optional Argument Name 3"));    
         assertEquals(ArgumentParser.Types.FLOAT, p.getOptionalArgumentType("Optional Argument Name 4"));   
     }    
+    
     @Test
     public void testAddOptionalArgAndTestTypeAsString(){
         ArgumentParser p = new ArgumentParser();
@@ -129,6 +137,7 @@ public class ArgumentParserTest{
         assertEquals("BOOLEAN", p.getOptionalArgumentTypeAsString("Optional Argument Name 3"));    
         assertEquals("FLOAT", p.getOptionalArgumentTypeAsString("Optional Argument Name 4"));    
     }
+    
     @Test
     public void testAddOptionalArgAndTestDefaultValue(){
         ArgumentParser p = new ArgumentParser();
@@ -204,6 +213,7 @@ public class ArgumentParserTest{
 		assertEquals(3, height);
 		assertEquals("red", color);
 	}	
+    
 	@Test
     public void testGetValueOfOptionalArgumentInTheMiddleOfTheList(){
 		ArgumentParser p = new ArgumentParser();
@@ -227,6 +237,7 @@ public class ArgumentParserTest{
 		assertEquals(3, height);
 		assertEquals("red", color);
 	}		
+    
 	@Test
     public void testGetValueOfOptionalArgumentAtBeginningOfTheList(){
 		ArgumentParser p = new ArgumentParser();
@@ -250,6 +261,7 @@ public class ArgumentParserTest{
 		assertEquals(3, height);
 		assertEquals("red", color);
 	}
+    
 	@Test
     public void testGetValueOfMultipleOptionalArguments(){
 		ArgumentParser p = new ArgumentParser();
@@ -276,6 +288,7 @@ public class ArgumentParserTest{
 		assertEquals("red", color);
 		assertEquals(5, weight);
 	}
+    
 	@Test
     public void testGetValueOfOptionalArgumentPassedAsLowercase(){
 		ArgumentParser p = new ArgumentParser();
@@ -313,6 +326,7 @@ public class ArgumentParserTest{
 		String[] args = {"1", "2", "3", "--Color"};
 		p.parse(args);
 	}	
+    
 	@Test(expected=InvalidArgumentException.class)
     public void testLowerCaseOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -326,6 +340,7 @@ public class ArgumentParserTest{
 		String[] args = {"1", "2", "3", "--color"};
 		p.parse(args);
 	}	
+    
 	@Test(expected=UnknownArgumentException.class)
     public void testUnknownOptionalArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -368,6 +383,19 @@ public class ArgumentParserTest{
 		assertEquals(2.0f, precipiation, 0.1f);
 	}
     
+    @Test
+    public void testSetOptionalFlag(){
+        ArgumentParser p = new ArgumentParser();
+        p.addOptionalArgument("Raining", "Is it snowing?");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        String[] args = {"--Raining" , "1" , "1", "2" , "3"};
+        p.parse(args);
+        assertEquals(true, p.getOptionalFlagStatus("Raining"));
+    }
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetDescriptionOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -376,6 +404,7 @@ public class ArgumentParserTest{
         
         p.getArgumentDescription("Not length");
 	}    
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetTypeOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -384,6 +413,7 @@ public class ArgumentParserTest{
         
         p.getArgumentType("Not length");
 	}    
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetTypeAsStringOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -392,6 +422,7 @@ public class ArgumentParserTest{
         
         p.getArgumentTypeAsString("Not length");
 	}	
+    
 	@Test(expected=UnknownArgumentException.class)
 	public void testGetValueOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -413,6 +444,7 @@ public class ArgumentParserTest{
         
         p.getOptionalArgumentDescription("Not optional argument");
 	}    
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetTypeOfUnknownOptionalArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -422,6 +454,7 @@ public class ArgumentParserTest{
         
         p.getOptionalArgumentType("Not optional argument");
 	}    
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetTypeAsStringOfUnknownOptionalArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -431,6 +464,7 @@ public class ArgumentParserTest{
         
         p.getOptionalArgumentTypeAsString("Not optional argument");
 	}	
+    
 	@Test(expected=UnknownArgumentException.class)
 	public void testGetValueOfUnknownOptionalArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();
@@ -440,6 +474,7 @@ public class ArgumentParserTest{
 
         p.getOptionalArgumentValueOf("Not optional argument");
 	}	
+    
 	@Test(expected=InvalidArgumentException.class)
 	public void testSendInvalidOptionalArgumentDefaultValueThrowsException(){
 		ArgumentParser p = new ArgumentParser();
