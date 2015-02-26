@@ -384,16 +384,69 @@ public class ArgumentParserTest{
 	}
     
     @Test
-    public void testSetOptionalFlag(){
+    public void testSetOptionalFlagAtBeginning(){
         ArgumentParser p = new ArgumentParser();
-        p.addOptionalArgument("Raining", "Is it snowing?");
+        p.addOptionalFlag("Raining", "Is it snowing?");
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
-        String[] args = {"--Raining" , "1" , "1", "2" , "3"};
+        String[] args = {"--Raining", "1", "2" , "3"};
         p.parse(args);
-        assertEquals(true, p.getOptionalFlagStatus("Raining"));
+        
+        int length = p.getValueOf("Length");
+        int width = p.getValueOf("Width");
+        int height = p.getValueOf("Height");
+        boolean value = p.getOptionalArgumentValueOf("Raining");
+        
+		assertEquals(1, length);
+		assertEquals(2, width);
+		assertEquals(3, height);
+        assertEquals(true, value);
+    }
+    
+    @Test
+    public void testSetOptionalFlagAtEnd(){
+        ArgumentParser p = new ArgumentParser();
+        p.addOptionalFlag("Raining", "Is it snowing?");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        String[] args = {"1", "2" , "3", "--Raining"};
+        p.parse(args);
+        
+        int length = p.getValueOf("Length");
+        int width = p.getValueOf("Width");
+        int height = p.getValueOf("Height");
+        boolean value = p.getOptionalArgumentValueOf("Raining");
+        
+		assertEquals(1, length);
+		assertEquals(2, width);
+		assertEquals(3, height);
+        assertEquals(true, value);
+    }
+    
+    @Test
+    public void testSetOptionalFlagInMiddle(){
+        ArgumentParser p = new ArgumentParser();
+        p.addOptionalFlag("Raining", "Is it snowing?");
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        
+        String[] args = {"1", "--Raining", "2" , "3"};
+        p.parse(args);
+        
+        int length = p.getValueOf("Length");
+        int width = p.getValueOf("Width");
+        int height = p.getValueOf("Height");
+        boolean value = p.getOptionalArgumentValueOf("Raining");
+        
+		assertEquals(1, length);
+		assertEquals(2, width);
+		assertEquals(3, height);
+        assertEquals(true, value);
     }
     
     @Test(expected=UnknownArgumentException.class)

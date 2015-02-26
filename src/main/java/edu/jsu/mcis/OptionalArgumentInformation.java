@@ -10,8 +10,8 @@ public class OptionalArgumentInformation extends ArgumentInformation{
         setValue(defaultValue + "");
     }
     
-    public void setFlagStatus(boolean bool){
-        isFlagged = bool;
+    public void setFlagStatus(boolean isFlagged){
+        this.isFlagged = isFlagged;
     }
     
     public boolean getFlagStatus(){
