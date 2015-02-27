@@ -553,7 +553,7 @@ public class ArgumentParserTest{
 		p.parse(args);	
 	}
 	
-	@Test(expected = IncorrectNumberOfArgumentsException.class)
+	@Test(expected = NotEnoughArgumentsException.class)
 	public void testNotEnoughArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		
@@ -564,7 +564,7 @@ public class ArgumentParserTest{
 		p.parse(args);
 	}
 	
-	@Test(expected = IncorrectNumberOfArgumentsException.class)
+	@Test(expected = TooManyArgumentsException.class)
 	public void testTooManyArgumentsThrowsException(){
 		ArgumentParser p = new ArgumentParser();
 		

@@ -116,7 +116,7 @@ public class ArgumentParser{
         }
     }
 	
-	public void parse(String[] args) throws IncorrectNumberOfArgumentsException, InvalidArgumentException{           
+	public void parse(String[] args) throws TooManyArgumentsException, NotEnoughArgumentsException, InvalidArgumentException{           
 		getHelp(args);     
         
         List<String> argumentValuesList = new ArrayList<String>();
@@ -128,9 +128,9 @@ public class ArgumentParser{
         pullOptionalArguments(argumentValuesList);
         
 		if(argumentValuesList.size() < getNumberOfArguments()){
-			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
+			throw new NotEnoughArgumentsException(argumentValuesList.toString());
 		}else if(argumentValuesList.size() > getNumberOfArguments()){
-			throw new IncorrectNumberOfArgumentsException(argumentValuesList.toString());
+			throw new TooManyArgumentsException(argumentValuesList.toString());
 		}        
 
 		for(int i = 0; i < argumentValuesList.size(); i++){
