@@ -127,10 +127,13 @@ public class ArgumentParser{
         
         pullOptionalArguments(argumentValuesList);
         
-		if(argumentValuesList.size() < getNumberOfArguments()){
-			throw new NotEnoughArgumentsException(argumentValuesList.toString());
+        int numArgs = getNumberOfArguments();
+		if(argumentValuesList.size() < numArgs){
+			throw new NotEnoughArgumentsException("\n\n\tNot enough arguments." + "\n\tGiven: " + argumentValuesList.size() + " Expected: "
+                                                    + numArgs + "\n\tArguments given: " + argumentValuesList.toString() + "\n");
 		}else if(argumentValuesList.size() > getNumberOfArguments()){
-			throw new TooManyArgumentsException(argumentValuesList.toString());
+			throw new TooManyArgumentsException("\n\n\tToo many arguments." + "\n\tGiven: " + argumentValuesList.size() + " Expected: " 
+                                                    + numArgs + "\n\tArguments given: " + argumentValuesList.toString() + "\n");
 		}        
 
 		for(int i = 0; i < argumentValuesList.size(); i++){
@@ -138,7 +141,7 @@ public class ArgumentParser{
 		}
 	}
     
-    public void pullOptionalArguments(List<String> args){
+    private void pullOptionalArguments(List<String> args){
         for(int i = 0; i < args.size(); i++){
             if(args.get(i).length() > 1){
                 if(args.get(i).substring(0,2).equals("--")){
