@@ -18,7 +18,9 @@ public class PizzaOrder{
         
         boolean toGo = p.getOptionalArgumentValueOf("Togo");
         
-		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity") + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust") + " crust and " + p.getValueOf("Toppings") + " topping(s)");
+		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity")
+                            + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust")
+                            + " crust and " + p.getValueOf("Toppings") + " topping(s)");
 		System.out.println("Drink: " + p.getOptionalArgumentValueOf("Drink"));
         if(toGo){
             System.out.println("This order is to-go");
