@@ -11,3 +11,13 @@ Create Shape With Volume 42
     Should Be Equal  ${5}  ${width}
     ${height}=  Get Height
     Should Be Equal  ${2}  ${height}
+
+Create List With Flagged Arguments
+   ${scalar}=  Create List  --Raining  32  --Cloudy
+   Start Program With Optional Arguments  ${scalar}
+   ${temperature}=  Get Temperature
+   Should Be Equal  ${32}  ${temperature}
+   ${rain}=  Get Flag Value Of Raining
+   Should Be Equal  ${true}  ${rain}
+   ${cloud}=  Get Flag Value of Cloudy
+   Should Be Equal  ${true}  ${cloud}
