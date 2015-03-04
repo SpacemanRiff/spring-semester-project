@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config>
+    <argument>
+        <name>Argument 1</name>
+        <description>Argument 1 description</description>
+        <type>Integer</type>
+    </argument>
+    
+    <optional>
+        <name>Optional Argument 1</name>
+        <description>Optional Argument 1 description</description>
+        <type>String</type>
+        <default>Value 1</default>
+    </optional>   
+    
+    <optional>
+        <name>Optional Flag 1</name>
+        <flag>true</flag>
+        <description>Optional Argument 1 description</description>
+    </optional>
+</config>
