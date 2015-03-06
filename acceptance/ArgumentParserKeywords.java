@@ -13,7 +13,7 @@ public class ArgumentParserKeywords{
         a.parse(args);
     }
     
-    public void startProgramWithOptionalArguments(String[] args){
+    public void startProgramWithFlaggedArguments(String[] args){
         a = new ArgumentParser();
         
         a.addArgument("Temperature", "How warm it is going to be.", ArgumentParser.Types.INTEGER);
@@ -21,6 +21,18 @@ public class ArgumentParserKeywords{
         a.addOptionalFlag("Cloudy", "It is cloudy");
         
         a.parse(args);
+    }
+    
+    public void startProgramWithOptionalArguments(String[] args){
+        a = new ArgumentParser();
+        
+        a.addArgument("Length", "Length of the shape", ArgumentParser.Types.INTEGER);
+        a.addArgument("Width", "Width of the shape", ArgumentParser.Types.INTEGER);
+        a.addArgument("Height", "Height of the shape", ArgumentParser.Types.INTEGER);
+        a.addOptionalArgument("Color", "Color of the shape", ArgumentParser.Types.STRING, "Black");
+        
+        a.parse(args);
+        
     }
     
     public int getLengthOf(){
@@ -46,6 +58,13 @@ public class ArgumentParserKeywords{
         
         return temperature;
     }
+    
+    public String getColor(){
+        String color = a.getOptionalArgumentValueOf("Color");
+        
+        return color;
+    }
+    
     public boolean getFlagValueOfRaining(){
         boolean flagValue = a.getOptionalArgumentValueOf("Raining");
         
