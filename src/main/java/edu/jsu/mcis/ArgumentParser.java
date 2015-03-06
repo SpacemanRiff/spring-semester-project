@@ -146,27 +146,23 @@ public class ArgumentParser{
             if(args.get(i).length() > 1){
                 if(args.get(i).substring(0,2).equals("--")){
                     String lookUpString = args.get(i).substring(2);
-                    if(optionalArgumentMap.get(lookUpString) != null){
-                        lookUpString = lookUpString;
-                    }else if(optionalArgumentMap.get(lookUpString.substring(0,1).toUpperCase() + lookUpString.substring(1)) != null){
-                        lookUpString = lookUpString.substring(0,1).toUpperCase() + lookUpString.substring(1);
-                    }else{
-                        throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
-                    }
-                    
-                    if(!optionalArgumentMap.get(lookUpString).getFlagStatus()){
-                        try{
-                            optionalArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                    if(optionalArgumentMap.get(lookUpString) != null){                    
+                        if(!optionalArgumentMap.get(lookUpString).getFlagStatus()){
+                            try{
+                                optionalArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                                args.remove(i);
+                                args.remove(i);
+                                i--;
+                            }catch(IndexOutOfBoundsException ex){
+                                throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                            }
+                        }else{
+                            optionalArgumentMap.get(lookUpString).setValue("true");
                             args.remove(i);
-                            args.remove(i);
-                            i--;
-                        }catch(IndexOutOfBoundsException ex){
-                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                            i--;                            
                         }
                     }else{
-                        optionalArgumentMap.get(lookUpString).setValue("true");
-                        args.remove(i);
-                        i--;                            
+                        throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
                     }
                 }
             }
