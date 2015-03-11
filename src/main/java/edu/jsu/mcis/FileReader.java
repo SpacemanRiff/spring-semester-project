@@ -3,9 +3,8 @@ package edu.jsu.mcis;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -27,13 +26,13 @@ public class FileReader{
     private static final String FLAG = "flag";
     private enum ArgumentType {POSITIONALARGUMENT, OPTIONALARGUMENT};
     
-    public void readArguments(Sting fileName, List<String> argumentNames, 
+    public void readArguments(String fileName, List<String> argumentNames, 
         List<String> optionalArgumentNames, 
         Map<String, ArgumentInformation> argumentMap,
         Map<String, OptionalArgumentInformation> optionalArgumentMap){
             try{
                 XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-                InputStream in = new FileInputStream(configFile);
+                InputStream in = new FileInputStream(fileName);
                 XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
                 
                 while(eventReader.hasNext()){
@@ -49,12 +48,6 @@ public class FileReader{
                     
                     if (event.isStartElement()) {
                         StartElement startElement = event.asStartElement();
-                        if (startElement.getName().getLocalPart().equals(ARGUMENT)) {
-                            argType = POSITIONALARGUMENT;
-                        }
-                        if (startElement.getName().getLocalPart().equals(OPTIONAL)) {
-                            argType = OPTIONALARGUMENT;
-                        }
                         if (startElement.getName().getLocalPart().equals(NAME)) {
                             event = eventReader.nextEvent();
                             name = event.asCharacters().getData();
@@ -67,7 +60,7 @@ public class FileReader{
                         }
                         if (startElement.getName().getLocalPart().equals(TYPE)) {
                             event = eventReader.nextEvent();
-                            name = event.asCharacters().getData();
+                            type = Types.valueOf(event.asCharacters().getData());
                             continue;
                         }
                         if (startElement.getName().getLocalPart().equals(DEFAULT)) {
@@ -75,6 +68,7 @@ public class FileReader{
                             value = event.asCharacters().getData();
                             continue;
                         }
+                        //should be removed when we get rid of the flag definition
                         if (startElement.getName().getLocalPart().equals(FLAG)) {}
                     }
                     if (event.isEndElement()) {
@@ -85,7 +79,7 @@ public class FileReader{
                         }
                         if (endElement.getName().getLocalPart().equals(OPTIONAL)) {
                             optionalArgumentNames.add(name);
-                            optionalArgumentMap.put(name, new ArgumentInformation(description, type, value));
+                            optionalArgumentMap.put(name, new OptionalArgumentInformation(description, type, value));
                         }
                     }
                 }
