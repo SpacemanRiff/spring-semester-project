@@ -6,22 +6,22 @@ import static org.junit.Assert.*;
 public class ArgumentParserTest{
     @Test
     public void testInitialArgumentMapIsEmpty(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         assertEquals(0, p.getNumberOfArguments());
     }   
     
     @Test
     public void testAddArgAndTestDescription(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
-		
-		assertEquals("The length of the box", p.getArgumentDescription("Length"));
-		assertEquals("The width of the box", p.getArgumentDescription("Width"));
-		assertEquals("The height of the box", p.getArgumentDescription("Height")); 
+        
+        assertEquals("The length of the box", p.getArgumentDescription("Length"));
+        assertEquals("The width of the box", p.getArgumentDescription("Width"));
+        assertEquals("The height of the box", p.getArgumentDescription("Height")); 
     }   
     
     @Test
@@ -39,7 +39,7 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddArgAndTestTypeUsingValueOf(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.valueOf("INTEGER"));
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.valueOf("INTEGER"));
@@ -65,7 +65,7 @@ public class ArgumentParserTest{
 
     @Test
     public void testInitialOptionalArgumentMapIsEmpty(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         assertEquals(0, p.getNumberOfOptionalArguments());
     }     
@@ -163,38 +163,38 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddProgramDescription(){        
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.setProgramDescription("This is simply a test.");
         
         assertEquals("This is simply a test.", p.getProgramDescription()); 
     }
-	
-	@Test
+    
+    @Test
     public void testGetValueReturnsCorrectValue(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.printProgramInformation();
-				
-		String[] args = {"1", "2", "3"};
-		p.parse(args);
+                
+        String[] args = {"1", "2", "3"};
+        p.parse(args);
         
         int length = p.getValueOf("Length");
         int width = p.getValueOf("Width");
         int height = p.getValueOf("Height");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
-	}
-	
-	@Test
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
+    }
+    
+    @Test
     public void testGetValueOfOptionalArgumentAtEndOfTheList(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -203,72 +203,72 @@ public class ArgumentParserTest{
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
         
         p.printProgramInformation();
-				
-		String[] args = {"1", "2", "3", "--Color", "red"};
-		p.parse(args);
+                
+        String[] args = {"1", "2", "3", "--Color", "red"};
+        p.parse(args);
         
         int length = p.getValueOf("Length");
         int width = p.getValueOf("Width");
         int height = p.getValueOf("Height");
         String color = p.getOptionalArgumentValueOf("Color");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
-		assertEquals("red", color);
-	}	
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
+        assertEquals("red", color);
+    }   
     
-	@Test
+    @Test
     public void testGetValueOfOptionalArgumentInTheMiddleOfTheList(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
-				
-		String[] args = {"1", "--Color", "red", "2", "3"};
-		p.parse(args);
+                
+        String[] args = {"1", "--Color", "red", "2", "3"};
+        p.parse(args);
         
         int length = p.getValueOf("Length");
         int width = p.getValueOf("Width");
         int height = p.getValueOf("Height");
         String color = p.getOptionalArgumentValueOf("Color");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
-		assertEquals("red", color);
-	}		
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
+        assertEquals("red", color);
+    }       
     
-	@Test
+    @Test
     public void testGetValueOfOptionalArgumentAtBeginningOfTheList(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
-				
-		String[] args = {"--Color", "red", "1", "2", "3"};
-		p.parse(args);
+                
+        String[] args = {"--Color", "red", "1", "2", "3"};
+        p.parse(args);
         
         int length = p.getValueOf("Length");
         int width = p.getValueOf("Width");
         int height = p.getValueOf("Height");
         String color = p.getOptionalArgumentValueOf("Color");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
-		assertEquals("red", color);
-	}
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
+        assertEquals("red", color);
+    }
     
-	@Test
+    @Test
     public void testGetValueOfMultipleOptionalArguments(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -276,9 +276,9 @@ public class ArgumentParserTest{
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
         p.addOptionalArgument("Weight", "The weight of the box", ArgumentParser.Types.INTEGER, 1);
-				
-		String[] args = {"--Color", "red", "1", "2", "3", "--Weight", "5"};
-		p.parse(args);
+                
+        String[] args = {"--Color", "red", "1", "2", "3", "--Weight", "5"};
+        p.parse(args);
         
         int length = p.getValueOf("Length");
         int width = p.getValueOf("Width");
@@ -286,52 +286,52 @@ public class ArgumentParserTest{
         String color = p.getOptionalArgumentValueOf("Color");
         int weight = p.getOptionalArgumentValueOf("Weight");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
-		assertEquals("red", color);
-		assertEquals(5, weight);
-	}
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
+        assertEquals("red", color);
+        assertEquals(5, weight);
+    }
     
-	@Test(expected=InvalidArgumentException.class)
+    @Test(expected=InvalidArgumentException.class)
     public void testOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
-				
-		String[] args = {"1", "2", "3", "--Color"};
-		p.parse(args);
-	}	
+                
+        String[] args = {"1", "2", "3", "--Color"};
+        p.parse(args);
+    }   
     
-	@Test(expected=UnknownArgumentException.class)
+    @Test(expected=UnknownArgumentException.class)
     public void testUnknownOptionalArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Color", "The color of the box", ArgumentParser.Types.STRING, "white");
-				
-		String[] args = {"1", "2", "3", "--Nice", "Nice"};
-		p.parse(args);
-	}
-	
-	@Test
+                
+        String[] args = {"1", "2", "3", "--Nice", "Nice"};
+        p.parse(args);
+    }
+    
+    @Test
     public void testGetValueReturnsCorrectValueType(){
-		ArgumentParser p = new ArgumentParser();
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Temperature", "The current air temperature", ArgumentParser.Types.INTEGER);
         p.addArgument("Current Month", "The current month", ArgumentParser.Types.STRING);
         p.addArgument("Raining", "Whether or not it is raining", ArgumentParser.Types.BOOLEAN);
         p.addArgument("Precipitation", "The amount of precipitation in the last week", ArgumentParser.Types.FLOAT);
-				
-		String[] args = {"32", "January", "false", "2.0f"};
-		p.parse(args);
+                
+        String[] args = {"32", "January", "false", "2.0f"};
+        p.parse(args);
         
         assertEquals("INTEGER", p.getArgumentTypeAsString("Temperature"));
         assertEquals("STRING", p.getArgumentTypeAsString("Current Month"));
@@ -342,12 +342,12 @@ public class ArgumentParserTest{
         String month = p.getValueOf("Current Month");
         boolean isRaining = p.getValueOf("Raining");
         float precipiation = p.getValueOf("Precipitation");
-		
-		assertEquals(32, temperature);
-		assertEquals("January", month);
-		assertEquals(false, isRaining);
-		assertEquals(2.0f, precipiation, 0.1f);
-	}
+        
+        assertEquals(32, temperature);
+        assertEquals("January", month);
+        assertEquals(false, isRaining);
+        assertEquals(2.0f, precipiation, 0.1f);
+    }
     
     @Test
     public void testSetOptionalFlagAtBeginning(){
@@ -367,9 +367,9 @@ public class ArgumentParserTest{
         int height = p.getValueOf("Height");
         boolean value = p.getOptionalArgumentValueOf("Raining");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
         assertEquals(true, value);
     }
     
@@ -389,9 +389,9 @@ public class ArgumentParserTest{
         int height = p.getValueOf("Height");
         boolean value = p.getOptionalArgumentValueOf("Raining");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
         assertEquals(true, value);
     }
     
@@ -411,9 +411,9 @@ public class ArgumentParserTest{
         int height = p.getValueOf("Height");
         boolean value = p.getOptionalArgumentValueOf("Raining");
         
-		assertEquals(1, length);
-		assertEquals(2, width);
-		assertEquals(3, height);
+        assertEquals(1, length);
+        assertEquals(2, width);
+        assertEquals(3, height);
         assertEquals(true, value);
     }
     
@@ -433,122 +433,122 @@ public class ArgumentParserTest{
     }
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetDescriptionOfUnknownArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetDescriptionOfUnknownArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentDescription("Not length");
-	}    
+    }    
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetTypeOfUnknownArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetTypeOfUnknownArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentType("Not length");
-	}    
+    }    
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetTypeAsStringOfUnknownArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetTypeAsStringOfUnknownArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentTypeAsString("Not length");
-	}	
+    }   
     
-	@Test(expected=UnknownArgumentException.class)
-	public void testGetValueOfUnknownArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    @Test(expected=UnknownArgumentException.class)
+    public void testGetValueOfUnknownArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
-		String[] args = {"7"};
+        String[] args = {"7"};
 
-		p.parse(args);
-		p.getValueOf("8");		
-	}
+        p.parse(args);
+        p.getValueOf("8");      
+    }
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetDescriptionOfUnknownOptionalArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetDescriptionOfUnknownOptionalArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
         p.getOptionalArgumentDescription("Not optional argument");
-	}    
+    }    
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetTypeOfUnknownOptionalArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetTypeOfUnknownOptionalArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
         p.getOptionalArgumentType("Not optional argument");
-	}    
+    }    
     
     @Test(expected=UnknownArgumentException.class)
-	public void testGetTypeAsStringOfUnknownOptionalArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    public void testGetTypeAsStringOfUnknownOptionalArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
         p.getOptionalArgumentTypeAsString("Not optional argument");
-	}	
+    }   
     
-	@Test(expected=UnknownArgumentException.class)
-	public void testGetValueOfUnknownOptionalArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    @Test(expected=UnknownArgumentException.class)
+    public void testGetValueOfUnknownOptionalArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
 
         p.getOptionalArgumentValueOf("Not optional argument");
-	}	
+    }   
     
-	@Test(expected=InvalidArgumentException.class)
-	public void testSendInvalidOptionalArgumentDefaultValueThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    @Test(expected=InvalidArgumentException.class)
+    public void testSendInvalidOptionalArgumentDefaultValueThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, "bad");        
-	}
-	
-	@Test(expected=InvalidArgumentException.class)
-	public void testSendInvalidArgumentThrowsException(){
-		ArgumentParser p = new ArgumentParser();
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testSendInvalidArgumentThrowsException(){
+        ArgumentParser p = new ArgumentParser();
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
-		String[] args = {"nice"};
+        String[] args = {"nice"};
 
-		p.parse(args);	
-	}
-	
-	@Test(expected = NotEnoughArgumentsException.class)
-	public void testNotEnoughArgumentsThrowsException(){
-		ArgumentParser p = new ArgumentParser();
-		
+        p.parse(args);  
+    }
+    
+    @Test(expected = NotEnoughArgumentsException.class)
+    public void testNotEnoughArgumentsThrowsException(){
+        ArgumentParser p = new ArgumentParser();
+        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-		
-		String[] args = {"7"};
-		p.parse(args);
-	}
-	
-	@Test(expected = TooManyArgumentsException.class)
-	public void testTooManyArgumentsThrowsException(){
-		ArgumentParser p = new ArgumentParser();
-		
+        
+        String[] args = {"7"};
+        p.parse(args);
+    }
+    
+    @Test(expected = TooManyArgumentsException.class)
+    public void testTooManyArgumentsThrowsException(){
+        ArgumentParser p = new ArgumentParser();
+        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-		
-		String[] args = {"7", "4", "8"};
-		p.parse(args);
-	}
+        
+        String[] args = {"7", "4", "8"};
+        p.parse(args);
+    }
 }
