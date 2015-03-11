@@ -417,6 +417,21 @@ public class ArgumentParserTest{
         assertEquals(true, value);
     }
     
+    @Test
+    public void testShorthandArgument(){
+        ArgumentParser p = new ArgumentParser();
+        
+        p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "None");
+        
+        String[] args = {"2", "3", "4", "-C", "red"};
+        p.parse(args);
+        
+        assertEquals("red", p.getOptionalArgumentValueOf("Color"));
+    }
+    
     @Test(expected=UnknownArgumentException.class)
 	public void testGetDescriptionOfUnknownArgumentThrowsException(){
 		ArgumentParser p = new ArgumentParser();

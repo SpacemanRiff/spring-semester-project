@@ -117,14 +117,13 @@ public class ArgumentParser{
     }
 	
 	public void parse(String[] args) throws TooManyArgumentsException, NotEnoughArgumentsException, InvalidArgumentException{           
-		getHelp(args);     
+		getHelp(args);
         
         List<String> argumentValuesList = new ArrayList<String>();
         
         for(int i = 0; i < args.length; i++){
             argumentValuesList.add(args[i]);
         }
-        
         pullOptionalArguments(argumentValuesList);
         
         int numArgs = getNumberOfArguments();
@@ -141,10 +140,54 @@ public class ArgumentParser{
 		}
 	}
     
-    private void pullOptionalArguments(List<String> args){
+    private boolean isNotCharacterLength(String s){
+        if(s.length() > 1)
+            return true;
+        else
+            return false;
+    }
+    
+    private boolean isShortArgument(String s){
+        if(s.substring(0,1).equals("-") && s.length() == 2)
+            return true;
+        else
+            return false;
+    }
+    
+    private boolean isLongArgument(String s){
+        if(s.substring(0,2).equals("--"))
+            return true;
+        else
+            return false;
+    }
+    
+    private void setShortArguments(List<String> args){
         for(int i = 0; i < args.size(); i++){
-            if(args.get(i).length() > 1){
-                if(args.get(i).substring(0,2).equals("--")){
+            if(isNotCharacterLength(args.get(i))){
+                if(isShortArgument(args.get(i))){
+                    String replaceString = renameShortArgument(args.get(i).substring(1));
+                    args.set(i, "--".concat(replaceString));
+                }
+            }
+        }
+    }
+    
+    private String renameShortArgument(String s){
+        for(int i = 0; i < optionalArgumentNames.size(); i++){
+            if(s.equals(optionalArgumentNames.get(i).substring(0,1))){
+                s = optionalArgumentNames.get(i);
+            }
+            else
+                s = s;
+        }
+        return s;
+    }
+    
+    private void pullOptionalArguments(List<String> args){
+        setShortArguments(args);
+        for(int i = 0; i < args.size(); i++){
+            if(isNotCharacterLength(args.get(i))){
+                if(isLongArgument(args.get(i))){
                     String lookUpString = args.get(i).substring(2);
                     if(optionalArgumentMap.get(lookUpString) != null){                    
                         if(!optionalArgumentMap.get(lookUpString).getFlagStatus()){
