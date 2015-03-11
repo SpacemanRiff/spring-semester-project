@@ -148,7 +148,7 @@ public class ArgumentParser{
     }
     
     private boolean isShortArgument(String s){
-        if(s.substring(0,1).equals("-") && s.length() == 2)
+        if(s.substring(0,1).equals("-") && !s.substring(1,2).equals("-"))
             return true;
         else
             return false;
