@@ -432,6 +432,22 @@ public class ArgumentParserTest{
         assertEquals("red", p.getOptionalArgumentValueOf("Color"));
     }
     
+    @Test
+    public void testGetArgumentsFromFile(){
+        ArgumentParser p = new ArgumentParser();
+        
+        XMLManager.loadArguments("testRead.xml", p);
+        
+        p.printProgramInformation();
+        
+        assertEquals("Argument 1 description", p.getArgumentDescription("Argument1"));
+        assertEquals(ArgumentParser.Types.INTEGER, p.getArgumentType("Argument1"));
+        
+        assertEquals("Optional Argument 1 description", p.getOptionalArgumentDescription("OptionalArgument1"));
+        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("OptionalArgument1"));
+        
+    }
+    
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownArgumentThrowsException(){
         ArgumentParser p = new ArgumentParser();
