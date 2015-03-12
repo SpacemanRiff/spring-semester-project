@@ -1,5 +1,6 @@
 package edu.jsu.mcis;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -24,10 +25,13 @@ public class XMLManager{
     private static final String FLAG = "flag";
     
     public void loadArguments(String fileName, ArgumentParser p){
+        loadArguments(new File(fileName), p);
+    }
+    
+    public void loadArguments(File file, ArgumentParser p){
         try{
-            ClassLoader classLoader = getClass().getClassLoader();
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            InputStream in = new FileInputStream(classLoader.getResource(fileName).getFile());
+            InputStream in = new FileInputStream(file);
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
                 
             String name = "";

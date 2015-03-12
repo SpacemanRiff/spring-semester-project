@@ -435,10 +435,11 @@ public class ArgumentParserTest{
     @Test
     public void testGetArgumentsFromFile(){
         ArgumentParser p = new ArgumentParser();
+        ClassLoader classLoader = getClass().getClassLoader();
         
         XMLManager manager = new XMLManager();
         
-        manager.loadArguments("testRead.xml", p);
+        manager.loadArguments(classLoader.getResource("testRead.xml").getFile(), p);        
         
         p.printProgramInformation();
         
