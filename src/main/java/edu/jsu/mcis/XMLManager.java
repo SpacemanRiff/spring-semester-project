@@ -30,6 +30,11 @@ public class XMLManager{
             InputStream in = new FileInputStream(classLoader.getResource(fileName).getFile());
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
                 
+            String name = "";
+            String description = "";
+            Types type = Types.valueOf("STRING");
+            String value = "";
+                
             System.out.println("\n");
             
             while(eventReader.hasNext()){
@@ -37,35 +42,26 @@ public class XMLManager{
                 ArgumentInformation arg;
                 OptionalArgumentInformation optArg;
                 
-                String name = "";
-                String description = "";
-                Types type = Types.valueOf("STRING");
-                String value = "";
-                
                 if (event.isStartElement()) {
                     StartElement startElement = event.asStartElement();
                     if (startElement.getName().getLocalPart().equals(NAME)) {
                         event = eventReader.nextEvent();
                         name = event.asCharacters().getData();
-                        System.out.print("test1 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(DESCRIPTION)) {
                         event = eventReader.nextEvent();
                         description = event.asCharacters().getData();
-                        System.out.print("test2 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(TYPE)) {
                         event = eventReader.nextEvent();
                         type = Types.valueOf(event.asCharacters().getData());
-                        System.out.print("test3 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(DEFAULT)) {
                         event = eventReader.nextEvent();
                         value = event.asCharacters().getData();
-                        System.out.print("test4 ");
                         continue;
                     }
                     //should be removed when we get rid of the flag definition
@@ -75,11 +71,19 @@ public class XMLManager{
                     EndElement endElement = event.asEndElement();
                     if (endElement.getName().getLocalPart().equals(ARGUMENT)) {
                         p.addArgument(name, description, type);
-                        System.out.print("test5 ");
+                        
+                        name = "";
+                        description = "";
+                        type = Types.valueOf("STRING");
+                        value = "";
                     }
                     if (endElement.getName().getLocalPart().equals(OPTIONAL)) {
                         p.addOptionalArgument(name, description, type, value);
-                        System.out.print("test6 ");
+                        
+                        name = "";
+                        description = "";
+                        type = Types.valueOf("STRING");
+                        value = "";
                     }
                 }
             }

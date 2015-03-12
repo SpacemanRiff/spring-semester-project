@@ -447,6 +447,7 @@ public class ArgumentParserTest{
         
         assertEquals("Optional Argument 1 description", p.getOptionalArgumentDescription("OptionalArgument1"));
         assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("OptionalArgument1"));
+        assertEquals("Value1", p.getOptionalArgumentValueOf("OptionalArgument1"));
         
     }
     
