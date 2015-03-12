@@ -24,11 +24,11 @@ public class XMLManager{
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
     
-    public void loadArguments(String fileName, ArgumentParser p){
+    public static void loadArguments(String fileName, ArgumentParser p){
         loadArguments(new File(fileName), p);
     }
     
-    public void loadArguments(File file, ArgumentParser p){
+    public static void loadArguments(File file, ArgumentParser p){
         try{
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream in = new FileInputStream(file);
