@@ -436,7 +436,9 @@ public class ArgumentParserTest{
     public void testGetArgumentsFromFile(){
         ArgumentParser p = new ArgumentParser();
         
-        XMLManager.loadArguments("testRead.xml", p);
+        XMLManager manager = new XMLManager();
+        
+        manager.loadArguments("testRead.xml", p);
         
         p.printProgramInformation();
         

@@ -22,14 +22,15 @@ public class XMLManager{
     private static final String TYPE = "type";
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
-    private enum ArgumentType {POSITIONALARGUMENT, OPTIONALARGUMENT};
     
-    public static void loadArguments(String fileName, ArgumentParser p){
+    public void loadArguments(String fileName, ArgumentParser p){
         try{
+            ClassLoader classLoader = getClass().getClassLoader();
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            InputStream in = new FileInputStream(fileName);
+            InputStream in = new FileInputStream(classLoader.getResource(fileName).getFile());
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-            System.out.println("test");
+                
+            System.out.println("\n");
             
             while(eventReader.hasNext()){
                 XMLEvent event = eventReader.nextEvent();
@@ -38,30 +39,33 @@ public class XMLManager{
                 
                 String name = "";
                 String description = "";
-                Types type = null;
+                Types type = Types.valueOf("STRING");
                 String value = "";
-                ArgumentType argType = null;
                 
                 if (event.isStartElement()) {
                     StartElement startElement = event.asStartElement();
                     if (startElement.getName().getLocalPart().equals(NAME)) {
                         event = eventReader.nextEvent();
                         name = event.asCharacters().getData();
+                        System.out.print("test1 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(DESCRIPTION)) {
                         event = eventReader.nextEvent();
                         description = event.asCharacters().getData();
+                        System.out.print("test2 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(TYPE)) {
                         event = eventReader.nextEvent();
                         type = Types.valueOf(event.asCharacters().getData());
+                        System.out.print("test3 ");
                         continue;
                     }
                     if (startElement.getName().getLocalPart().equals(DEFAULT)) {
                         event = eventReader.nextEvent();
                         value = event.asCharacters().getData();
+                        System.out.print("test4 ");
                         continue;
                     }
                     //should be removed when we get rid of the flag definition
@@ -71,9 +75,11 @@ public class XMLManager{
                     EndElement endElement = event.asEndElement();
                     if (endElement.getName().getLocalPart().equals(ARGUMENT)) {
                         p.addArgument(name, description, type);
+                        System.out.print("test5 ");
                     }
                     if (endElement.getName().getLocalPart().equals(OPTIONAL)) {
                         p.addOptionalArgument(name, description, type, value);
+                        System.out.print("test6 ");
                     }
                 }
             }

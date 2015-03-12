@@ -3,19 +3,13 @@
     <argument>
         <name>Argument1</name>
         <description>Argument 1 description</description>
-        <type>Integer</type>
+        <type>INTEGER</type>
     </argument>
     
     <optional>
         <name>OptionalArgument1</name>
         <description>Optional Argument 1 description</description>
-        <type>String</type>
-        <default>Value 1</default>
+        <type>STRING</type>
+        <default>Value1</default>
     </optional>   
-    
-    <optional>
-        <name>OptionalFlag1</name>
-        <flag>true</flag>
-        <description>Optional Argument 1 description</description>
-    </optional>
 </config>
