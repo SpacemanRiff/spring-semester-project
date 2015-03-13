@@ -11,5 +11,11 @@
         <description>Optional Argument 1 description</description>
         <type>STRING</type>
         <default>Value1</default>
-    </optional>   
+    </optional>      
+    
+    <optional>
+        <name>OptionalFlag1</name>
+        <description>Optional Flag 1 description</description>
+        <flag>true</flag>
+    </optional> 
 </config>

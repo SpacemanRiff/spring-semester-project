@@ -408,6 +408,10 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("OptionalArgument1"));
         assertEquals("Value1", p.getOptionalArgumentValueOf("OptionalArgument1"));
         
+        assertEquals("Optional Flag 1 description", p.getOptionalArgumentDescription("OptionalFlag1"));
+        assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("OptionalFlag1"));
+        assertEquals(false, p.getOptionalArgumentValueOf("OptionalFlag1"));
+        
     }
     
     @Test(expected=UnknownArgumentException.class)
