@@ -72,11 +72,11 @@ public class XMLManager{
         }
     }
     
-    public void loadArguments(String fileName, ArgumentParser p){
+    public static void loadArguments(String fileName, ArgumentParser p){
         loadArguments(new File(fileName), p);
     }
     
-    public void loadArguments(File file, ArgumentParser p){
+    public static void loadArguments(File file, ArgumentParser p){
         try{
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream in = new FileInputStream(file);
@@ -86,6 +86,7 @@ public class XMLManager{
             String description = "";
             Types type = Types.valueOf("STRING");
             String value = "";
+            boolean isFlag = false;
                 
             System.out.println("\n");
             
@@ -117,7 +118,9 @@ public class XMLManager{
                         continue;
                     }
                     //should be removed when we get rid of the flag definition
-                    if (startElement.getName().getLocalPart().equals(FLAG)) {}
+                    if (startElement.getName().getLocalPart().equals(FLAG)) {
+                        isFlag = true;
+                    }
                 }
                 if (event.isEndElement()) {
                     EndElement endElement = event.asEndElement();
@@ -128,14 +131,19 @@ public class XMLManager{
                         description = "";
                         type = Types.valueOf("STRING");
                         value = "";
+                        isFlag = false;
                     }
                     if (endElement.getName().getLocalPart().equals(OPTIONAL)) {
-                        p.addOptionalArgument(name, description, type, value);
-                        
+                        if(!isFlag){
+                            p.addOptionalArgument(name, description, type, value);
+                        }else{
+                            p.addOptionalFlag(name, description);
+                        }
                         name = "";
                         description = "";
                         type = Types.valueOf("STRING");
                         value = "";
+                        isFlag = false;
                     }
                 }
             }

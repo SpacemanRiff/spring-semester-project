@@ -3,18 +3,21 @@ package edu.jsu.mcis;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class ArgumentParserTest{
+public class ArgumentParserTest{       
+    ArgumentParser p;
+    
+    @Before
+    public void setUp(){        
+        p = new ArgumentParser(); 
+    }
+    
     @Test
-    public void testInitialArgumentMapIsEmpty(){
-        ArgumentParser p = new ArgumentParser();
-        
+    public void testInitialArgumentMapIsEmpty(){        
         assertEquals(0, p.getNumberOfArguments());
     }   
     
     @Test
-    public void testAddArgAndTestDescription(){
-        ArgumentParser p = new ArgumentParser();
-        
+    public void testAddArgAndTestDescription(){    
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -26,8 +29,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddArgAndTestType(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -39,8 +40,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddArgAndTestTypeUsingValueOf(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.valueOf("INTEGER"));
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.valueOf("INTEGER"));
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.valueOf("INTEGER"));
@@ -52,8 +51,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddArgAndTestTypeAsString(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -65,15 +62,11 @@ public class ArgumentParserTest{
 
     @Test
     public void testInitialOptionalArgumentMapIsEmpty(){
-        ArgumentParser p = new ArgumentParser();
-        
         assertEquals(0, p.getNumberOfOptionalArguments());
     }     
     
     @Test
     public void testAddOptionalArgAndTestDescription(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
@@ -89,8 +82,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddOptionalArgAndTestType(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
@@ -106,8 +97,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddOptionalArgAndTestTypeUsingValueOf(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.valueOf("INTEGER"), 10);   
@@ -123,8 +112,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddOptionalArgAndTestTypeAsString(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
@@ -140,9 +127,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddOptionalArgAndTestDefaultValue(){
-        ArgumentParser p = new ArgumentParser();
-        
-        
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
@@ -163,8 +147,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddProgramDescription(){        
-        ArgumentParser p = new ArgumentParser();
-        
         p.setProgramDescription("This is simply a test.");
         
         assertEquals("This is simply a test.", p.getProgramDescription()); 
@@ -172,8 +154,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueReturnsCorrectValue(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -194,8 +174,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueOfOptionalArgumentAtEndOfTheList(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -220,8 +198,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueOfOptionalArgumentInTheMiddleOfTheList(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -244,8 +220,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueOfOptionalArgumentAtBeginningOfTheList(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -268,8 +242,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueOfMultipleOptionalArguments(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -295,8 +267,6 @@ public class ArgumentParserTest{
     
     @Test(expected=InvalidArgumentException.class)
     public void testOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -309,8 +279,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testUnknownOptionalArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -323,8 +291,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetValueReturnsCorrectValueType(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Temperature", "The current air temperature", ArgumentParser.Types.INTEGER);
         p.addArgument("Current Month", "The current month", ArgumentParser.Types.STRING);
         p.addArgument("Raining", "Whether or not it is raining", ArgumentParser.Types.BOOLEAN);
@@ -351,7 +317,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testSetOptionalFlagAtBeginning(){
-        ArgumentParser p = new ArgumentParser();
         p.addOptionalFlag("Raining", "Is it snowing?");
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -375,7 +340,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testSetOptionalFlagAtEnd(){
-        ArgumentParser p = new ArgumentParser();
         p.addOptionalFlag("Raining", "Is it snowing?");
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -397,7 +361,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testSetOptionalFlagInMiddle(){
-        ArgumentParser p = new ArgumentParser();
         p.addOptionalFlag("Raining", "Is it snowing?");
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -419,8 +382,6 @@ public class ArgumentParserTest{
     
     @Test
     public void testShorthandArgument(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
@@ -434,12 +395,9 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetArgumentsFromFile(){
-        ArgumentParser p = new ArgumentParser();
         ClassLoader classLoader = getClass().getClassLoader();
         
-        XMLManager manager = new XMLManager();
-        
-        manager.loadArguments(classLoader.getResource("testRead.xml").getFile(), p);        
+        XMLManager.loadArguments(classLoader.getResource("testRead.xml").getFile(), p);        
         
         p.printProgramInformation();
         
@@ -450,12 +408,14 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("OptionalArgument1"));
         assertEquals("Value1", p.getOptionalArgumentValueOf("OptionalArgument1"));
         
+        assertEquals("Optional Flag 1 description", p.getOptionalArgumentDescription("OptionalFlag1"));
+        assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("OptionalFlag1"));
+        assertEquals(false, p.getOptionalArgumentValueOf("OptionalFlag1"));
+        
     }
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentDescription("Not length");
@@ -463,7 +423,7 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetTypeOfUnknownArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
+         
         
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
@@ -472,8 +432,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetTypeAsStringOfUnknownArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentTypeAsString("Not length");
@@ -481,8 +439,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetValueOfUnknownArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         String[] args = {"7"};
@@ -493,8 +449,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownOptionalArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
@@ -503,8 +457,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetTypeOfUnknownOptionalArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
@@ -513,8 +465,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetTypeAsStringOfUnknownOptionalArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
         
@@ -523,8 +473,6 @@ public class ArgumentParserTest{
     
     @Test(expected=UnknownArgumentException.class)
     public void testGetValueOfUnknownOptionalArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, 20);
 
@@ -533,16 +481,12 @@ public class ArgumentParserTest{
     
     @Test(expected=InvalidArgumentException.class)
     public void testSendInvalidOptionalArgumentDefaultValueThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument", "Optional Argument Description", ArgumentParser.Types.INTEGER, "bad");        
     }
     
     @Test(expected=InvalidArgumentException.class)
     public void testSendInvalidArgumentThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         String[] args = {"nice"};
@@ -552,8 +496,6 @@ public class ArgumentParserTest{
     
     @Test(expected = NotEnoughArgumentsException.class)
     public void testNotEnoughArgumentsThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         
@@ -563,8 +505,6 @@ public class ArgumentParserTest{
     
     @Test(expected = TooManyArgumentsException.class)
     public void testTooManyArgumentsThrowsException(){
-        ArgumentParser p = new ArgumentParser();
-        
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         
