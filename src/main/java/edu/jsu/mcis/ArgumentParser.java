@@ -26,6 +26,14 @@ public class ArgumentParser{
         return programDescription;
     }
 	
+    public List<String> getArgumentNames(){
+        return argumentNames;
+    }
+    
+    public List<String> getOptionalArgumentNames(){
+        return optionalArgumentNames;
+    }
+    
     public void addOptionalFlag(String argName, String argDescription){
         optionalArgumentNames.add(argName);
         optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, Types.BOOLEAN, false));        
@@ -69,7 +77,7 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
     }
-	
+    
     @SuppressWarnings("unchecked")
 	public <T> T getValueOf(String argName) throws UnknownArgumentException{
 		if(argumentMap.get(argName) != null){

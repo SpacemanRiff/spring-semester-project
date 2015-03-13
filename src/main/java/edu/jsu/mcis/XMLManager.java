@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -15,6 +16,9 @@ import javax.xml.stream.events.XMLEvent;
 
 import edu.jsu.mcis.ArgumentParser.Types;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class XMLManager{
     private static final String ARGUMENT = "argument";
     private static final String OPTIONAL = "optional";
@@ -23,6 +27,50 @@ public class XMLManager{
     private static final String TYPE = "type";
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
+    private PrintWriter writer;
+    
+    public void writeArguments(String fileName, ArgumentParser p){
+        try{
+            writer = new PrintWriter(fileName);
+            List<String> argNames = new ArrayList<String>();
+            List<String> optionalArgNames = new ArrayList<String>();
+            
+            argNames = p.getArgumentNames();
+            optionalArgNames = p.getOptionalArgumentNames();
+            
+            writer.write("<?xml version=\"1.0\"?>");
+            writer.write("<config>");
+            
+            for(int i = 0; i < argNames.size(); i++){
+                writer.write("\t<argument>");
+                writer.write("\t\t<name>" + argNames.get(i) + "</name>");
+                writer.write("\t\t<description>" + p.getArgumentDescription(argNames.get(i)) 
+                                + "</description>");
+                writer.write("\t\t<type>" + p.getArgumentTypeAsString(argNames.get(i))
+                                + "</type>");
+                writer.write("\t</argument>");
+                writer.write("");
+            }
+            
+            for(int i = 0; i<optionalArgNames.size(); i++){
+                writer.write("\t<optional>");
+                writer.write("\t\t<name>" + optionalArgNames.get(i) + "</name>");
+                writer.write("\t\t<description>" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
+                                + "</description>");
+                writer.write("\t\t<type>" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
+                                + "</type>");
+                writer.write("\t\t<default>" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
+                                + "</default>");
+                writer.write("\t</optional>");
+                writer.write("");
+            }
+            
+            writer.write("</config>");
+            
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+    }
     
     public void loadArguments(String fileName, ArgumentParser p){
         loadArguments(new File(fileName), p);
