@@ -113,6 +113,14 @@ public class ArgumentParser{
         }else{
             throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
         }
+    }   
+    
+    public Boolean getOptionalArgumentFlagStatus(String argName) throws UnknownArgumentException{
+		if(optionalArgumentMap.get(argName) != null){
+            return optionalArgumentMap.get(argName).getFlagStatus();
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
+        }
     }	
     
     @SuppressWarnings("unchecked")

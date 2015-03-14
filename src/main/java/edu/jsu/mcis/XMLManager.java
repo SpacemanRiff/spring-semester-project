@@ -42,26 +42,30 @@ public class XMLManager{
             writer.write("<config>\n");
             
             for(int i = 0; i < argNames.size(); i++){
-                writer.write("\t<argument>\n");
-                writer.write("\t\t<name>" + argNames.get(i) + "</name>\n");
-                writer.write("\t\t<description>" + p.getArgumentDescription(argNames.get(i)) 
-                                + "</description>\n");
-                writer.write("\t\t<type>" + p.getArgumentTypeAsString(argNames.get(i))
-                                + "</type>\n");
-                writer.write("\t</argument>\n");
+                writer.write("\t<" + ARGUMENT + ">\n");
+                writer.write("\t\t<" + NAME + ">" + argNames.get(i) + "</" + NAME + ">\n");
+                writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(argNames.get(i)) 
+                                + "</" + DESCRIPTION + ">\n");
+                writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(argNames.get(i))
+                                + "</" + TYPE + ">\n");
+                writer.write("\t</" + ARGUMENT + ">\n");
                 writer.write("\n");
             }
             
             for(int i = 0; i<optionalArgNames.size(); i++){
-                    writer.write("\t<optional>\n");
-                    writer.write("\t\t<name>" + optionalArgNames.get(i) + "</name>\n");
-                    writer.write("\t\t<description>" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
-                                    + "</description>\n");
-                    writer.write("\t\t<type>" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
-                                    + "</type>\n");
-                    writer.write("\t\t<default>" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
-                                    + "</default>\n");
-                    writer.write("\t</optional>\n");
+                    writer.write("\t<" + OPTIONAL + ">\n");
+                    writer.write("\t\t<" + NAME + ">" + optionalArgNames.get(i) + "</" + NAME + ">\n");
+                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
+                                    + "</" + DESCRIPTION + ">\n");
+                    if(!p.getOptionalArgumentFlagStatus(optionalArgNames.get(i))){
+                        writer.write("\t\t<" + TYPE + ">" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
+                                        + "</" + TYPE + ">\n");
+                        writer.write("\t\t<" + DEFAULT + ">" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
+                                        + "</" + DEFAULT + ">\n");
+                    }else{
+                        writer.write("\t\t<" + FLAG + ">true</" + FLAG + ">\n");
+                    }
+                    writer.write("\t</" + OPTIONAL + ">\n");
                     writer.write("\n");
             }
             
@@ -74,13 +78,9 @@ public class XMLManager{
     }
     
     public static void loadArguments(String fileName, ArgumentParser p){
-        loadArguments(new File(fileName), p);
-    }
-    
-    public static void loadArguments(File file, ArgumentParser p){
         try{
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            InputStream in = new FileInputStream(file);
+            InputStream in = new FileInputStream(new File(fileName));
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
                 
             String name = "";

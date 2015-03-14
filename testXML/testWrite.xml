@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config>
+	<argument>
+		<name>Length</name>
+		<description>The length of the shape</description>
+		<type>STRING</type>
+	</argument>
+
+	<optional>
+		<name>Color</name>
+		<description>The color of the shape</description>
+		<type>STRING</type>
+		<default>red</default>
+	</optional>
+
+	<optional>
+		<name>Flag</name>
+		<description>Is there a flag</description>
+		<flag>true</flag>
+	</optional>
+
+</config>

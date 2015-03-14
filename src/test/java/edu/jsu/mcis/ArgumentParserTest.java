@@ -395,9 +395,7 @@ public class ArgumentParserTest{
     
     @Test
     public void testGetArgumentsFromFile(){
-        ClassLoader classLoader = getClass().getClassLoader();
-        
-        XMLManager.loadArguments(classLoader.getResource("testRead.xml").getFile(), p);        
+        XMLManager.loadArguments("testXML/testRead.xml", p);        
         
         p.printProgramInformation();
         
@@ -418,13 +416,14 @@ public class ArgumentParserTest{
     public void testWriteArgumentsToFile(){
         p.addArgument("Length", "The length of the shape", ArgumentParser.Types.STRING);
         p.addOptionalArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "red");
+        p.addOptionalFlag("Flag", "Is there a flag");
         
         String[] args = {"3", "-C", "red"};
         p.parse(args);
         
-        XMLManager.writeArguments("testWrite.xml", p);
+        XMLManager.writeArguments("testXML/testWrite.xml", p);
         p = new ArgumentParser();
-        XMLManager.loadArguments("testWrite.xml", p);
+        XMLManager.loadArguments("testXML/testWrite.xml", p);
         
         assertEquals("The length of the shape", p.getArgumentDescription("Length"));
         assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Length"));
@@ -433,6 +432,9 @@ public class ArgumentParserTest{
         assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Color"));
         assertEquals("red", p.getOptionalArgumentValueOf("Color"));
         
+        assertEquals("Is there a flag", p.getOptionalArgumentDescription("Flag"));
+        assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Flag"));
+        assertEquals(false, p.getOptionalArgumentValueOf("Flag"));        
     }
     
     @Test(expected=UnknownArgumentException.class)
@@ -443,9 +445,7 @@ public class ArgumentParserTest{
     }    
     
     @Test(expected=UnknownArgumentException.class)
-    public void testGetTypeOfUnknownArgumentThrowsException(){
-         
-        
+    public void testGetTypeOfUnknownArgumentThrowsException(){     
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         
         p.getArgumentType("Not length");
