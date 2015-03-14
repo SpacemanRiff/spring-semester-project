@@ -414,6 +414,27 @@ public class ArgumentParserTest{
         
     }
     
+    @Test
+    public void testWriteArgumentsToFile(){
+        p.addArgument("Length", "The length of the shape", ArgumentParser.Types.STRING);
+        p.addOptionalArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "red");
+        
+        String[] args = {"3", "-C", "red"};
+        p.parse(args);
+        
+        XMLManager.writeArguments("testWrite.xml", p);
+        p = new ArgumentParser();
+        XMLManager.loadArguments("testWrite.xml", p);
+        
+        assertEquals("The length of the shape", p.getArgumentDescription("Length"));
+        assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Length"));
+        
+        assertEquals("The color of the shape", p.getOptionalArgumentDescription("Color"));
+        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Color"));
+        assertEquals("red", p.getOptionalArgumentValueOf("Color"));
+        
+    }
+    
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownArgumentThrowsException(){
         p.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);

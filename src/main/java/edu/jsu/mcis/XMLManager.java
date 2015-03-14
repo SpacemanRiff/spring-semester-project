@@ -27,9 +27,9 @@ public class XMLManager{
     private static final String TYPE = "type";
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
-    private PrintWriter writer;
+    private static PrintWriter writer;
     
-    public void writeArguments(String fileName, ArgumentParser p){
+    public static void writeArguments(String fileName, ArgumentParser p){
         try{
             writer = new PrintWriter(fileName);
             List<String> argNames = new ArrayList<String>();
@@ -38,34 +38,35 @@ public class XMLManager{
             argNames = p.getArgumentNames();
             optionalArgNames = p.getOptionalArgumentNames();
             
-            writer.write("<?xml version=\"1.0\"?>");
-            writer.write("<config>");
+            writer.write("<?xml version=\"1.0\"?>\n");
+            writer.write("<config>\n");
             
             for(int i = 0; i < argNames.size(); i++){
-                writer.write("\t<argument>");
-                writer.write("\t\t<name>" + argNames.get(i) + "</name>");
+                writer.write("\t<argument>\n");
+                writer.write("\t\t<name>" + argNames.get(i) + "</name>\n");
                 writer.write("\t\t<description>" + p.getArgumentDescription(argNames.get(i)) 
-                                + "</description>");
+                                + "</description>\n");
                 writer.write("\t\t<type>" + p.getArgumentTypeAsString(argNames.get(i))
-                                + "</type>");
-                writer.write("\t</argument>");
-                writer.write("");
+                                + "</type>\n");
+                writer.write("\t</argument>\n");
+                writer.write("\n");
             }
             
             for(int i = 0; i<optionalArgNames.size(); i++){
-                writer.write("\t<optional>");
-                writer.write("\t\t<name>" + optionalArgNames.get(i) + "</name>");
-                writer.write("\t\t<description>" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
-                                + "</description>");
-                writer.write("\t\t<type>" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
-                                + "</type>");
-                writer.write("\t\t<default>" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
-                                + "</default>");
-                writer.write("\t</optional>");
-                writer.write("");
+                    writer.write("\t<optional>\n");
+                    writer.write("\t\t<name>" + optionalArgNames.get(i) + "</name>\n");
+                    writer.write("\t\t<description>" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
+                                    + "</description>\n");
+                    writer.write("\t\t<type>" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
+                                    + "</type>\n");
+                    writer.write("\t\t<default>" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
+                                    + "</default>\n");
+                    writer.write("\t</optional>\n");
+                    writer.write("\n");
             }
             
             writer.write("</config>");
+            writer.close();
             
         }catch(FileNotFoundException e){
             e.printStackTrace();
