@@ -1,34 +1,35 @@
 <?xml version="1.0"?>
 <config>
-    <argument>
-        <name>size</name>
-        <description>The size of the pizza (Small, Medium, or Large)</description>
-        <type>STRING</type>
-    </argument>
-    
-    <argument>
-        <name>crust</name>
-        <description>The style of pizza crust</description>
-        <type>STRING</type>
-    </argument>
-    
-    <argument>
-        <name>toppings</name>
-        <description>The number of toppings for the pizza</description>
-        <type>INTEGER</type>
-    </argument>
-    
-    <optional>
-        <name>quantity</name>
-        <description>Allows you to order multiple of the same pizza</description>
-        <type>INTEGER</type>
-        <default>1</default>
-    </optional>
-    
-    <optional>
-        <name>drink</name>
-        <description>The drink you will have with your pizza</description>
-        <type>STRING</type>
-        <default>No Drink</default>
-    </optional> 
+	<argument>
+		<name>size</name>
+		<description>The size of the pizza (Small, Medium, or Large)</description>
+		<type>STRING</type>
+	</argument>
+
+	<argument>
+		<name>crust</name>
+		<description>The style of pizza crust</description>
+		<type>STRING</type>
+	</argument>
+
+	<argument>
+		<name>toppings</name>
+		<description>The number of toppings for the pizza</description>
+		<type>INTEGER</type>
+	</argument>
+
+	<optional>
+		<name>quantity</name>
+		<description>Allows you to order multiple of the same pizza</description>
+		<type>INTEGER</type>
+		<default>1</default>
+	</optional>
+
+	<optional>
+		<name>drink</name>
+		<description>The drink you will have with your pizza</description>
+		<type>STRING</type>
+		<default>No Drink</default>
+	</optional>
+
 </config>
