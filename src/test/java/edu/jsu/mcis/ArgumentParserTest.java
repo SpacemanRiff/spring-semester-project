@@ -68,12 +68,10 @@ public class ArgumentParserTest{
     @Test
     public void testAddOptionalArgAndTestDescription(){
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        
         p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
         p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value"); 
         p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
         p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
-        
         assertEquals("Optional Argument Description 1", p.getOptionalArgumentDescription("Optional Argument Name 1"));        
         assertEquals("Optional Argument Description 2", p.getOptionalArgumentDescription("Optional Argument Name 2"));      
         assertEquals("Optional Argument Description 3", p.getOptionalArgumentDescription("Optional Argument Name 3"));  
@@ -81,74 +79,124 @@ public class ArgumentParserTest{
     }    
     
     @Test
-    public void testAddOptionalArgAndTestType(){
+    public void testAddOptionalIntegerAndTestType(){
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        
-        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
-        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value"); 
-        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
-        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
-        
+        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10); 
         assertEquals(ArgumentParser.Types.INTEGER, p.getOptionalArgumentType("Optional Argument Name 1"));        
-        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Optional Argument Name 2"));      
+    }     
+    
+    @Test
+    public void testAddOptionalStringAndTestType(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value");     
+        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Optional Argument Name 2"));    
+    }  
+    
+    @Test
+    public void testAddOptionalBooleanAndTestType(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true);     
         assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Optional Argument Name 3"));    
+    }  
+    
+    @Test
+    public void testAddOptionalFloatAndTestType(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f);   
         assertEquals(ArgumentParser.Types.FLOAT, p.getOptionalArgumentType("Optional Argument Name 4"));
-    }    
+    } 
     
     @Test
-    public void testAddOptionalArgAndTestTypeUsingValueOf(){
+    public void testAddOptionalIntegerAndTestTypeUsingValueOf(){
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        
-        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.valueOf("INTEGER"), 10);   
-        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.valueOf("STRING"), "value"); 
-        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.valueOf("BOOLEAN"), true); 
-        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.valueOf("FLOAT"), 2.0f); 
-        
+        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.valueOf("INTEGER"), 10);  
         assertEquals(ArgumentParser.Types.INTEGER, p.getOptionalArgumentType("Optional Argument Name 1"));        
-        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Optional Argument Name 2"));      
-        assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Optional Argument Name 3"));    
-        assertEquals(ArgumentParser.Types.FLOAT, p.getOptionalArgumentType("Optional Argument Name 4"));   
-    }    
+    }     
     
     @Test
-    public void testAddOptionalArgAndTestTypeAsString(){
+    public void testAddOptionalStringAndTestTypeUsingValueOf(){
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        
-        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
+        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.valueOf("STRING"), "value"); 
+        assertEquals(ArgumentParser.Types.STRING, p.getOptionalArgumentType("Optional Argument Name 2"));      
+    }  
+    
+    @Test
+    public void testAddOptionalBooleanAndTestTypeUsingValueOf(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.valueOf("BOOLEAN"), true); 
+        assertEquals(ArgumentParser.Types.BOOLEAN, p.getOptionalArgumentType("Optional Argument Name 3"));    
+    }  
+    
+    @Test
+    public void testAddOptionalFloatAndTestTypeUsingValueOf(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.valueOf("FLOAT"), 2.0f); 
+        assertEquals(ArgumentParser.Types.FLOAT, p.getOptionalArgumentType("Optional Argument Name 4"));   
+    } 
+    
+    @Test
+    public void testAddOptionalIntegerAndTestTypeAsString(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);        
+        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10); 
+        assertEquals("INTEGER", p.getOptionalArgumentTypeAsString("Optional Argument Name 1"));      
+    }  
+    
+    @Test
+    public void testAddOptionalStringAndTestTypeAsString(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value"); 
-        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
-        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
-        
-        assertEquals("INTEGER", p.getOptionalArgumentTypeAsString("Optional Argument Name 1"));        
         assertEquals("STRING", p.getOptionalArgumentTypeAsString("Optional Argument Name 2"));      
+    }  
+    
+    @Test
+    public void testAddOptionalBooleanAndTestTypeAsString(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
         assertEquals("BOOLEAN", p.getOptionalArgumentTypeAsString("Optional Argument Name 3"));    
+    }  
+    
+    @Test
+    public void testAddOptionalFloatAndTestTypeAsString(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
         assertEquals("FLOAT", p.getOptionalArgumentTypeAsString("Optional Argument Name 4"));    
     }
     
     @Test
-    public void testAddOptionalArgAndTestDefaultValue(){
+    public void testAddOptionalIntAndTestDefaultValue(){
         p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        
-        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);   
-        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value"); 
-        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
-        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
-        
+        p.addOptionalArgument("Optional Argument Name 1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
         int intValue = p.getOptionalArgumentValueOf("Optional Argument Name 1");
+        assertEquals(10, intValue);           
+    }
+    
+    @Test
+    public void testAddOptionalStringAndTestDefaultValue(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 2", "Optional Argument Description 2", ArgumentParser.Types.STRING, "value"); 
         String stringValue = p.getOptionalArgumentValueOf("Optional Argument Name 2");
+        assertEquals("value", stringValue);                
+    }
+    
+    @Test
+    public void testAddOptionalBooleanAndTestDefaultValue(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 3", "Optional Argument Description 3", ArgumentParser.Types.BOOLEAN, true); 
         boolean boolValue = p.getOptionalArgumentValueOf("Optional Argument Name 3");
+        assertEquals(true, boolValue);               
+    }
+    
+    @Test
+    public void testAddOptionalFloatAndTestDefaultValue(){
+        p.addArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addOptionalArgument("Optional Argument Name 4", "Optional Argument Description 4", ArgumentParser.Types.FLOAT, 2.0f); 
         float floatValue = p.getOptionalArgumentValueOf("Optional Argument Name 4");
-        
-        assertEquals(10, intValue);        
-        assertEquals("value", stringValue);      
-        assertEquals(true, boolValue);      
         assertEquals(2.0f, floatValue, 0.1f);           
     }
     
     @Test
     public void testAddProgramDescription(){        
         p.setProgramDescription("This is simply a test.");
-        
         assertEquals("This is simply a test.", p.getProgramDescription()); 
     }
     
@@ -290,28 +338,54 @@ public class ArgumentParserTest{
     }
     
     @Test
-    public void testGetValueReturnsCorrectValueType(){
-        p.addArgument("Temperature", "The current air temperature", ArgumentParser.Types.INTEGER);
-        p.addArgument("Current Month", "The current month", ArgumentParser.Types.STRING);
-        p.addArgument("Raining", "Whether or not it is raining", ArgumentParser.Types.BOOLEAN);
-        p.addArgument("Precipitation", "The amount of precipitation in the last week", ArgumentParser.Types.FLOAT);
+    public void testGetValueOfIntegerReturnsInteger(){
+        p.addArgument("Length", "The length", ArgumentParser.Types.INTEGER);
                 
-        String[] args = {"32", "January", "false", "2.0f"};
+        String[] args = {"2"};
         p.parse(args);
         
-        assertEquals("INTEGER", p.getArgumentTypeAsString("Temperature"));
+        assertEquals("INTEGER", p.getArgumentTypeAsString("Length"));
+        
+        int length = p.getValueOf("Length");
+        
+        assertEquals(2, length);
+    }
+    
+    @Test
+    public void testGetValueOfStringReturnsString(){
+        p.addArgument("Current Month", "The current month", ArgumentParser.Types.STRING);
+                
+        String[] args = {"January"};
+        p.parse(args);
+        
         assertEquals("STRING", p.getArgumentTypeAsString("Current Month"));
-        assertEquals("BOOLEAN", p.getArgumentTypeAsString("Raining"));
-        assertEquals("FLOAT", p.getArgumentTypeAsString("Precipitation"));
         
-        int temperature = p.getValueOf("Temperature");
         String month = p.getValueOf("Current Month");
-        boolean isRaining = p.getValueOf("Raining");
-        float precipiation = p.getValueOf("Precipitation");
         
-        assertEquals(32, temperature);
         assertEquals("January", month);
+    }
+    
+    @Test
+    public void testGetValueOfBooleanReturnsBoolean(){
+        p.addArgument("Raining", "Whether or not it is raining", ArgumentParser.Types.BOOLEAN);
+                
+        String[] args = {"false"};
+        p.parse(args);
+        
+        assertEquals("BOOLEAN", p.getArgumentTypeAsString("Raining"));
+        
+        boolean isRaining = p.getValueOf("Raining");
+        
         assertEquals(false, isRaining);
+    }
+    
+    @Test
+    public void testGetValueOfFloatReturnsFloat(){
+        p.addArgument("Precipitation", "The amount of precipitation in the last week", ArgumentParser.Types.FLOAT);
+        String[] args = {"2.0f"};
+        p.parse(args);
+        assertEquals("FLOAT", p.getArgumentTypeAsString("Precipitation"));
+        float precipiation = p.getValueOf("Precipitation");
         assertEquals(2.0f, precipiation, 0.1f);
     }
     
