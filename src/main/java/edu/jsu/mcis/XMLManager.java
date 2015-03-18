@@ -39,10 +39,10 @@ public class XMLManager{
             optionalArgNames = p.getOptionalArgumentNames();
             
             writer.write("<?xml version=\"1.0\"?>\n");
-            writer.write("<config>\n");
+            writer.write("<argument>\n");
             
             for(int i = 0; i < argNames.size(); i++){
-                writer.write("\t<" + ARGUMENT + ">\n");
+                writer.write("\t<" + ARGUMENT + " type = \"positional\"" + ">\n");
                 writer.write("\t\t<" + NAME + ">" + argNames.get(i) + "</" + NAME + ">\n");
                 writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(argNames.get(i)) 
                                 + "</" + DESCRIPTION + ">\n");
@@ -53,7 +53,7 @@ public class XMLManager{
             }
             
             for(int i = 0; i<optionalArgNames.size(); i++){
-                    writer.write("\t<" + OPTIONAL + ">\n");
+                    writer.write("\t<" + ARGUMENT + " type = \"positional\"" + ">\n");
                     writer.write("\t\t<" + NAME + ">" + optionalArgNames.get(i) + "</" + NAME + ">\n");
                     writer.write("\t\t<" + DESCRIPTION + ">" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
                                     + "</" + DESCRIPTION + ">\n");
@@ -65,11 +65,11 @@ public class XMLManager{
                     }else{
                         writer.write("\t\t<" + FLAG + ">true</" + FLAG + ">\n");
                     }
-                    writer.write("\t</" + OPTIONAL + ">\n");
+                    writer.write("\t</" + ARGUMENT + ">\n");
                     writer.write("\n");
             }
             
-            writer.write("</config>");
+            writer.write("</argument>");
             writer.close();
             
         }catch(FileNotFoundException e){
