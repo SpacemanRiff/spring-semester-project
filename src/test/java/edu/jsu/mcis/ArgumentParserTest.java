@@ -490,10 +490,11 @@ public class ArgumentParserTest{
     public void testWriteArgumentsToFile(){
         p.addArgument("Length", "The length of the shape", ArgumentParser.Types.STRING);
         p.addOptionalArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "red");
-        p.addOptionalFlag("Flag", "Is there a flag");
+        p.addOptionalArgument("Flag", "Is there a flag", ArgumentParser.Types.BOOLEAN, false);
         
         String[] args = {"3", "-C", "red"};
         p.parse(args);
+        p.printProgramInformation();
         
         XMLManager.writeArguments("testXML/testWrite.xml", p);
         p = new ArgumentParser();

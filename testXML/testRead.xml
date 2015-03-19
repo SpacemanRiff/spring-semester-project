@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<config>
-    <argument>
+<arguments>
+    <argument type = "positional">
         <name>Argument1</name>
         <description>Argument 1 description</description>
         <type>INTEGER</type>
     </argument>
     
-    <optional>
+    <argument type = "named">
         <name>OptionalArgument1</name>
         <description>Optional Argument 1 description</description>
         <type>STRING</type>
         <default>Value1</default>
-    </optional>      
+    </argument>      
     
-    <optional>
+    <argument type = "named">
         <name>OptionalFlag1</name>
         <description>Optional Flag 1 description</description>
-        <flag>true</flag>
-    </optional> 
-</config>
+        <type>BOOLEAN</type>
+        <default>false</default>
+    </argument> 
+</arguments>

@@ -17,11 +17,14 @@ import javax.xml.stream.events.XMLEvent;
 import edu.jsu.mcis.ArgumentParser.Types;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class XMLManager{
     private static final String ARGUMENT = "argument";
     private static final String OPTIONAL = "optional";
+    private static final String NAMED_ARGUMENT = "named";
+    private static final String POS_ARGUMENT = "positional";
     private static final String NAME = "name";
     private static final String DESCRIPTION = "description";
     private static final String TYPE = "type";
@@ -39,7 +42,7 @@ public class XMLManager{
             optionalArgNames = p.getOptionalArgumentNames();
             
             writer.write("<?xml version=\"1.0\"?>\n");
-            writer.write("<argument>\n");
+            writer.write("<arguments>\n");
             
             for(int i = 0; i < argNames.size(); i++){
                 writer.write("\t<" + ARGUMENT + " type = \"positional\"" + ">\n");
@@ -53,7 +56,7 @@ public class XMLManager{
             }
             
             for(int i = 0; i<optionalArgNames.size(); i++){
-                    writer.write("\t<" + ARGUMENT + " type = \"positional\"" + ">\n");
+                    writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
                     writer.write("\t\t<" + NAME + ">" + optionalArgNames.get(i) + "</" + NAME + ">\n");
                     writer.write("\t\t<" + DESCRIPTION + ">" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
                                     + "</" + DESCRIPTION + ">\n");
@@ -69,7 +72,7 @@ public class XMLManager{
                     writer.write("\n");
             }
             
-            writer.write("</argument>");
+            writer.write("</arguments>");
             writer.close();
             
         }catch(FileNotFoundException e){
@@ -88,6 +91,7 @@ public class XMLManager{
             Types type = Types.valueOf("STRING");
             String value = "";
             boolean isFlag = false;
+            String argumentType = "";
                 
             System.out.println("\n");
             
@@ -102,6 +106,29 @@ public class XMLManager{
                         event = eventReader.nextEvent();
                         name = event.asCharacters().getData();
                         continue;
+                    }
+                    if (startElement.getName().getLocalPart().equals(ARGUMENT)){
+                        Iterator<Attribute> attributes = startElement.getAttributes();
+                        while(attributes.hasNext()){
+                            Attribute attribute = attributes.next();
+                            if(attribute.getName().toString().equals(TYPE)){
+                                event = eventReader.nextEvent();
+                                argumentType = attribute.getValue();
+                            }
+                        }
+                        continue;
+                        
+                    }
+                    if (startElement.getName().getLocalPart().equals(ARGUMENT)){
+                        Iterator<Attribute> attributes = startElement.getAttributes();
+                        while(attributes.hasNext()){
+                            Attribute attribute = attributes.next();
+                            if(attribute.getName().toString().equals(TYPE)){
+                                event = eventReader.nextEvent();
+                                argumentType = event.asCharacters().getData();
+                            }
+                        }
+                        
                     }
                     if (startElement.getName().getLocalPart().equals(DESCRIPTION)) {
                         event = eventReader.nextEvent();
@@ -126,19 +153,10 @@ public class XMLManager{
                 if (event.isEndElement()) {
                     EndElement endElement = event.asEndElement();
                     if (endElement.getName().getLocalPart().equals(ARGUMENT)) {
-                        p.addArgument(name, description, type);
-                        
-                        name = "";
-                        description = "";
-                        type = Types.valueOf("STRING");
-                        value = "";
-                        isFlag = false;
-                    }
-                    if (endElement.getName().getLocalPart().equals(OPTIONAL)) {
-                        if(!isFlag){
+                        if(argumentType.equals(POS_ARGUMENT)){
+                            p.addArgument(name, description, type);
+                        } else if (argumentType.equals(NAMED_ARGUMENT)){
                             p.addOptionalArgument(name, description, type, value);
-                        }else{
-                            p.addOptionalFlag(name, description);
                         }
                         name = "";
                         description = "";
@@ -146,6 +164,7 @@ public class XMLManager{
                         value = "";
                         isFlag = false;
                     }
+                    
                 }
             }
             

@@ -1,22 +1,23 @@
 <?xml version="1.0"?>
-<config>
-	<argument>
+<arguments>
+	<argument type = "positional">
 		<name>Length</name>
 		<description>The length of the shape</description>
 		<type>STRING</type>
 	</argument>
 
-	<optional>
+	<argument type = "named">
 		<name>Color</name>
 		<description>The color of the shape</description>
 		<type>STRING</type>
 		<default>red</default>
-	</optional>
+	</argument>
 
-	<optional>
+	<argument type = "named">
 		<name>Flag</name>
 		<description>Is there a flag</description>
-		<flag>true</flag>
-	</optional>
+		<type>BOOLEAN</type>
+		<default>false</default>
+	</argument>
 
-</config>
+</arguments>
