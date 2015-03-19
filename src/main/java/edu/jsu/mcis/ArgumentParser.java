@@ -34,12 +34,6 @@ public class ArgumentParser{
         return optionalArgumentNames;
     }
     
-    public void addOptionalFlag(String argName, String argDescription){
-        optionalArgumentNames.add(argName);
-        optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, Types.BOOLEAN, false));        
-        optionalArgumentMap.get(argName).setFlagStatus(true);
-    }
-    
     public void addOptionalArgument(String argName, String argDescription, Types type, Object defaultValue){
         optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, type, defaultValue));
         optionalArgumentNames.add(argName);        
@@ -116,11 +110,7 @@ public class ArgumentParser{
     }   
     
     public Boolean getOptionalArgumentFlagStatus(String argName) throws UnknownArgumentException{
-		if(optionalArgumentMap.get(argName) != null){
-            return optionalArgumentMap.get(argName).getFlagStatus();
-        }else{
-            throw new UnknownArgumentException("\n\nCould not find optional argument \"" + argName + "\"\n");
-        }
+		return true;
     }	
     
     @SuppressWarnings("unchecked")
@@ -206,7 +196,7 @@ public class ArgumentParser{
                 if(isLongArgument(args.get(i))){
                     String lookUpString = args.get(i).substring(2);
                     if(optionalArgumentMap.get(lookUpString) != null){                    
-                        if(!optionalArgumentMap.get(lookUpString).getFlagStatus()){
+                        if(getOptionalArgumentType(lookUpString) != Types.BOOLEAN){
                             try{
                                 optionalArgumentMap.get(lookUpString).setValue(args.get(i+1));
                                 args.remove(i);
@@ -251,7 +241,7 @@ public class ArgumentParser{
             System.out.print(argumentNames.get(i).toLowerCase() + "  ");
         }            
         for(int i = 0; i < optionalArgumentNames.size(); i++){
-            if(!optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+            if(getOptionalArgumentType(optionalArgumentNames.get(i)) != Types.BOOLEAN){
                 System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + " " + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() + "] ");
             }else{
                 System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + "] ");
@@ -269,7 +259,7 @@ public class ArgumentParser{
         System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
         System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
         for(int i = 0; i < optionalArgumentNames.size(); i++){
-            if(!optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+            if(getOptionalArgumentType(optionalArgumentNames.get(i)) != Types.BOOLEAN){
                 System.out.printf("%-15s %-10s %-30s \n", optionalArgumentNames.get(i), 
                 optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString(), 
                 optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
@@ -281,7 +271,7 @@ public class ArgumentParser{
             System.out.printf("%-15s %-30s \n", "Name", "Description"); 
             System.out.printf("%-15s %-30s \n", "----", "-----------"); 
             for(int i = 0; i < optionalArgumentNames.size(); i++){
-                if(optionalArgumentMap.get(optionalArgumentNames.get(i)).getFlagStatus()){
+                if(getOptionalArgumentType(optionalArgumentNames.get(i)) == Types.BOOLEAN){
                     System.out.printf("%-15s %-30s \n", optionalArgumentNames.get(i), 
                     optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
                 }
