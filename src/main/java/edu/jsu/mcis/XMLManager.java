@@ -38,8 +38,8 @@ public class XMLManager{
             List<String> argNames = new ArrayList<String>();
             List<String> optionalArgNames = new ArrayList<String>();
             
-            argNames = p.getArgumentNames();
-            optionalArgNames = p.getOptionalArgumentNames();
+            argNames = p.getPositionalArgumentNames();
+            optionalArgNames = p.getNamedArgumentNames();
             
             writer.write("<?xml version=\"1.0\"?>\n");
             writer.write("<arguments>\n");
@@ -93,8 +93,8 @@ public class XMLManager{
             
             while(eventReader.hasNext()){
                 XMLEvent event = eventReader.nextEvent();
-                ArgumentInformation arg;
-                OptionalArgumentInformation optArg;
+                Argument arg;
+                NamedArgument optArg;
                 
                 if (event.isStartElement()) {
                     StartElement startElement = event.asStartElement();
@@ -115,17 +115,6 @@ public class XMLManager{
                         continue;
                         
                     }
-                    if (startElement.getName().getLocalPart().equals(ARGUMENT)){
-                        Iterator<Attribute> attributes = startElement.getAttributes();
-                        while(attributes.hasNext()){
-                            Attribute attribute = attributes.next();
-                            if(attribute.getName().toString().equals(TYPE)){
-                                event = eventReader.nextEvent();
-                                argumentType = event.asCharacters().getData();
-                            }
-                        }
-                        
-                    }
                     if (startElement.getName().getLocalPart().equals(DESCRIPTION)) {
                         event = eventReader.nextEvent();
                         description = event.asCharacters().getData();
@@ -141,18 +130,14 @@ public class XMLManager{
                         value = event.asCharacters().getData();
                         continue;
                     }
-                    //should be removed when we get rid of the flag definition
-                    if (startElement.getName().getLocalPart().equals(FLAG)) {
-                        isFlag = true;
-                    }
                 }
                 if (event.isEndElement()) {
                     EndElement endElement = event.asEndElement();
                     if (endElement.getName().getLocalPart().equals(ARGUMENT)) {
                         if(argumentType.equals(POS_ARGUMENT)){
-                            p.addArgument(name, description, type);
+                            p.addPositionalArgument(name, description, type);
                         } else if (argumentType.equals(NAMED_ARGUMENT)){
-                            p.addOptionalArgument(name, description, type, value);
+                            p.addNamedArgument(name, description, type, value);
                         }
                         name = "";
                         description = "";

@@ -6,9 +6,9 @@ public class ArgumentParserKeywords{
     public void startProgramWithArguments(String[] args){
         a = new ArgumentParser();
         
-        a.addArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
-        a.addArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
-        a.addArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
+        a.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
+        a.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
+        a.addPositionalArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
         
         a.parse(args);
     }
@@ -16,8 +16,8 @@ public class ArgumentParserKeywords{
     public void startProgramWithFlaggedArguments(String[] args){
         a = new ArgumentParser();
         
-        a.addArgument("Temperature", "How warm it is going to be.", ArgumentParser.Types.INTEGER);
-        a.addOptionalArgument("Raining", "It is raining", ArgumentParser.Types.BOOLEAN, false);
+        a.addPositionalArgument("Temperature", "How warm it is going to be.", ArgumentParser.Types.INTEGER);
+        a.addNamedArgument("Raining", "It is raining", ArgumentParser.Types.BOOLEAN, false);
         a.addOptionalFlag("Cloudy", "It is cloudy", ArgumentParser.Types.BOOLEAN, false);
         
         a.parse(args);
@@ -26,10 +26,10 @@ public class ArgumentParserKeywords{
     public void startProgramWithOptionalArguments(String[] args){
         a = new ArgumentParser();
         
-        a.addArgument("Length", "Length of the shape", ArgumentParser.Types.INTEGER);
-        a.addArgument("Width", "Width of the shape", ArgumentParser.Types.INTEGER);
-        a.addArgument("Height", "Height of the shape", ArgumentParser.Types.INTEGER);
-        a.addOptionalArgument("Color", "Color of the shape", ArgumentParser.Types.STRING, "Black");
+        a.addPositionalArgument("Length", "Length of the shape", ArgumentParser.Types.INTEGER);
+        a.addPositionalArgument("Width", "Width of the shape", ArgumentParser.Types.INTEGER);
+        a.addPositionalArgument("Height", "Height of the shape", ArgumentParser.Types.INTEGER);
+        a.addNamedArgument("Color", "Color of the shape", ArgumentParser.Types.STRING, "Black");
         
         a.parse(args);
         

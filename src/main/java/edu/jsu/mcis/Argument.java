@@ -2,12 +2,12 @@ package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
 
-public class ArgumentInformation{
+public class Argument{
     private String description;
     private Types type;
     private Object value;
     
-    public ArgumentInformation(String description, Types type){
+    public Argument(String description, Types type){
         this.description = description;
         this.type = type;
     }

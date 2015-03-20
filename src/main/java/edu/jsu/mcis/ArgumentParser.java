@@ -3,18 +3,18 @@ package edu.jsu.mcis;
 import java.util.*;
 
 public class ArgumentParser{
-    private Map<String, ArgumentInformation> argumentMap;
-    private Map<String, OptionalArgumentInformation> optionalArgumentMap;
-    private List<String> argumentNames;
-    private List<String> optionalArgumentNames;
+    private Map<String, Argument> positionalArgumentMap;
+    private Map<String, NamedArgument> namedArgumentMap;
+    private List<String> positionalArgumentNames;
+    private List<String> namedArgumentNames;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
-        argumentMap = new HashMap<String, ArgumentInformation>();
-        optionalArgumentMap = new HashMap<String, OptionalArgumentInformation>();
-        argumentNames = new ArrayList<String>();
-        optionalArgumentNames = new ArrayList<String>();
+        positionalArgumentMap = new HashMap<String, Argument>();
+        namedArgumentMap = new HashMap<String, NamedArgument>();
+        positionalArgumentNames = new ArrayList<String>();
+        namedArgumentNames = new ArrayList<String>();
         programDescription = "";
     }
 
@@ -26,53 +26,53 @@ public class ArgumentParser{
         return programDescription;
     }
 	
-    public List<String> getArgumentNames(){
-        return argumentNames;
+    public List<String> getPositionalArgumentNames(){
+        return positionalArgumentNames;
     }
     
-    public List<String> getOptionalArgumentNames(){
-        return optionalArgumentNames;
+    public List<String> getNamedArgumentNames(){
+        return namedArgumentNames;
     }
     
-	public void addArgument(String argName, String argDescription, Types type){
-        argumentMap.put(argName, new ArgumentInformation(argDescription, type));
-        argumentNames.add(argName);
+	public void addPositionalArgument(String argName, String argDescription, Types type){
+        positionalArgumentMap.put(argName, new Argument(argDescription, type));
+        positionalArgumentNames.add(argName);
 	}
     
-    public void addOptionalArgument(String argName, String argDescription, Types type, Object defaultValue){
-        optionalArgumentMap.put(argName, new OptionalArgumentInformation(argDescription, type, defaultValue));
-        optionalArgumentNames.add(argName);        
+    public void addNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
+        namedArgumentNames.add(argName);        
     }
     
     public int getNumberOfArguments(){
-        return argumentMap.size();
+        return positionalArgumentMap.size();
     }
     
     public String getArgumentDescription(String argName){
-		if(argumentMap.get(argName) != null){
-            return argumentMap.get(argName).getDescription();
-        }else if(optionalArgumentMap.get(argName) != null){
-            return optionalArgumentMap.get(argName).getDescription();        
+		if(positionalArgumentMap.get(argName) != null){
+            return positionalArgumentMap.get(argName).getDescription();
+        }else if(namedArgumentMap.get(argName) != null){
+            return namedArgumentMap.get(argName).getDescription();        
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
     }
     
     public Types getArgumentType(String argName){
-		if(argumentMap.get(argName) != null){
-            return argumentMap.get(argName).getType();
-        }else if(optionalArgumentMap.get(argName) != null){
-            return optionalArgumentMap.get(argName).getType();
+		if(positionalArgumentMap.get(argName) != null){
+            return positionalArgumentMap.get(argName).getType();
+        }else if(namedArgumentMap.get(argName) != null){
+            return namedArgumentMap.get(argName).getType();
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
     }
     
     public String getArgumentTypeAsString(String argName){
-		if(argumentMap.get(argName) != null){
-            return argumentMap.get(argName).getTypeAsString();
-        }else if(optionalArgumentMap.get(argName) != null){
-            return optionalArgumentMap.get(argName).getTypeAsString();            
+		if(positionalArgumentMap.get(argName) != null){
+            return positionalArgumentMap.get(argName).getTypeAsString();
+        }else if(namedArgumentMap.get(argName) != null){
+            return namedArgumentMap.get(argName).getTypeAsString();            
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
@@ -80,10 +80,10 @@ public class ArgumentParser{
     
     @SuppressWarnings("unchecked")
 	public <T> T getValueOf(String argName){
-		if(argumentMap.get(argName) != null){
-            return (T)argumentMap.get(argName).getValue();
-        }else if(optionalArgumentMap.get(argName) != null){
-            return (T)optionalArgumentMap.get(argName).getValue();
+		if(positionalArgumentMap.get(argName) != null){
+            return (T)positionalArgumentMap.get(argName).getValue();
+        }else if(namedArgumentMap.get(argName) != null){
+            return (T)namedArgumentMap.get(argName).getValue();
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
@@ -91,9 +91,9 @@ public class ArgumentParser{
     
     @SuppressWarnings("unchecked")
     public <T> T getDefaultValueOf(String argName){
-        if(optionalArgumentMap.get(argName) != null){
-            return (T)optionalArgumentMap.get(argName).getDefaultValue();
-		}else if(argumentMap.get(argName) != null){
+        if(namedArgumentMap.get(argName) != null){
+            return (T)namedArgumentMap.get(argName).getDefaultValue();
+		}else if(positionalArgumentMap.get(argName) != null){
             throw new InvalidArgumentException("\n\n\"" + argName + "\" is not a named argument\n");
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
@@ -101,7 +101,7 @@ public class ArgumentParser{
     }
     
     public int getNumberOfOptionalArguments(){
-        return optionalArgumentMap.size();
+        return namedArgumentMap.size();
     }	
 	
 	public void parse(String[] args){           
@@ -112,7 +112,7 @@ public class ArgumentParser{
         for(int i = 0; i < args.length; i++){
             argumentValuesList.add(args[i]);
         }
-        pullOptionalArguments(argumentValuesList);
+        pullNamedArguments(argumentValuesList);
         
         int numArgs = getNumberOfArguments();
 		if(argumentValuesList.size() < numArgs){
@@ -124,7 +124,7 @@ public class ArgumentParser{
 		}        
 
 		for(int i = 0; i < argumentValuesList.size(); i++){
-            argumentMap.get(argumentNames.get(i)).setValue(argumentValuesList.get(i));          
+            positionalArgumentMap.get(positionalArgumentNames.get(i)).setValue(argumentValuesList.get(i));          
 		}
 	}
     
@@ -161,9 +161,9 @@ public class ArgumentParser{
     }
     
     private String renameShortArgument(String s){
-        for(int i = 0; i < optionalArgumentNames.size(); i++){
-            if(s.equals(optionalArgumentNames.get(i).substring(0,1))){
-                s = optionalArgumentNames.get(i);
+        for(int i = 0; i < namedArgumentNames.size(); i++){
+            if(s.equals(namedArgumentNames.get(i).substring(0,1))){
+                s = namedArgumentNames.get(i);
             }
             else
                 s = s;
@@ -171,16 +171,16 @@ public class ArgumentParser{
         return s;
     }
     
-    private void pullOptionalArguments(List<String> args){
+    private void pullNamedArguments(List<String> args){
         setShortArguments(args);
         for(int i = 0; i < args.size(); i++){
             if(isNotCharacterLength(args.get(i))){
                 if(isLongArgument(args.get(i))){
                     String lookUpString = args.get(i).substring(2);
-                    if(optionalArgumentMap.get(lookUpString) != null){                    
+                    if(namedArgumentMap.get(lookUpString) != null){                    
                         if(getArgumentType(lookUpString) != Types.BOOLEAN){
                             try{
-                                optionalArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                                namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
                                 args.remove(i);
                                 args.remove(i);
                                 i--;
@@ -188,7 +188,7 @@ public class ArgumentParser{
                                 throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
                             }
                         }else{
-                            optionalArgumentMap.get(lookUpString).setValue("true");
+                            namedArgumentMap.get(lookUpString).setValue("true");
                             args.remove(i);
                             i--;                            
                         }
@@ -219,43 +219,43 @@ public class ArgumentParser{
         System.out.println("\n" + programDescription + "\n");     
         int numberOfFlags = 0;
         
-        for(int i = 0; i < argumentNames.size(); i++){
-            System.out.print(argumentNames.get(i).toLowerCase() + "  ");
+        for(int i = 0; i < positionalArgumentNames.size(); i++){
+            System.out.print(positionalArgumentNames.get(i).toLowerCase() + "  ");
         }            
-        for(int i = 0; i < optionalArgumentNames.size(); i++){
-            if(getArgumentType(optionalArgumentNames.get(i)) != Types.BOOLEAN){
-                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + " " + optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString() + "] ");
+        for(int i = 0; i < namedArgumentNames.size(); i++){
+            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
+                System.out.print("[--" + namedArgumentNames.get(i).toLowerCase() + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");
             }else{
-                System.out.print("[--" + optionalArgumentNames.get(i).toLowerCase() + "] ");
+                System.out.print("[--" + namedArgumentNames.get(i).toLowerCase() + "] ");
                 numberOfFlags++;
             }
         }
         
-        System.out.println("\n\n***Required Arguments***");
+        System.out.println("\n\n***Positional Arguments***");
         System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description");   
         System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------");           
-        for(int i = 0; i < argumentNames.size(); i++){
-            System.out.printf("%-15s %-10s %-30s \n", argumentNames.get(i), argumentMap.get(argumentNames.get(i)).getTypeAsString(), argumentMap.get(argumentNames.get(i)).getDescription());
+        for(int i = 0; i < positionalArgumentNames.size(); i++){
+            System.out.printf("%-15s %-10s %-30s \n", positionalArgumentNames.get(i), positionalArgumentMap.get(positionalArgumentNames.get(i)).getTypeAsString(), positionalArgumentMap.get(positionalArgumentNames.get(i)).getDescription());
         }
-        System.out.println("\n***Optional Arguments***");
+        System.out.println("\n***Named Arguments***");
         System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
         System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
-        for(int i = 0; i < optionalArgumentNames.size(); i++){
-            if(getArgumentType(optionalArgumentNames.get(i)) != Types.BOOLEAN){
-                System.out.printf("%-15s %-10s %-30s \n", optionalArgumentNames.get(i), 
-                optionalArgumentMap.get(optionalArgumentNames.get(i)).getTypeAsString(), 
-                optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
+        for(int i = 0; i < namedArgumentNames.size(); i++){
+            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
+                System.out.printf("%-15s %-10s %-30s \n", namedArgumentNames.get(i), 
+                namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
+                namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
             }
         }
         
         if(numberOfFlags > 0){            
-            System.out.println("\n***Optional Flags***");
+            System.out.println("\n***Named Flags***");
             System.out.printf("%-15s %-30s \n", "Name", "Description"); 
             System.out.printf("%-15s %-30s \n", "----", "-----------"); 
-            for(int i = 0; i < optionalArgumentNames.size(); i++){
-                if(getArgumentType(optionalArgumentNames.get(i)) == Types.BOOLEAN){
-                    System.out.printf("%-15s %-30s \n", optionalArgumentNames.get(i), 
-                    optionalArgumentMap.get(optionalArgumentNames.get(i)).getDescription());
+            for(int i = 0; i < namedArgumentNames.size(); i++){
+                if(getArgumentType(namedArgumentNames.get(i)) == Types.BOOLEAN){
+                    System.out.printf("%-15s %-30s \n", namedArgumentNames.get(i), 
+                    namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
                 }
             }
         }

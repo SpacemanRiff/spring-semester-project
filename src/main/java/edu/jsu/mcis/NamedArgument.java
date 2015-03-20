@@ -2,10 +2,10 @@ package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
 
-public class OptionalArgumentInformation extends ArgumentInformation{   
+public class NamedArgument extends Argument{   
     private Object defaultValue;
     
-    public OptionalArgumentInformation(String description, Types type, Object defaultValue){
+    public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
