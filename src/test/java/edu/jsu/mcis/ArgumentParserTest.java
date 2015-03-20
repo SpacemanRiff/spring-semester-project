@@ -607,4 +607,17 @@ public class ArgumentParserTest{
         String[] args = {"7", "4", "8"};
         p.parse(args);
     }
+    
+    @Test(expected = UnknownArgumentException.class)
+    public void testGetDefaultValueOfArgumentDoesNotExistsThrowsException(){
+        p.addNamedArgument("Optional", "Optional argument description", ArgumentParser.Types.STRING, "Default");
+        
+        p.getDefaultValueOf("Optional Argument");
+    }
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetDefaultValueOfPositionalArgumentInvalidThrowsException(){
+        p.addPositionalArgument("Pos", "Description", ArgumentParser.Types.STRING);
+        
+        p.getDefaultValueOf("Pos");
+    }
 }
