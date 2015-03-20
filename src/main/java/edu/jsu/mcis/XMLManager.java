@@ -31,7 +31,7 @@ public class XMLManager{
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
     private static PrintWriter writer;
-    
+        
     public static void writeArguments(String fileName, ArgumentParser p){
         try{
             writer = new PrintWriter(fileName);
@@ -58,20 +58,15 @@ public class XMLManager{
             for(int i = 0; i<optionalArgNames.size(); i++){
                     writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
                     writer.write("\t\t<" + NAME + ">" + optionalArgNames.get(i) + "</" + NAME + ">\n");
-                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getOptionalArgumentDescription(optionalArgNames.get(i))
+                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(optionalArgNames.get(i))
                                     + "</" + DESCRIPTION + ">\n");
-                    if(!p.getOptionalArgumentFlagStatus(optionalArgNames.get(i))){
-                        writer.write("\t\t<" + TYPE + ">" + p.getOptionalArgumentTypeAsString(optionalArgNames.get(i))
-                                        + "</" + TYPE + ">\n");
-                        writer.write("\t\t<" + DEFAULT + ">" + p.getOptionalArgumentValueOf(optionalArgNames.get(i))
-                                        + "</" + DEFAULT + ">\n");
-                    }else{
-                        writer.write("\t\t<" + FLAG + ">true</" + FLAG + ">\n");
-                    }
+                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(optionalArgNames.get(i))
+                                    + "</" + TYPE + ">\n");
+                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(optionalArgNames.get(i))
+                                    + "</" + DEFAULT + ">\n");                    
                     writer.write("\t</" + ARGUMENT + ">\n");
                     writer.write("\n");
-            }
-            
+            }            
             writer.write("</arguments>");
             writer.close();
             
@@ -80,6 +75,7 @@ public class XMLManager{
         }
     }
     
+    @SuppressWarnings("unchecked")
     public static void loadArguments(String fileName, ArgumentParser p){
         try{
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();

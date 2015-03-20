@@ -17,8 +17,8 @@ public class ArgumentParserKeywords{
         a = new ArgumentParser();
         
         a.addArgument("Temperature", "How warm it is going to be.", ArgumentParser.Types.INTEGER);
-        a.addOptionalFlag("Raining", "It is raining");
-        a.addOptionalFlag("Cloudy", "It is cloudy");
+        a.addOptionalArgument("Raining", "It is raining", ArgumentParser.Types.BOOLEAN, false);
+        a.addOptionalFlag("Cloudy", "It is cloudy", ArgumentParser.Types.BOOLEAN, false);
         
         a.parse(args);
     }
@@ -60,19 +60,19 @@ public class ArgumentParserKeywords{
     }
     
     public String getColor(){
-        String color = a.getOptionalArgumentValueOf("Color");
+        String color = a.getValueOf("Color");
         
         return color;
     }
     
     public boolean getFlagValueOfRaining(){
-        boolean flagValue = a.getOptionalArgumentValueOf("Raining");
+        boolean flagValue = a.getValueOf("Raining");
         
         return flagValue;
     }
     
     public boolean getFlagValueOfCloudy(){
-        boolean flagValue = a.getOptionalArgumentValueOf("Cloudy");
+        boolean flagValue = a.getValueOf("Cloudy");
         
         return flagValue;
     }

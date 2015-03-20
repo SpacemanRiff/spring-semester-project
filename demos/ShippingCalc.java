@@ -16,12 +16,12 @@ public class ShippingCalc{
 		
 		p.parse(args);
         
-        boolean local = p.getOptionalArgumentValueOf("local");
+        boolean local = p.getValueOf("local");
         
-		System.out.println("\n\nYou have requested to ship "  + p.getOptionalArgumentValueOf("quantity")
+		System.out.println("\n\nYou have requested to ship "  + p.getValueOf("quantity")
                             + " " + p.getValueOf("Item 1") + "(s)\nEach " + p.getValueOf("Item 1") + " costs $"
                             + p.getValueOf("Price 1") + "\nShipping cost is $" + p.getValueOf("Shipping Cost") 
-							+ "\nThe weight of this item is: " + p.getOptionalArgumentValueOf("weight") + "lbs");
+							+ "\nThe weight of this item is: " + p.getValueOf("weight") + "lbs");
 		
 		float shipping = p.getValueOf("Shipping Cost");
 		float price = p.getValueOf("Price 1");
