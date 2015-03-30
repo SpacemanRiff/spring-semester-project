@@ -5,12 +5,20 @@ import edu.jsu.mcis.ArgumentParser.Types;
 public class NamedArgument extends Argument{   
     private Object defaultValue;
     private boolean isRequired;
+    private String shorthand;
     
     public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
         isRequired = false;
+    }
+    
+    public NamedArgument(String description, String shorthand, Types type, Object defaultValue){
+        super(description, type);
+        setDefaultValue(defaultValue + "");
+        setValue(defaultValue + "");
+        shorthand = this.shorthand;
     }
     
     private void setDefaultValue(String defaultValue){
@@ -38,11 +46,16 @@ public class NamedArgument extends Argument{
         return defaultValue;
     }
     
+<<<<<<< HEAD
     public void setRequired(){
         isRequired = true;
     }
     
     public boolean isThisRequired(){
         return isRequired;
+=======
+    public String getShorthandName(){
+        return shorthand;
+>>>>>>> origin/master
     }
 }
