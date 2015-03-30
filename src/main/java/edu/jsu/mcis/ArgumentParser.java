@@ -44,6 +44,11 @@ public class ArgumentParser{
         namedArgumentNames.add(argName);        
     }
     
+    public void addNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, shorthand, type, defaultValue));
+        namedArgumentNames.add(argName);
+    }
+    
     public int getNumberOfArguments(){
         return positionalArgumentMap.size();
     }

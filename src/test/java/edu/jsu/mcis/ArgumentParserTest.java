@@ -459,7 +459,7 @@ public class ArgumentParserTest{
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER);
-        p.addNamedArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "None");
+        p.addNamedArgument("Color", "C", "The color of the shape", ArgumentParser.Types.STRING, "None");
         
         String[] args = {"2", "3", "4", "-C", "red"};
         p.parse(args);
