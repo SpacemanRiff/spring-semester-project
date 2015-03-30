@@ -8,6 +8,7 @@ public class ArgumentParser{
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
     private String programDescription;
+    private int totalRequiredArguments;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
@@ -41,6 +42,12 @@ public class ArgumentParser{
     
     public void addNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
+        namedArgumentNames.add(argName);        
+    }
+    
+    public void addRequiredNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
+        namedArgumentMap.get(argName).setRequired();
         namedArgumentNames.add(argName);        
     }
     

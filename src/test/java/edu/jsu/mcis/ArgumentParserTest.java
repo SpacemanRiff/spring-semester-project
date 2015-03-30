@@ -313,6 +313,27 @@ public class ArgumentParserTest{
         assertEquals(5, weight);
     }
     
+    @Test
+    public void testAddRequiredArgumentsWorksLikeNormalNamedArguments(){
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addRequiredNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);         
+                
+        String[] args = {"3", "--Optional", "45"};
+        p.parse(args);
+        
+        int intValue = p.getValueOf("Optional");
+        assertEquals(45, intValue);          
+    }
+    
+    @Test(expected=NotEnoughArgumentsExcepion.class)
+    public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addRequiredNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);         
+                
+        String[] args = {"3"};
+        p.parse(args);      
+    }
+    
     @Test(expected=InvalidArgumentException.class)
     public void testOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
