@@ -6,9 +6,12 @@ public class Argument{
     private String description;
     private Types type;
     private Object value;
+    private boolean hasRestrictedValues;
+    private Object[] restrictedValues;
     
     public Argument(String description, Types type){
         this.description = description;
+        hasRestrictedValues = false;
         this.type = type;
     }
     
@@ -55,6 +58,30 @@ public class Argument{
                 return "BOOLEAN";
             default:
                 return "STRING";
+        }
+    }
+    
+    public void setRestrictedValues(Object[] values){
+        restrictedValues = new Object[values.length];
+        for(int i = 0; i < values.length; i++){
+            try{
+                switch(type){
+                    case INTEGER:
+                        restrictedValues[i] = Integer.parseInt(values[i] + "");
+                        break;
+                    case FLOAT:
+                        restrictedValues[i] = Float.parseFloat(values[i] + "");
+                        break;
+                    case BOOLEAN:
+                        restrictedValues[i] = Boolean.parseBoolean(values[i] + "");
+                        break;
+                    default:
+                        restrictedValues[i] = values[i];
+                        break;
+                }
+            }catch(IllegalArgumentException ex){
+                throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n");
+            }   
         }
     }
 }

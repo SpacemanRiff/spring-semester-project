@@ -329,6 +329,20 @@ public class ArgumentParserTest{
         assertEquals(55, intValue2);          
     }
     
+    @Test
+    public void testAddRestrictedValuesToArguments(){
+        Object[] restrictedValues = {10, 15, 20};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+                
+        String[] args = {"10"};
+        p.parse(args);
+        
+        int intValue = p.getValueOf("Argument Name");
+        assertEquals(10, intValue);  
+    }
+    
     @Test(expected=NotEnoughArgumentsException.class)
     public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);  
