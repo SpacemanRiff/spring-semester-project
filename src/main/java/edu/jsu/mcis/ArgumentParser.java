@@ -9,6 +9,7 @@ public class ArgumentParser{
     private List<String> namedArgumentNames;
     private List<String> namedArgumentShorthand;
     private String programDescription;
+    private int totalRequiredArguments;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
@@ -50,6 +51,13 @@ public class ArgumentParser{
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);
         namedArgumentShorthand.add(shorthand);
+    }
+
+    public void addRequiredNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
+        namedArgumentMap.get(argName).setRequired();
+        namedArgumentNames.add(argName); 
+        totalRequiredArguments++;
     }
     
     public int getNumberOfArguments(){
@@ -182,6 +190,7 @@ public class ArgumentParser{
     
     private void pullNamedArguments(List<String> args){
         setShortArguments(args);
+        List<String> usedRequiredArguments = new ArrayList<String>();
         for(int i = 0; i < args.size(); i++){
             if(isNotCharacterLength(args.get(i))){
                 if(isLongArgument(args.get(i))){
@@ -201,11 +210,17 @@ public class ArgumentParser{
                             args.remove(i);
                             i--;                            
                         }
+                        if(namedArgumentMap.get(lookUpString).isThisRequired()){
+                            usedRequiredArguments.add(lookUpString);
+                        }
                     }else{
                         throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
                     }
                 }
             }
+        }
+        if(usedRequiredArguments.size() != totalRequiredArguments){
+            throw new NotEnoughArgumentsException("\n\nDid not use all required arguments.\nExpected " + totalRequiredArguments + ", but only got " + usedRequiredArguments.size());
         }
     }
     

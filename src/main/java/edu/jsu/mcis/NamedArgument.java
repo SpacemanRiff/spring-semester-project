@@ -4,11 +4,13 @@ import edu.jsu.mcis.ArgumentParser.Types;
 
 public class NamedArgument extends Argument{   
     private Object defaultValue;
+    private boolean isRequired;
     
     public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
+        isRequired = false;
     }
     
     private void setDefaultValue(String defaultValue){
@@ -34,5 +36,13 @@ public class NamedArgument extends Argument{
     
     public Object getDefaultValue(){
         return defaultValue;
+    }
+    
+    public void setRequired(){
+        isRequired = true;
+    }
+    
+    public boolean isThisRequired(){
+        return isRequired;
     }
 }

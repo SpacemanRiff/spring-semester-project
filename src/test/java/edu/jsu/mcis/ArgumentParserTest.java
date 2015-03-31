@@ -313,6 +313,32 @@ public class ArgumentParserTest{
         assertEquals(5, weight);
     }
     
+    @Test
+    public void testAddRequiredArgumentsWorksLikeNormalNamedArguments(){
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
+        p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);         
+                
+        String[] args = {"3", "--Optional1", "45", "--Optional2", "55"};
+        p.parse(args);
+        
+        int intValue1 = p.getValueOf("Optional1");
+        int intValue2 = p.getValueOf("Optional2");
+        
+        assertEquals(45, intValue1);  
+        assertEquals(55, intValue2);          
+    }
+    
+    @Test(expected=NotEnoughArgumentsException.class)
+    public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);  
+        p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
+        p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);      
+                
+        String[] args = {"3", "--Optional1", "45"};
+        p.parse(args);      
+    }
+    
     @Test(expected=InvalidArgumentException.class)
     public void testOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
