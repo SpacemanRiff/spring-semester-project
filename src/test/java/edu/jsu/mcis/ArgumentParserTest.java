@@ -489,7 +489,7 @@ public class ArgumentParserTest{
     @Test
     public void testWriteArgumentsToFile(){
         p.addPositionalArgument("Length", "The length of the shape", ArgumentParser.Types.STRING);
-        p.addNamedArgument("Color", "The color of the shape", ArgumentParser.Types.STRING, "red");
+        p.addNamedArgument("Color", "C", "The color of the shape", ArgumentParser.Types.STRING, "red");
         p.addNamedArgument("Flag", "Is there a flag", ArgumentParser.Types.BOOLEAN, false);
         
         String[] args = {"3", "-C", "red"};

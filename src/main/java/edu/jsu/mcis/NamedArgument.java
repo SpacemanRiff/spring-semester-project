@@ -4,19 +4,11 @@ import edu.jsu.mcis.ArgumentParser.Types;
 
 public class NamedArgument extends Argument{   
     private Object defaultValue;
-    private String shorthand;
     
     public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
-    }
-    
-    public NamedArgument(String description, String shorthand, Types type, Object defaultValue){
-        super(description, type);
-        setDefaultValue(defaultValue + "");
-        setValue(defaultValue + "");
-        shorthand = this.shorthand;
     }
     
     private void setDefaultValue(String defaultValue){
@@ -42,9 +34,5 @@ public class NamedArgument extends Argument{
     
     public Object getDefaultValue(){
         return defaultValue;
-    }
-    
-    public String getShorthandName(){
-        return shorthand;
     }
 }

@@ -7,6 +7,7 @@ public class ArgumentParser{
     private Map<String, NamedArgument> namedArgumentMap;
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
+    private List<String> namedArgumentShorthand;
     private String programDescription;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
@@ -15,6 +16,7 @@ public class ArgumentParser{
         namedArgumentMap = new HashMap<String, NamedArgument>();
         positionalArgumentNames = new ArrayList<String>();
         namedArgumentNames = new ArrayList<String>();
+        namedArgumentShorthand = new ArrayList<String>();
         programDescription = "";
     }
 
@@ -45,8 +47,9 @@ public class ArgumentParser{
     }
     
     public void addNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
-        namedArgumentMap.put(argName, new NamedArgument(argDescription, shorthand, type, defaultValue));
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);
+        namedArgumentShorthand.add(shorthand);
     }
     
     public int getNumberOfArguments(){
@@ -156,9 +159,10 @@ public class ArgumentParser{
     
     private void setShortArguments(List<String> args){
         for(int i = 0; i < args.size(); i++){
-            if(isNotCharacterLength(args.get(i))){
-                if(isShortArgument(args.get(i))){
-                    String replaceString = renameShortArgument(args.get(i).substring(1));
+            String compareString = args.get(i);
+            if(isNotCharacterLength(compareString)){
+                if(isShortArgument(compareString)){
+                    String replaceString = renameShortArgument(compareString.substring(1));
                     args.set(i, "--".concat(replaceString));
                 }
             }
@@ -166,8 +170,8 @@ public class ArgumentParser{
     }
     
     private String renameShortArgument(String s){
-        for(int i = 0; i < namedArgumentNames.size(); i++){
-            if(s.equals(namedArgumentNames.get(i).substring(0,1))){
+        for(int i = 0; i < namedArgumentShorthand.size(); i++){
+            if(s.equals(namedArgumentShorthand.get(i))){
                 s = namedArgumentNames.get(i);
             }
             else
