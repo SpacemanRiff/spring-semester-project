@@ -46,16 +46,15 @@ public class NamedArgument extends Argument{
         return defaultValue;
     }
     
-<<<<<<< HEAD
     public void setRequired(){
         isRequired = true;
     }
     
     public boolean isThisRequired(){
         return isRequired;
-=======
+    }
+    
     public String getShorthandName(){
         return shorthand;
->>>>>>> origin/master
     }
 }

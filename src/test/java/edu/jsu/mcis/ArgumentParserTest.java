@@ -316,21 +316,26 @@ public class ArgumentParserTest{
     @Test
     public void testAddRequiredArgumentsWorksLikeNormalNamedArguments(){
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        p.addRequiredNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);         
+        p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
+        p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);         
                 
-        String[] args = {"3", "--Optional", "45"};
+        String[] args = {"3", "--Optional1", "45", "--Optional2", "55"};
         p.parse(args);
         
-        int intValue = p.getValueOf("Optional");
-        assertEquals(45, intValue);          
+        int intValue1 = p.getValueOf("Optional1");
+        int intValue2 = p.getValueOf("Optional2");
+        
+        assertEquals(45, intValue1);  
+        assertEquals(55, intValue2);          
     }
     
-    @Test(expected=NotEnoughArgumentsExcepion.class)
+    @Test(expected=NotEnoughArgumentsException.class)
     public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
-        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
-        p.addRequiredNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);         
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);  
+        p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
+        p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);      
                 
-        String[] args = {"3"};
+        String[] args = {"3", "--Optional1", "45"};
         p.parse(args);      
     }
     
