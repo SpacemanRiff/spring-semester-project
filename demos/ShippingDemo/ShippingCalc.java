@@ -10,9 +10,9 @@ public class ShippingCalc{
 		p.addPositionalArgument("Item 1", "The item you want to ship", ArgumentParser.Types.STRING);
 		p.addPositionalArgument("Price 1", "The price of the first item", ArgumentParser.Types.FLOAT);
 		p.addPositionalArgument("Shipping Cost", "The cost to ship this item", ArgumentParser.Types.FLOAT);
-		p.addNamedArgument("quantity", "Allows you to order multiple of the same item", ArgumentParser.Types.INTEGER, 1);
-		p.addNamedArgument("weight", "The weight of the item", ArgumentParser.Types.STRING, "n/a");
-        p.addNamedArgument("local", "This item will be shipped locally", ArgumentParser.Types.BOOLEAN, true);
+		p.addNamedArgument("quantity", "q", "Allows you to order multiple of the same item", ArgumentParser.Types.INTEGER, 1);
+		p.addNamedArgument("weight", "w", "The weight of the item", ArgumentParser.Types.STRING, "n/a");
+        p.addNamedArgument("local", "l", "This item will be shipped locally", ArgumentParser.Types.BOOLEAN, true);
 		
 		p.parse(args);
         
