@@ -330,17 +330,49 @@ public class ArgumentParserTest{
     }
     
     @Test
-    public void testAddRestrictedValuesToArguments(){
+    public void testAddRestrictedIntegerValuesToArguments(){
         Object[] restrictedValues = {10, 15, 20};
         
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.addRequiredNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
         p.setRestrictedValues("Argument Name", restrictedValues);
+        p.setRestrictedValues("Optional", restrictedValues);
                 
-        String[] args = {"10"};
+        String[] args = {"10", "--Optional", "10"};
         p.parse(args);
         
-        int intValue = p.getValueOf("Argument Name");
+        int intValue = p.getValueOf("Argument Name");        
+        int intNamedValue = p.getValueOf("Optional");
         assertEquals(10, intValue);  
+        assertEquals(10, intNamedValue);  
+    }
+    
+    @Test
+    public void testAddRestrictedFloatValuesToArguments(){
+        Object[] restrictedValues = {2f, 4f, 6f};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.FLOAT);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+                
+        String[] args = {"2f"};
+        p.parse(args);
+        
+        float floatValue = p.getValueOf("Argument Name");
+        assertEquals(2f, floatValue, 0.1f);  
+    }
+    
+    @Test
+    public void testAddRestrictedStringValuesToArguments(){
+        Object[] restrictedValues = {"cat", "dog"};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+                
+        String[] args = {"cat"};
+        p.parse(args);
+        
+        String stringValue = p.getValueOf("Argument Name");
+        assertEquals("cat", stringValue);  
     }
     
     @Test(expected=NotEnoughArgumentsException.class)

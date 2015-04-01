@@ -1,6 +1,7 @@
 package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
+import java.lang.*;
 
 public class Argument{
     private String description;
@@ -11,29 +12,51 @@ public class Argument{
     
     public Argument(String description, Types type){
         this.description = description;
+        restrictedValues = new Object[0];
         hasRestrictedValues = false;
         this.type = type;
     }
     
     public void setValue(String value) throws InvalidArgumentException{
+        Object holdValue;
+        
         try{
             switch(type){
                 case INTEGER:
-                    this.value = Integer.parseInt(value);
+                    holdValue = Integer.parseInt(value);
                     break;
                 case FLOAT:
-                    this.value = Float.parseFloat(value);
+                    holdValue = Float.parseFloat(value);
                     break;
                 case BOOLEAN:
-                    this.value = Boolean.parseBoolean(value);
+                    holdValue = Boolean.parseBoolean(value);
                     break;
                 default:
-                    this.value = value;
+                    holdValue = value;
                     break;
             }
         }catch(IllegalArgumentException ex){
             throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n");
         }   
+        
+        if(hasRestrictedValues){
+            boolean foundValue = false;
+            int i = 0;
+            while(i < restrictedValues.length && !foundValue){
+                if(holdValue == restrictedValues[i]){
+                    foundValue = true;
+                }else if(type == ArgumentParser.Types.FLOAT){
+                    if(Float.compare((float)holdValue, (float)restrictedValues[i]) == 0){
+                        foundValue = true;
+                    }
+                }
+                i++;
+            }
+            if(!foundValue){
+                throw new InvalidArgumentException("\n\nDid not use restricted value\n");
+            }
+        }
+        this.value = holdValue;
     }
     
     public Object getValue(){
@@ -72,9 +95,6 @@ public class Argument{
                     case FLOAT:
                         restrictedValues[i] = Float.parseFloat(values[i] + "");
                         break;
-                    case BOOLEAN:
-                        restrictedValues[i] = Boolean.parseBoolean(values[i] + "");
-                        break;
                     default:
                         restrictedValues[i] = values[i];
                         break;
@@ -83,5 +103,6 @@ public class Argument{
                 throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n");
             }   
         }
+        hasRestrictedValues = true;
     }
 }
