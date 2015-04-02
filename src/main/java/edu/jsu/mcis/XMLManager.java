@@ -19,6 +19,8 @@ import edu.jsu.mcis.ArgumentParser.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class XMLManager{
     private static final String ARGUMENT = "argument";
@@ -26,6 +28,7 @@ public class XMLManager{
     private static final String NAMED_ARGUMENT = "named";
     private static final String POS_ARGUMENT = "positional";
     private static final String NAME = "name";
+    private static final String SHORTHAND = "shorthand";
     private static final String DESCRIPTION = "description";
     private static final String TYPE = "type";
     private static final String DEFAULT = "default";
@@ -36,10 +39,14 @@ public class XMLManager{
         try{
             writer = new PrintWriter(fileName);
             List<String> argNames = new ArrayList<String>();
-            List<String> optionalArgNames = new ArrayList<String>();
+            List<String> namedArgNames = new ArrayList<String>();
+            List<String> namedArgShorthand = new ArrayList<String>();
+            Map<String, NamedArgument> namedArgMap = new HashMap<String, NamedArgument>();
             
             argNames = p.getPositionalArgumentNames();
-            optionalArgNames = p.getNamedArgumentNames();
+            namedArgNames = p.getNamedArgumentNames();
+            namedArgShorthand = p.getNamedArgumentShorthand();
+            namedArgMap = p.getNamedArgumentMap();
             
             writer.write("<?xml version=\"1.0\"?>\n");
             writer.write("<arguments>\n");
@@ -55,14 +62,17 @@ public class XMLManager{
                 writer.write("\n");
             }
             
-            for(int i = 0; i<optionalArgNames.size(); i++){
+            for(int i = 0; i<namedArgNames.size(); i++){
                     writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
-                    writer.write("\t\t<" + NAME + ">" + optionalArgNames.get(i) + "</" + NAME + ">\n");
-                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(optionalArgNames.get(i))
+                    writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
+                    if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
+                        writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
+                    }
+                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
                                     + "</" + DESCRIPTION + ">\n");
-                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(optionalArgNames.get(i))
+                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
                                     + "</" + TYPE + ">\n");
-                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(optionalArgNames.get(i))
+                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
                                     + "</" + DEFAULT + ">\n");                    
                     writer.write("\t</" + ARGUMENT + ">\n");
                     writer.write("\n");

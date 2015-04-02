@@ -37,6 +37,14 @@ public class ArgumentParser{
         return namedArgumentNames;
     }
     
+    public List<String> getNamedArgumentShorthand(){
+        return namedArgumentShorthand;
+    }
+    
+    public Map<String, NamedArgument> getNamedArgumentMap(){
+        return namedArgumentMap;
+    }
+    
 	public void addPositionalArgument(String argName, String argDescription, Types type){
         positionalArgumentMap.put(argName, new Argument(argDescription, type));
         positionalArgumentNames.add(argName);
@@ -51,6 +59,7 @@ public class ArgumentParser{
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);
         namedArgumentShorthand.add(shorthand);
+        namedArgumentMap.get(argName).setShorthand();
     }
 
     public void addRequiredNamedArgument(String argName, String argDescription, Types type, Object defaultValue){

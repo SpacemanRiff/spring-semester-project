@@ -5,6 +5,7 @@ import edu.jsu.mcis.ArgumentParser.Types;
 public class NamedArgument extends Argument{   
     private Object defaultValue;
     private boolean isRequired;
+    private boolean isShorthand;
     
     public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
@@ -44,5 +45,13 @@ public class NamedArgument extends Argument{
     
     public boolean isThisRequired(){
         return isRequired;
+    }
+    
+    public void setShorthand(){
+        isShorthand = true;
+    }
+    
+    public boolean isArgumentShorthand(){
+        return isShorthand;
     }
 }
