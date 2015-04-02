@@ -6,12 +6,15 @@ public class NamedArgument extends Argument{
     private Object defaultValue;
     private boolean isRequired;
     private boolean isShorthand;
+    private boolean isInGroup;
+    private String groupName;
     
     public NamedArgument(String description, Types type, Object defaultValue){
         super(description, type);
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
         isRequired = false;
+        isInGroup = false;
     }
     
     private void setDefaultValue(String defaultValue){
@@ -53,5 +56,14 @@ public class NamedArgument extends Argument{
     
     public boolean isArgumentShorthand(){
         return isShorthand;
+    }
+    
+    public void setGroupName(String groupName){
+        this.groupName = groupName;
+        isInGroup = true;
+    }
+    
+    public boolean isInAGroup(){
+        return isInGroup;
     }
 }

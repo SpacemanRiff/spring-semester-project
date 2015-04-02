@@ -5,19 +5,24 @@ import java.util.*;
 public class ArgumentParser{
     private Map<String, Argument> positionalArgumentMap;
     private Map<String, NamedArgument> namedArgumentMap;
+    private Map<String, String> argumentGroupValues;
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
     private List<String> namedArgumentShorthand;
     private String programDescription;
     private int totalRequiredArguments;
+    private int numberOfGroups;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
 	public ArgumentParser(){
         positionalArgumentMap = new HashMap<String, Argument>();
         namedArgumentMap = new HashMap<String, NamedArgument>();
+        argumentGroupValues = new HashMap<String, String>();
         positionalArgumentNames = new ArrayList<String>();
         namedArgumentNames = new ArrayList<String>();
         namedArgumentShorthand = new ArrayList<String>();
+        numberOfGroups = 0;
+        
         programDescription = "";
     }
 
@@ -67,6 +72,17 @@ public class ArgumentParser{
         namedArgumentMap.get(argName).setRequired();
         namedArgumentNames.add(argName); 
         totalRequiredArguments++;
+    }
+    
+    public void addArgumentToGroup(String argName, String groupName){
+		if(namedArgumentMap.get(argName) != null){
+            namedArgumentMap.get(argName).setGroupName(groupName);
+            argumentGroupValues.put(argName, groupName);
+        }else if(positionalArgumentMap.get(argName) != null){
+            throw new InvalidArgumentException("\n\nCannot add positional argument to a group\n");      
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }        
     }
     
     public void setRestrictedValues(String argName, Object[] values){
@@ -138,6 +154,20 @@ public class ArgumentParser{
     public int getNumberOfOptionalArguments(){
         return namedArgumentMap.size();
     }	
+    
+    public String getArgumentGroup(String argName){
+		if(namedArgumentMap.get(argName) != null){
+            if(namedArgumentMap.get(argName).isInAGroup()){
+                return argumentGroupValues.get(argName);
+            }else{
+                throw new NotInGroupException("\n\n\"" + argName + "\" is not in a group\n");
+            }
+        }else if(positionalArgumentMap.get(argName) != null){
+            throw new InvalidArgumentException("\n\nPositional arguments cannot be in a group\n");      
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }        
+    }
 	
 	public void parse(String[] args){           
 		getHelp(args);
@@ -210,11 +240,23 @@ public class ArgumentParser{
     private void pullNamedArguments(List<String> args){
         setShortArguments(args);
         List<String> usedRequiredArguments = new ArrayList<String>();
+        boolean usingGroups = false;
+        String usedGroup = "";
         for(int i = 0; i < args.size(); i++){
             if(isNotCharacterLength(args.get(i))){
                 if(isLongArgument(args.get(i))){
                     String lookUpString = args.get(i).substring(2);
-                    if(namedArgumentMap.get(lookUpString) != null){                    
+                    if(namedArgumentMap.get(lookUpString) != null){ 
+                        if(namedArgumentMap.get(lookUpString).isInAGroup()){
+                            if(!usingGroups){
+                                usedGroup = argumentGroupValues.get(lookUpString);
+                                usingGroups = true;
+                            }else{
+                                if(!usedGroup.equals(argumentGroupValues.get(lookUpString))){
+                                    throw new NotInTheSameGroupException("\n\n\"" + lookUpString + "\" is not in the group \"" + usedGroup + "\"\n");
+                                }
+                            }
+                        }
                         if(getArgumentType(lookUpString) != Types.BOOLEAN){
                             try{
                                 namedArgumentMap.get(lookUpString).setValue(args.get(i+1));

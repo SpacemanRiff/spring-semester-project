@@ -375,6 +375,74 @@ public class ArgumentParserTest{
         assertEquals("cat", stringValue);  
     }
     
+    @Test
+    public void testAddArgumentToGroup(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.addNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
+        p.addArgumentToGroup("Optional", "Group 1");
+
+        assertEquals("Group 1", p.getArgumentGroup("Optional"));
+    }
+    
+    @Test
+    public void testAddMultipleArgumentsToMultipleGroups(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.addNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
+        p.addNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);  
+        p.addNamedArgument("Optional3", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10); 
+        p.addArgumentToGroup("Optional1", "Group 1"); 
+        p.addArgumentToGroup("Optional2", "Group 1");
+        p.addArgumentToGroup("Optional3", "Group 2");
+
+        assertEquals("Group 1", p.getArgumentGroup("Optional1"));
+        assertEquals("Group 1", p.getArgumentGroup("Optional2"));
+        assertEquals("Group 2", p.getArgumentGroup("Optional3"));
+    }
+    
+    @Test(expected=NotInTheSameGroupException.class)
+    public void testUsingArgumentsInDifferentGroupsThrowsException(){
+        p.addNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
+        p.addNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);  
+        p.addNamedArgument("Optional3", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);    
+        p.addArgumentToGroup("Optional1", "Group 1"); 
+        p.addArgumentToGroup("Optional2", "Group 1");
+        p.addArgumentToGroup("Optional3", "Group 2");        
+                
+        String[] args = {"--Optional1", "45", "--Optional2", "55", "--Optional3", "65"};
+        p.parse(args);
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testAddPositionalArgumentToGroupThrowsException(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.addArgumentToGroup("Argument Name", "Group 1");
+    }
+    
+    @Test(expected=UnknownArgumentException.class)
+    public void testAddUnknownArgumentToGroupThrowsException(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.addArgumentToGroup("wrong", "Group 1");
+    }
+    
+    @Test(expected=NotInGroupException.class)
+    public void testGetArgumentNotInGroupThrowsException(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.addNamedArgument("Optional", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
+        p.getArgumentGroup("Optional");
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testGetPositionalArgumentGroupThrowsException(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);  
+        p.getArgumentGroup("Argument Name");
+    }
+    
+    @Test(expected=UnknownArgumentException.class)
+    public void testGetUnknownArgumentGroupThrowsException(){        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);  
+        p.getArgumentGroup("wrong");
+    }
+    
     @Test(expected=UnknownArgumentException.class)
     public void testAddRestricteArgumentsToUnknownArgumentsThrowsException(){
         Object[] restrictedValues = {"cat", "dog"};
