@@ -69,6 +69,16 @@ public class ArgumentParser{
         totalRequiredArguments++;
     }
     
+    public void setRestrictedValues(String argName, Object[] values){
+		if(positionalArgumentMap.get(argName) != null){
+            positionalArgumentMap.get(argName).setRestrictedValues(values);
+        }else if(namedArgumentMap.get(argName) != null){
+            namedArgumentMap.get(argName).setRestrictedValues(values);       
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }        
+    }
+    
     public int getNumberOfArguments(){
         return positionalArgumentMap.size();
     }

@@ -11,10 +11,10 @@ public class PizzaOrderFromXML{
 		
         p.parse(args);
         
-		System.out.println("\nYou have ordered "  + p.getOptionalArgumentValueOf("quantity")
+		System.out.println("\nYou have ordered "  + p.getValueOf("quantity")
                             + " " + p.getValueOf("size") + " pizza(s) with " + p.getValueOf("crust")
                             + " crust and " + p.getValueOf("toppings") + " topping(s)");
-		System.out.println("Drink: " + p.getOptionalArgumentValueOf("drink"));
+		System.out.println("Drink: " + p.getValueOf("drink"));
 	}
 }
 

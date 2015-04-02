@@ -7,21 +7,21 @@ public class PizzaOrder{
 		
 		p.setProgramDescription("Pizza Creator");
 		
-		p.addArgument("Size", "The size of the pizza (Small, Medium, or Large)", ArgumentParser.Types.STRING);
-		p.addArgument("Crust", "The style of pizza crust", ArgumentParser.Types.STRING);
-		p.addArgument("Toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
-		p.addOptionalArgument("Quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
-		p.addOptionalArgument("Drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
-        p.addOptionalFlag("Togo", "Is the order to go?");
+		p.addPositionalArgument("Size", "The size of the pizza (Small, Medium, or Large)", ArgumentParser.Types.STRING);
+		p.addPositionalArgument("Crust", "The style of pizza crust", ArgumentParser.Types.STRING);
+		p.addPositionalArgument("Toppings", "The number of toppings for the pizza", ArgumentParser.Types.INTEGER);
+		p.addNamedArgument("quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
+		p.addNamedArgument("drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
+        p.addNamedArgument("togo", "Is the order to go?", ArgumentParser.Types.BOOLEAN, false);
 		
 		p.parse(args);
         
-        boolean toGo = p.getOptionalArgumentValueOf("Togo");
+        boolean toGo = p.getValueOf("togo");
         
-		System.out.println("\n\nYou have ordered "  + p.getOptionalArgumentValueOf("Quantity")
+		System.out.println("\n\nYou have ordered "  + p.getValueOf("quantity")
                             + " " + p.getValueOf("Size") + " pizza(s) with " + p.getValueOf("Crust")
                             + " crust and " + p.getValueOf("Toppings") + " topping(s)");
-		System.out.println("Drink: " + p.getOptionalArgumentValueOf("Drink"));
+		System.out.println("Drink: " + p.getValueOf("drink"));
         if(toGo){
             System.out.println("This order is to-go");
         }else{
