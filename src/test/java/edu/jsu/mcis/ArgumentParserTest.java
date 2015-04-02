@@ -375,6 +375,44 @@ public class ArgumentParserTest{
         assertEquals("cat", stringValue);  
     }
     
+    @Test(expected=UnknownArgumentException.class)
+    public void testAddRestricteArgumentsToUnknownArgumentsThrowsException(){
+        Object[] restrictedValues = {"cat", "dog"};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.setRestrictedValues("wrong", restrictedValues);
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testGivingWrongRestrictedValuesTypeThrowsException(){
+        Object[] restrictedValues = {2f, 4f, 6f};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testNotUsingRestrictedArgumentsThrowsException(){
+        Object[] restrictedValues = {"cat", "dog"};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+                
+        String[] args = {"wrong"};
+        p.parse(args); 
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testNotUsingRestrictedFloatThrowsException(){
+        Object[] restrictedValues = {2f, 4f, 6f};
+        
+        p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.FLOAT);
+        p.setRestrictedValues("Argument Name", restrictedValues);
+                
+        String[] args = {"3f"};
+        p.parse(args); 
+    }
+    
     @Test(expected=NotEnoughArgumentsException.class)
     public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);  
