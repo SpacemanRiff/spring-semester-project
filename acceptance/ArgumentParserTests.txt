@@ -37,3 +37,21 @@ Create List With Red Shape With Volume 36
     Should Be Equal  ${3}  ${height}
     ${volume}=  Get Volume
     Should Be Equal  ${36}  ${volume}
+    
+Create List With blue Shape With Volume 10 using shorthand arguments
+    ${scalar}=  Create List  -C  blue  2  1  5
+    Start Program With Optional Arguments  ${scalar}
+    ${color}=  Get Color
+    Should Be Equal  blue  ${color}
+    ${length}=  Get Length Of
+    Should be Equal  ${2}  ${length}
+    ${width}=  Get Width
+    Should Be Equal  ${1}  ${width}
+    ${height}=  Get Height
+    Should Be Equal  ${5}  ${height}
+    ${volume}=  Get Volume
+    Should Be Equal  ${10}  ${volume}
+    
+    
+    
+    

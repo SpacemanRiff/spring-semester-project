@@ -29,7 +29,7 @@ public class ArgumentParserKeywords{
         a.addPositionalArgument("Length", "Length of the shape", ArgumentParser.Types.INTEGER);
         a.addPositionalArgument("Width", "Width of the shape", ArgumentParser.Types.INTEGER);
         a.addPositionalArgument("Height", "Height of the shape", ArgumentParser.Types.INTEGER);
-        a.addNamedArgument("Color", "Color of the shape", ArgumentParser.Types.STRING, "Black");
+        a.addNamedArgument("Color", "C", "Color of the shape", ArgumentParser.Types.STRING, "Black");
         
         a.parse(args);
         
