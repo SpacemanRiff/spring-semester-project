@@ -18,7 +18,7 @@ public class ArgumentParserKeywords{
         
         a.addPositionalArgument("Temperature", "How warm it is going to be.", ArgumentParser.Types.INTEGER);
         a.addNamedArgument("Raining", "It is raining", ArgumentParser.Types.BOOLEAN, false);
-        a.addOptionalFlag("Cloudy", "It is cloudy", ArgumentParser.Types.BOOLEAN, false);
+        a.addNamedArgument("Cloudy", "It is cloudy", ArgumentParser.Types.BOOLEAN, false);
         
         a.parse(args);
     }
