@@ -12,6 +12,7 @@ public class NamedArgument extends Argument{
         setDefaultValue(defaultValue + "");
         setValue(defaultValue + "");
         isRequired = false;
+        isShorthand = false;
     }
     
     private void setDefaultValue(String defaultValue){

@@ -584,6 +584,31 @@ public class ArgumentParserTest{
         assertEquals(false, p.getDefaultValueOf("Flag"));        
     }
     
+    @Test
+    public void testWriteRequiredArgumentsToFile(){
+        p.addPositionalArgument("Length", "The length of the shape", ArgumentParser.Types.STRING);
+        p.addNamedArgument("Color", "C", "The color of the shape", ArgumentParser.Types.STRING, "red");
+        p.addRequiredNamedArgument("Required", "A required argument", ArgumentParser.Types.STRING, "HELLO");
+        
+        String[] args = {"3", "-C", "red", "--Required", "OLLEH"};
+        p.parse(args);
+        
+        XMLManager.writeArguments("testXML/testWriteRequired.xml", p);
+        p = new ArgumentParser();
+        XMLManager.loadArguments("testXML/testWriteRequired.xml", p);
+        
+        assertEquals("The length of the shape", p.getArgumentDescription("Length"));
+        assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Length"));
+        
+        assertEquals("The color of the shape", p.getArgumentDescription("Color"));
+        assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Color"));
+        assertEquals("red", p.getDefaultValueOf("Color"));
+        
+        assertEquals("A required argument", p.getArgumentDescription("Required"));
+        assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Required"));
+        assertEquals("HELLO", p.getDefaultValueOf("Required"));
+    }
+    
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownArgumentThrowsException(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
