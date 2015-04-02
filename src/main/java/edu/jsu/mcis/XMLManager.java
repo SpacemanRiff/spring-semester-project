@@ -27,6 +27,7 @@ public class XMLManager{
     private static final String OPTIONAL = "optional";
     private static final String NAMED_ARGUMENT = "named";
     private static final String POS_ARGUMENT = "positional";
+    private static final String REQUIRED_ARGUMENT = "required";
     private static final String NAME = "name";
     private static final String SHORTHAND = "shorthand";
     private static final String DESCRIPTION = "description";
@@ -63,6 +64,21 @@ public class XMLManager{
             }
             
             for(int i = 0; i<namedArgNames.size(); i++){
+                if(namedArgMap.get(namedArgNames.get(i)).isThisRequired()){
+                    writer.write("\t<" + ARGUMENT +  " type = \"required\"" + ">\n");
+                    writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
+                    if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
+                        writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
+                    }
+                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
+                                    + "</" + DESCRIPTION + ">\n");
+                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
+                                    + "</" + TYPE + ">\n");
+                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
+                                    + "</" + DEFAULT + ">\n");                    
+                    writer.write("\t</" + ARGUMENT + ">\n");
+                    writer.write("\n");
+                }else{
                     writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
                     writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
                     if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
@@ -76,7 +92,9 @@ public class XMLManager{
                                     + "</" + DEFAULT + ">\n");                    
                     writer.write("\t</" + ARGUMENT + ">\n");
                     writer.write("\n");
-            }            
+                }
+            }
+            
             writer.write("</arguments>");
             writer.close();
             
@@ -148,6 +166,8 @@ public class XMLManager{
                             p.addPositionalArgument(name, description, type);
                         } else if (argumentType.equals(NAMED_ARGUMENT)){
                             p.addNamedArgument(name, description, type, value);
+                        } else if (argumentType.equals(REQUIRED_ARGUMENT)){
+                            p.addRequiredNamedArgument(name, description, type, value);
                         }
                         name = "";
                         description = "";

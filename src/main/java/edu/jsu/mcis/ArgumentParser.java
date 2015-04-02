@@ -231,8 +231,6 @@ public class ArgumentParser{
             if(s.equals(namedArgumentShorthand.get(i))){
                 s = namedArgumentNames.get(i);
             }
-            else
-                s = s;
         }
         return s;
     }
