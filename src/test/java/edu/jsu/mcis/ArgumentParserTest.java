@@ -363,16 +363,16 @@ public class ArgumentParserTest{
     
     @Test
     public void testAddRestrictedStringValuesToArguments(){
-        Object[] restrictedValues = {"cat", "dog"};
+        Object[] restrictedValues = {"cat", "dog", "Cat", "Dog"};
         
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
         p.setRestrictedValues("Argument Name", restrictedValues);
                 
-        String[] args = {"cat"};
+        String[] args = {"Dog"};
         p.parse(args);
         
         String stringValue = p.getValueOf("Argument Name");
-        assertEquals("cat", stringValue);  
+        assertEquals("Dog", stringValue);  
     }
     
     @Test

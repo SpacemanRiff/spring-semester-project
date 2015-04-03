@@ -271,40 +271,38 @@ public class ArgumentParser{
         boolean usingGroups = false;
         String usedGroup = "";
         for(int i = 0; i < args.size(); i++){
-            if(isNotCharacterLength(args.get(i))){
-                if(isLongArgument(args.get(i))){
-                    String lookUpString = args.get(i).substring(2);
-                    if(namedArgumentMap.get(lookUpString) != null){ 
-                        if(namedArgumentMap.get(lookUpString).isInAGroup()){
-                            if(!usingGroups){
-                                usedGroup = argumentGroupValues.get(lookUpString);
-                                usingGroups = true;
-                            }else{
-                                if(!usedGroup.equals(argumentGroupValues.get(lookUpString))){
-                                    throw new NotInTheSameGroupException("\n\n\"" + lookUpString + "\" is not in the group \"" + usedGroup + "\"\n");
-                                }
-                            }
-                        }
-                        if(getArgumentType(lookUpString) != Types.BOOLEAN){
-                            try{
-                                namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
-                                args.remove(i);
-                                args.remove(i);
-                                i--;
-                            }catch(IndexOutOfBoundsException ex){
-                                throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
-                            }
+            if(isNotCharacterLength(args.get(i)) && isLongArgument(args.get(i))){
+                String lookUpString = args.get(i).substring(2);
+                if(namedArgumentMap.get(lookUpString) != null){
+                    if(namedArgumentMap.get(lookUpString).isInAGroup()){
+                        if(!usingGroups){
+                            usedGroup = argumentGroupValues.get(lookUpString);
+                            usingGroups = true;
                         }else{
-                            namedArgumentMap.get(lookUpString).setValue("true");
-                            args.remove(i);
-                            i--;                            
+                            if(!usedGroup.equals(argumentGroupValues.get(lookUpString))){
+                                throw new NotInTheSameGroupException("\n\n\"" + lookUpString + "\" is not in the group \"" + usedGroup + "\"\n");
+                            }
                         }
-                        if(namedArgumentMap.get(lookUpString).isThisRequired()){
-                            usedRequiredArguments.add(lookUpString);
+                    }
+                    if(getArgumentType(lookUpString) != Types.BOOLEAN){
+                        try{
+                            namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                            args.remove(i);
+                            args.remove(i);
+                            i--;
+                        }catch(IndexOutOfBoundsException ex){
+                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
                         }
                     }else{
-                        throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
+                        namedArgumentMap.get(lookUpString).setValue("true");
+                        args.remove(i);
+                        i--;                            
                     }
+                    if(namedArgumentMap.get(lookUpString).isThisRequired()){
+                        usedRequiredArguments.add(lookUpString);
+                    }
+                }else{
+                    throw new UnknownArgumentException("\n\nCould not find optional argument \"" + args.get(i) + "\"\n");                    
                 }
             }
         }

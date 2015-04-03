@@ -50,6 +50,10 @@ public class Argument{
                     if(Float.compare((float)holdValue, (float)restrictedValues[i]) == 0){
                         foundValue = true;
                     }
+                }else if(type == ArgumentParser.Types.STRING){
+                    if(holdValue.equals(restrictedValues[i])){
+                        foundValue = true;                        
+                    }
                 }
                 i++;
             }
