@@ -715,6 +715,19 @@ public class ArgumentParserTest{
         assertEquals("HELLO", p.getDefaultValueOf("Required"));
     }
     
+    @Test
+    public void testWriteRestrictedValuesToFile(){
+        Object[] restrictedValues = {10, 20, 30};
+        
+        p.addPositionalArgument("Argument", "Argument Description", ArgumentParser.Types.INTEGER);
+        p.setRestrictedValues("Argument", restrictedValues);
+        
+        String[] args = {"10"};
+        p.parse(args);
+        
+        XMLManager.writeArguments("testXML/testWriteRestricted.xml", p);
+    }
+    
     @Test(expected=UnknownArgumentException.class)
     public void testGetDescriptionOfUnknownArgumentThrowsException(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);

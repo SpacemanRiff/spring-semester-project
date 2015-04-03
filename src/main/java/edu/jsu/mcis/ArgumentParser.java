@@ -50,6 +50,36 @@ public class ArgumentParser{
         return namedArgumentMap;
     }
     
+    public Map<String, Argument> getPositionalArgumentMap(){
+        return positionalArgumentMap;
+    }
+    
+    public Object getRestrictedValue(String argName, int i){
+        Object returnObj;
+        if(namedArgumentMap.get(argName) != null){
+            returnObj = namedArgumentMap.get(argName).getRestrictedObject(i);
+        }else if(positionalArgumentMap.get(argName) != null){
+            returnObj = positionalArgumentMap.get(argName).getRestrictedObject(i);
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }
+        return returnObj;
+    }
+    
+    public Object[] getRestrictedNamedValues(String argName){
+        Object[] objArr;
+        if(namedArgumentMap.get(argName) != null){
+            objArr = new Object[namedArgumentMap.get(argName).numOfRestrictedValues()];
+            objArr = namedArgumentMap.get(argName).getRestrictedValues();
+        }else if(positionalArgumentMap.get(argName) != null){
+            objArr = new Object[positionalArgumentMap.get(argName).numOfRestrictedValues()];
+            objArr = positionalArgumentMap.get(argName).getRestrictedValues();
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }
+        return objArr;
+    }
+    
 	public void addPositionalArgument(String argName, String argDescription, Types type){
         positionalArgumentMap.put(argName, new Argument(argDescription, type));
         positionalArgumentNames.add(argName);

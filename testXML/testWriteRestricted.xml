@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<arguments>
+	<argument type = "positional">
+		<name>Argument</name>
+		<description>Argument Description</description>
+		<type>INTEGER</type>
+		<restricted value = "10">
+		<restricted value = "20">
+		<restricted value = "30">
+	</argument>
+
+</arguments>

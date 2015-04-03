@@ -14,11 +14,11 @@
 		<default>red</default>
 	</argument>
 
-	<argument type = "named">
-		<name>Flag</name>
-		<description>Is there a flag</description>
-		<type>BOOLEAN</type>
-		<default>false</default>
+	<argument type = "required">
+		<name>Required</name>
+		<description>A required argument</description>
+		<type>STRING</type>
+		<default>HELLO</default>
 	</argument>
 
 </arguments>

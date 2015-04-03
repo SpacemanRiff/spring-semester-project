@@ -28,12 +28,14 @@ public class XMLManager{
     private static final String NAMED_ARGUMENT = "named";
     private static final String POS_ARGUMENT = "positional";
     private static final String REQUIRED_ARGUMENT = "required";
+    private static final String RESTRICTED = "restricted";
     private static final String NAME = "name";
     private static final String SHORTHAND = "shorthand";
     private static final String DESCRIPTION = "description";
     private static final String TYPE = "type";
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
+    private static final String VALUE = "value";
     private static PrintWriter writer;
         
     public static void writeArguments(String fileName, ArgumentParser p){
@@ -43,11 +45,13 @@ public class XMLManager{
             List<String> namedArgNames = new ArrayList<String>();
             List<String> namedArgShorthand = new ArrayList<String>();
             Map<String, NamedArgument> namedArgMap = new HashMap<String, NamedArgument>();
+            Map<String, Argument> positionalArgMap = new HashMap<String, Argument>();
             
             argNames = p.getPositionalArgumentNames();
             namedArgNames = p.getNamedArgumentNames();
             namedArgShorthand = p.getNamedArgumentShorthand();
             namedArgMap = p.getNamedArgumentMap();
+            positionalArgMap = p.getPositionalArgumentMap();
             
             writer.write("<?xml version=\"1.0\"?>\n");
             writer.write("<arguments>\n");
@@ -59,6 +63,14 @@ public class XMLManager{
                                 + "</" + DESCRIPTION + ">\n");
                 writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(argNames.get(i))
                                 + "</" + TYPE + ">\n");
+                if(positionalArgMap.get(argNames.get(i)) != null){
+                    if(positionalArgMap.get(argNames.get(i)).containsRestrictedValues()){
+                        Object[] objArr = new Object[positionalArgMap.get(argNames.get(i)).numOfRestrictedValues()];
+                        for(int j = 0; j < objArr.length; j++){
+                            writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(argNames.get(i), j) + "\"" + ">\n");
+                        }
+                    }
+                }
                 writer.write("\t</" + ARGUMENT + ">\n");
                 writer.write("\n");
             }
@@ -74,6 +86,14 @@ public class XMLManager{
                                     + "</" + DESCRIPTION + ">\n");
                     writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
                                     + "</" + TYPE + ">\n");
+                    if(namedArgMap.get(namedArgNames.get(i)) != null){
+                        if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
+                            Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
+                            for(int j = 0; j < objArr.length; j++){
+                                writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(namedArgNames.get(i), i) + "\"" + ">\n");
+                            }
+                        }
+                    }
                     writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
                                     + "</" + DEFAULT + ">\n");                    
                     writer.write("\t</" + ARGUMENT + ">\n");
@@ -88,6 +108,14 @@ public class XMLManager{
                                     + "</" + DESCRIPTION + ">\n");
                     writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
                                     + "</" + TYPE + ">\n");
+                    if(namedArgMap.get(namedArgNames.get(i)) != null){
+                        if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
+                            Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
+                            for(int j = 0; j < objArr.length; j++){
+                                writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(namedArgNames.get(i), i) + "\"" + ">\n");
+                            }
+                        }
+                    }
                     writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
                                     + "</" + DEFAULT + ">\n");                    
                     writer.write("\t</" + ARGUMENT + ">\n");
@@ -109,7 +137,8 @@ public class XMLManager{
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream in = new FileInputStream(new File(fileName));
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-                
+            
+            List<String> restrictedValues = new ArrayList<String>();
             String name = "";
             String description = "";
             Types type = Types.valueOf("STRING");

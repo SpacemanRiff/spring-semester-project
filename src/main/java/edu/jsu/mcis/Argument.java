@@ -9,6 +9,7 @@ public class Argument{
     private Object value;
     private boolean hasRestrictedValues;
     private Object[] restrictedValues;
+    private int numOfValues;
     
     public Argument(String description, Types type){
         this.description = description;
@@ -86,6 +87,7 @@ public class Argument{
     
     public void setRestrictedValues(Object[] values){
         restrictedValues = new Object[values.length];
+        numOfValues = 0;
         for(int i = 0; i < values.length; i++){
             try{
                 switch(type){
@@ -99,10 +101,27 @@ public class Argument{
                         restrictedValues[i] = values[i];
                         break;
                 }
+                numOfValues++;
             }catch(IllegalArgumentException ex){
                 throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n");
             }   
         }
         hasRestrictedValues = true;
+    }
+    
+    public boolean containsRestrictedValues(){
+        return hasRestrictedValues;
+    }
+    
+    public Object[] getRestrictedValues(){
+        return restrictedValues;
+    }
+    
+    public Object getRestrictedObject(int i){
+        return restrictedValues[i];
+    }
+    
+    public int numOfRestrictedValues(){
+        return numOfValues;
     }
 }
