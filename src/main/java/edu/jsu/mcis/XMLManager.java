@@ -44,7 +44,7 @@ public class XMLManager{
             writer = new PrintWriter(fileName);
             List<String> argNames = new ArrayList<String>();
             List<String> namedArgNames = new ArrayList<String>();
-            List<String> namedArgShorthand = new ArrayList<String>();
+            Map<String, String> namedArgShorthand = new HashMap<String, String>();
             Map<String, NamedArgument> namedArgMap = new HashMap<String, NamedArgument>();
             Map<String, Argument> positionalArgMap = new HashMap<String, Argument>();
             
@@ -85,7 +85,7 @@ public class XMLManager{
                 }
                 writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
                 if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
-                    writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
+                        writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(namedArgNames.get(i)) + "</" + SHORTHAND + ">\n");
                 }
                 writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
                                 + "</" + DESCRIPTION + ">\n");
@@ -97,6 +97,7 @@ public class XMLManager{
                         Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
                         for(int j = 0; j < objArr.length; j++){
                             writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(namedArgNames.get(i), j) + "</" + RESTRICTED + ">\n");
+
                         }
                     }
                 }
