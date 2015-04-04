@@ -54,6 +54,24 @@ public class ArgumentParser{
         return positionalArgumentMap;
     }
     
+    public int getNumberOfRestrictedArguments(String argName){
+        if(namedArgumentMap.get(argName) != null){
+            if(namedArgumentMap.get(argName).containsRestrictedValues()){
+                return namedArgumentMap.get(argName).numOfRestrictedValues();
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
+        }else if(positionalArgumentMap.get(argName) != null){
+            if(positionalArgumentMap.get(argName).containsRestrictedValues()){
+                return positionalArgumentMap.get(argName).numOfRestrictedValues();
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }       
+    }
+    
     public Object getRestrictedValue(String argName, int i){
         Object returnObj;
         if(namedArgumentMap.get(argName) != null){
