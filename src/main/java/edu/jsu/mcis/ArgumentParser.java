@@ -357,41 +357,62 @@ public class ArgumentParser{
         int numberOfFlags = 0;
         
         for(int i = 0; i < positionalArgumentNames.size(); i++){
-            System.out.print(positionalArgumentNames.get(i).toLowerCase() + "  ");
+            System.out.print(positionalArgumentNames.get(i) + "  ");
         }            
         for(int i = 0; i < namedArgumentNames.size(); i++){
             if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
-                System.out.print("[--" + namedArgumentNames.get(i).toLowerCase() + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");
+                if(!namedArgumentMap.get(namedArgumentNames.get(i)).containsRestrictedValues()){
+                    System.out.print("[--" + namedArgumentNames.get(i) + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");
+                }else{
+                    System.out.print("[--" + namedArgumentNames.get(i) + " (");
+                    Object[] objectArray = getRestrictedNamedValues(namedArgumentNames.get(i));
+                    for(int j = 0; j < objectArray.length; j++){
+                        if(j != objectArray.length-1)
+                            System.out.print(objectArray[j] + "/");
+                        else
+                            System.out.print(objectArray[j]);
+                    }
+                    System.out.print(")] ");
+                }
             }else{
-                System.out.print("[--" + namedArgumentNames.get(i).toLowerCase() + "] ");
+                System.out.print("[--" + namedArgumentNames.get(i) + "] ");
                 numberOfFlags++;
             }
         }
         
-        System.out.println("\n\n***Positional Arguments***");
-        System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description");   
-        System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------");           
+        if(positionalArgumentNames.size() != 0){
+            System.out.println("\n\n***Positional Arguments***");
+            System.out.printf("%-18s %-10s %-32s \n", "Name", "Data Type", "Description");   
+            System.out.printf("%-18s %-10s %-32s \n", "----", "---- ----", "-----------");  
+        }        
         for(int i = 0; i < positionalArgumentNames.size(); i++){
-            System.out.printf("%-15s %-10s %-30s \n", positionalArgumentNames.get(i), positionalArgumentMap.get(positionalArgumentNames.get(i)).getTypeAsString(), positionalArgumentMap.get(positionalArgumentNames.get(i)).getDescription());
+            System.out.printf("%-18s %-10s %-32s \n", positionalArgumentNames.get(i), positionalArgumentMap.get(positionalArgumentNames.get(i)).getTypeAsString(), positionalArgumentMap.get(positionalArgumentNames.get(i)).getDescription());
         }
-        System.out.println("\n***Named Arguments***");
-        System.out.printf("%-15s %-10s %-30s \n", "Name", "Data Type", "Description"); 
-        System.out.printf("%-15s %-10s %-30s \n", "----", "---- ----", "-----------"); 
+        if(namedArgumentNames.size() != 0){
+            System.out.println("\n***Named Arguments***");
+            System.out.printf("%-18s %-10s %-32s %-7s \n", "Name", "Data Type", "Description", "Group"); 
+            System.out.printf("%-18s %-10s %-32s %-7s \n", "----", "---- ----", "-----------", "-----"); 
+        }
         for(int i = 0; i < namedArgumentNames.size(); i++){
             if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
-                System.out.printf("%-15s %-10s %-30s \n", namedArgumentNames.get(i), 
+                String groupName = "[none]";
+                if(argumentGroupValues.get(namedArgumentNames.get(i)) != null){
+                    groupName = argumentGroupValues.get(namedArgumentNames.get(i));
+                }
+                System.out.printf("%-18s %-10s %-32s %-7s \n", namedArgumentNames.get(i), 
                 namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
-                namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
+                namedArgumentMap.get(namedArgumentNames.get(i)).getDescription(),
+                groupName);
             }
         }
         
         if(numberOfFlags > 0){            
             System.out.println("\n***Named Flags***");
-            System.out.printf("%-15s %-30s \n", "Name", "Description"); 
-            System.out.printf("%-15s %-30s \n", "----", "-----------"); 
+            System.out.printf("%-18s %-32s \n", "Name", "Description"); 
+            System.out.printf("%-18s %-32s \n", "----", "-----------"); 
             for(int i = 0; i < namedArgumentNames.size(); i++){
                 if(getArgumentType(namedArgumentNames.get(i)) == Types.BOOLEAN){
-                    System.out.printf("%-15s %-30s \n", namedArgumentNames.get(i), 
+                    System.out.printf("%-18s %-32s \n", namedArgumentNames.get(i), 
                     namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
                 }
             }

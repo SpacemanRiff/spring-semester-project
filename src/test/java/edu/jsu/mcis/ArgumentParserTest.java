@@ -392,10 +392,12 @@ public class ArgumentParserTest{
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.STRING);
         p.addNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);  
         p.addNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);  
-        p.addNamedArgument("Optional3", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10); 
+        p.addNamedArgument("Optional3", "Optional Argument Description 3", ArgumentParser.Types.INTEGER, 10); 
         p.addArgumentToGroup("Optional1", "Group 1"); 
         p.addArgumentToGroup("Optional2", "Group 1");
         p.addArgumentToGroup("Optional3", "Group 2");
+        
+        p.printProgramInformation();
 
         assertEquals("Group 1", p.getArgumentGroup("Optional1"));
         assertEquals("Group 1", p.getArgumentGroup("Optional2"));
@@ -741,6 +743,8 @@ public class ArgumentParserTest{
         
         int intValue1 = p.getValueOf("Argument");
         int intValue2 = p.getValueOf("Named");
+        
+        p.printProgramInformation();
         
         assertEquals(10, intValue1);
         assertEquals(20, intValue2);

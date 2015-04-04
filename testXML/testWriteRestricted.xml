@@ -4,9 +4,21 @@
 		<name>Argument</name>
 		<description>Argument Description</description>
 		<type>INTEGER</type>
-		<restricted value = "10">
-		<restricted value = "20">
-		<restricted value = "30">
+		<restrictedcount>3</restrictedcount>
+		<restricted>10</restricted>
+		<restricted>20</restricted>
+		<restricted>30</restricted>
+	</argument>
+
+	<argument type = "named">
+		<name>Named</name>
+		<description>Named Description</description>
+		<type>INTEGER</type>
+		<restrictedcount>3</restrictedcount>
+		<restricted>10</restricted>
+		<restricted>20</restricted>
+		<restricted>30</restricted>
+		<default>10</default>
 	</argument>
 
 </arguments>
