@@ -4,6 +4,12 @@
 		<name>size</name>
 		<description>The size of the pizza (Small, Medium, or Large)</description>
 		<type>STRING</type>
+		<restricted value = "small">
+		<restricted value = "Small">
+		<restricted value = "medium">
+		<restricted value = "Medium">
+		<restricted value = "large">
+		<restricted value = "Large">
 	</argument>
 
 	<argument type = "positional">
@@ -18,7 +24,7 @@
 		<type>INTEGER</type>
 	</argument>
 
-	<argument type = "named">
+	<argument type = "required">
 		<name>quantity</name>
 		<description>Allows you to order multiple of the same pizza</description>
 		<type>INTEGER</type>
