@@ -8,7 +8,7 @@ public class ArgumentParser{
     private Map<String, String> argumentGroupValues;
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
-    private List<String> namedArgumentShorthand;
+    private Map<String, String> namedArgumentShorthand;
     private String programDescription;
     private int totalRequiredArguments;
     private int numberOfGroups;
@@ -20,7 +20,7 @@ public class ArgumentParser{
         argumentGroupValues = new HashMap<String, String>();
         positionalArgumentNames = new ArrayList<String>();
         namedArgumentNames = new ArrayList<String>();
-        namedArgumentShorthand = new ArrayList<String>();
+        namedArgumentShorthand = new HashMap<String, String>();
         numberOfGroups = 0;
         
         programDescription = "";
@@ -42,7 +42,7 @@ public class ArgumentParser{
         return namedArgumentNames;
     }
     
-    public List<String> getNamedArgumentShorthand(){
+    public Map<String, String> getNamedArgumentShorthand(){
         return namedArgumentShorthand;
     }
     
@@ -93,7 +93,7 @@ public class ArgumentParser{
     public void addNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);
-        namedArgumentShorthand.add(shorthand);
+        namedArgumentShorthand.put(argName, shorthand);
         namedArgumentMap.get(argName).setShorthand();
     }
 
@@ -101,6 +101,14 @@ public class ArgumentParser{
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentMap.get(argName).setRequired();
         namedArgumentNames.add(argName); 
+        totalRequiredArguments++;
+    }
+    
+    public void addRequiredNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
+        namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
+        namedArgumentMap.get(argName).setRequired();
+        namedArgumentNames.add(argName);
+        namedArgumentShorthand.put(argName, shorthand);
         totalRequiredArguments++;
     }
     
@@ -257,8 +265,8 @@ public class ArgumentParser{
     }
     
     private String renameShortArgument(String s){
-        for(int i = 0; i < namedArgumentShorthand.size(); i++){
-            if(s.equals(namedArgumentShorthand.get(i))){
+        for(int i = 0; i < namedArgumentNames.size(); i++){
+            if(s.equals(namedArgumentShorthand.get(namedArgumentNames.get(i)))){
                 s = namedArgumentNames.get(i);
             }
         }

@@ -318,15 +318,18 @@ public class ArgumentParserTest{
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
         p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);         
-                
-        String[] args = {"3", "--Optional1", "45", "--Optional2", "55"};
+        p.addRequiredNamedArgument("Optional3", "O", "Optional Argument Description 3", ArgumentParser.Types.INTEGER, 10);
+        
+        String[] args = {"-O", "99", "3", "--Optional1", "45", "--Optional2", "55"};
         p.parse(args);
         
         int intValue1 = p.getValueOf("Optional1");
         int intValue2 = p.getValueOf("Optional2");
+        int intValue3 = p.getValueOf("Optional3");
         
         assertEquals(45, intValue1);  
         assertEquals(55, intValue2);          
+        assertEquals(99, intValue3);
     }
     
     @Test
