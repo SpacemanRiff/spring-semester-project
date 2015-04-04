@@ -717,15 +717,30 @@ public class ArgumentParserTest{
     
     @Test
     public void testWriteRestrictedValuesToFile(){
-        Object[] restrictedValues = {10, 20, 30};
+        Object[] restrictedValues1 = {10, 20, 30};
+        Object[] restrictedValues2 = {10, 20, 30};
         
         p.addPositionalArgument("Argument", "Argument Description", ArgumentParser.Types.INTEGER);
-        p.setRestrictedValues("Argument", restrictedValues);
+        p.addNamedArgument("Named", "Named Description", ArgumentParser.Types.INTEGER, 10);
+        p.setRestrictedValues("Argument", restrictedValues1);
+        p.setRestrictedValues("Named", restrictedValues2);
         
-        String[] args = {"10"};
+        String[] args = {"10", "--Named", "20"};
         p.parse(args);
         
         XMLManager.writeArguments("testXML/testWriteRestricted.xml", p);
+        
+        p = new ArgumentParser();
+        
+        XMLManager.loadArguments("testXML/testWriteRestricted.xml", p);        
+        
+        p.parse(args);
+        
+        int intValue1 = p.getValueOf("Argument");
+        int intValue2 = p.getValueOf("Named");
+        
+        assertEquals(10, intValue1);
+        assertEquals(20, intValue2);
     }
     
     @Test(expected=UnknownArgumentException.class)

@@ -29,6 +29,7 @@ public class XMLManager{
     private static final String POS_ARGUMENT = "positional";
     private static final String REQUIRED_ARGUMENT = "required";
     private static final String RESTRICTED = "restricted";
+    private static final String RESTRICTED_COUNT = "restrictedcount";
     private static final String NAME = "name";
     private static final String SHORTHAND = "shorthand";
     private static final String DESCRIPTION = "description";
@@ -65,9 +66,10 @@ public class XMLManager{
                                 + "</" + TYPE + ">\n");
                 if(positionalArgMap.get(argNames.get(i)) != null){
                     if(positionalArgMap.get(argNames.get(i)).containsRestrictedValues()){
+                        writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(argNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
                         Object[] objArr = new Object[positionalArgMap.get(argNames.get(i)).numOfRestrictedValues()];
                         for(int j = 0; j < objArr.length; j++){
-                            writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(argNames.get(i), j) + "\"" + ">\n");
+                            writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(argNames.get(i), j) + "</" + RESTRICTED + ">\n");
                         }
                     }
                 }
@@ -78,49 +80,30 @@ public class XMLManager{
             for(int i = 0; i<namedArgNames.size(); i++){
                 if(namedArgMap.get(namedArgNames.get(i)).isThisRequired()){
                     writer.write("\t<" + ARGUMENT +  " type = \"required\"" + ">\n");
-                    writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
-                    if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
-                        writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
-                    }
-                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
-                                    + "</" + DESCRIPTION + ">\n");
-                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
-                                    + "</" + TYPE + ">\n");
-                    if(namedArgMap.get(namedArgNames.get(i)) != null){
-                        if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
-                            Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
-                            for(int j = 0; j < objArr.length; j++){
-                                writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(namedArgNames.get(i), i) + "\"" + ">\n");
-                            }
-                        }
-                    }
-                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
-                                    + "</" + DEFAULT + ">\n");                    
-                    writer.write("\t</" + ARGUMENT + ">\n");
-                    writer.write("\n");
                 }else{
                     writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
-                    writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
-                    if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
-                        writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
-                    }
-                    writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
-                                    + "</" + DESCRIPTION + ">\n");
-                    writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
-                                    + "</" + TYPE + ">\n");
-                    if(namedArgMap.get(namedArgNames.get(i)) != null){
-                        if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
-                            Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
-                            for(int j = 0; j < objArr.length; j++){
-                                writer.write("\t\t<" + RESTRICTED + " value = \"" + p.getRestrictedValue(namedArgNames.get(i), i) + "\"" + ">\n");
-                            }
+                }
+                writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
+                if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
+                    writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(i) + "</" + SHORTHAND + ">\n");
+                }
+                writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(namedArgNames.get(i))
+                                + "</" + DESCRIPTION + ">\n");
+                writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
+                                + "</" + TYPE + ">\n");                
+                if(namedArgMap.get(namedArgNames.get(i)) != null){
+                    if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
+                        writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(namedArgNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
+                        Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
+                        for(int j = 0; j < objArr.length; j++){
+                            writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(namedArgNames.get(i), j) + "</" + RESTRICTED + ">\n");
                         }
                     }
-                    writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
-                                    + "</" + DEFAULT + ">\n");                    
-                    writer.write("\t</" + ARGUMENT + ">\n");
-                    writer.write("\n");
                 }
+                writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
+                                + "</" + DEFAULT + ">\n");                    
+                writer.write("\t</" + ARGUMENT + ">\n");
+                writer.write("\n");
             }
             
             writer.write("</arguments>");
@@ -138,12 +121,13 @@ public class XMLManager{
             InputStream in = new FileInputStream(new File(fileName));
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
             
-            List<String> restrictedValues = new ArrayList<String>();
             String name = "";
             String description = "";
             Types type = Types.valueOf("STRING");
             String value = "";
-            boolean isFlag = false;
+            boolean hasRestrictedValues = false;
+            Object[] restrictedValues = new Object[1];
+            int currentRestrictedValue = 0;
             String argumentType = "";
                 
             System.out.println("\n");
@@ -187,6 +171,18 @@ public class XMLManager{
                         value = event.asCharacters().getData();
                         continue;
                     }
+                    if (startElement.getName().getLocalPart().equals(RESTRICTED_COUNT)){
+                        event = eventReader.nextEvent();
+                        restrictedValues = new Object[Integer.parseInt(event.asCharacters().getData())];
+                        hasRestrictedValues = true;
+                        continue;
+                    }
+                    if (startElement.getName().getLocalPart().equals(RESTRICTED)){                        
+                        event = eventReader.nextEvent();
+                        restrictedValues[currentRestrictedValue] = event.asCharacters().getData();
+                        currentRestrictedValue++;
+                        continue;
+                    }
                 }
                 if (event.isEndElement()) {
                     EndElement endElement = event.asEndElement();
@@ -198,11 +194,16 @@ public class XMLManager{
                         } else if (argumentType.equals(REQUIRED_ARGUMENT)){
                             p.addRequiredNamedArgument(name, description, type, value);
                         }
+                        if(hasRestrictedValues){
+                            p.setRestrictedValues(name, restrictedValues);
+                        }
                         name = "";
                         description = "";
                         type = Types.valueOf("STRING");
                         value = "";
-                        isFlag = false;
+                        restrictedValues = new Object[1];
+                        hasRestrictedValues = false;
+                        currentRestrictedValue = 0;
                     }
                     
                 }
