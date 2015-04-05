@@ -355,16 +355,40 @@ public class ArgumentParser{
     public void printProgramInformation(){
         System.out.println("\n" + programDescription + "\n");     
         int numberOfFlags = 0;
+        int numberOfRequiredArguments = 0;
         
         for(int i = 0; i < positionalArgumentNames.size(); i++){
-            System.out.print(positionalArgumentNames.get(i) + "  ");
+            System.out.print(positionalArgumentNames.get(i)); 
+            if(!positionalArgumentMap.get(positionalArgumentNames.get(i)).containsRestrictedValues()){
+                System.out.print(" ");
+            }else{
+                System.out.print("(");
+                Object[] objectArray = getRestrictedNamedValues(positionalArgumentNames.get(i));
+                for(int j = 0; j < objectArray.length; j++){
+                    if(j != objectArray.length-1)
+                        System.out.print(objectArray[j] + "/");
+                    else
+                        System.out.print(objectArray[j]);
+                }
+                System.out.print(") ");
+            }           
         }            
         for(int i = 0; i < namedArgumentNames.size(); i++){
             if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
                 if(!namedArgumentMap.get(namedArgumentNames.get(i)).containsRestrictedValues()){
-                    System.out.print("[--" + namedArgumentNames.get(i) + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");
+                    if(!namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){
+                        System.out.print("[--" + namedArgumentNames.get(i) + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");                 
+                    }else{                        
+                        System.out.print("(req)[--" + namedArgumentNames.get(i) + " " + namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString() + "] ");
+                        numberOfRequiredArguments++;
+                    }
                 }else{
-                    System.out.print("[--" + namedArgumentNames.get(i) + " (");
+                    if(!namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){
+                        System.out.print("[--" + namedArgumentNames.get(i) + " (");                        
+                    }else{                        
+                        System.out.print("(req)[--" + namedArgumentNames.get(i) + " (");
+                        numberOfRequiredArguments++;
+                    }
                     Object[] objectArray = getRestrictedNamedValues(namedArgumentNames.get(i));
                     for(int j = 0; j < objectArray.length; j++){
                         if(j != objectArray.length-1)
@@ -380,29 +404,44 @@ public class ArgumentParser{
             }
         }
         
-        if(positionalArgumentNames.size() != 0){
+        if(positionalArgumentNames.size() > 0){
             System.out.println("\n\n***Positional Arguments***");
             System.out.printf("%-18s %-10s %-32s \n", "Name", "Data Type", "Description");   
             System.out.printf("%-18s %-10s %-32s \n", "----", "---- ----", "-----------");  
         }        
         for(int i = 0; i < positionalArgumentNames.size(); i++){
-            System.out.printf("%-18s %-10s %-32s \n", positionalArgumentNames.get(i), positionalArgumentMap.get(positionalArgumentNames.get(i)).getTypeAsString(), positionalArgumentMap.get(positionalArgumentNames.get(i)).getDescription());
+            System.out.printf("%-18s %-10s %-32s \n", positionalArgumentNames.get(i), 
+                positionalArgumentMap.get(positionalArgumentNames.get(i)).getTypeAsString(),
+                positionalArgumentMap.get(positionalArgumentNames.get(i)).getDescription());
         }
-        if(namedArgumentNames.size() != 0){
+        if(namedArgumentNames.size()-numberOfFlags-numberOfRequiredArguments > 0){
             System.out.println("\n***Named Arguments***");
             System.out.printf("%-18s %-10s %-32s %-7s \n", "Name", "Data Type", "Description", "Group"); 
             System.out.printf("%-18s %-10s %-32s %-7s \n", "----", "---- ----", "-----------", "-----"); 
         }
         for(int i = 0; i < namedArgumentNames.size(); i++){
-            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN){
+            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN && !namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){
                 String groupName = "[none]";
                 if(argumentGroupValues.get(namedArgumentNames.get(i)) != null){
                     groupName = argumentGroupValues.get(namedArgumentNames.get(i));
                 }
                 System.out.printf("%-18s %-10s %-32s %-7s \n", namedArgumentNames.get(i), 
-                namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
-                namedArgumentMap.get(namedArgumentNames.get(i)).getDescription(),
-                groupName);
+                    namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
+                    namedArgumentMap.get(namedArgumentNames.get(i)).getDescription(),
+                    groupName);
+            }
+        }
+        
+        if(numberOfRequiredArguments > 0){            
+            System.out.println("\n***Required Named Arguments***");
+            System.out.printf("%-18s %-10s %-32s \n", "Name", "Data Type", "Description"); 
+            System.out.printf("%-18s %-10s %-32s \n", "----", "---- ----", "-----------"); 
+            for(int i = 0; i < namedArgumentNames.size(); i++){
+                if(namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){                  
+                    System.out.printf("%-18s %-10s %-32s \n", namedArgumentNames.get(i), 
+                        namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
+                        namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
+                }
             }
         }
         

@@ -318,10 +318,17 @@ public class ArgumentParserTest{
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);
         p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
         p.addRequiredNamedArgument("Optional2", "Optional Argument Description 2", ArgumentParser.Types.INTEGER, 10);         
-        p.addRequiredNamedArgument("Optional3", "O", "Optional Argument Description 3", ArgumentParser.Types.INTEGER, 10);
+        p.addRequiredNamedArgument("Optional3", "O", "Optional Argument Description 3", ArgumentParser.Types.INTEGER, 10);  
+        p.addNamedArgument("Optional4", "Optional Argument Description 4", ArgumentParser.Types.INTEGER, 10);
+        
+        Object[] restricted = {12, 14, 45};
+        
+        p.setRestrictedValues("Optional1", restricted);
         
         String[] args = {"-O", "99", "3", "--Optional1", "45", "--Optional2", "55"};
         p.parse(args);
+        
+        p.printProgramInformation();
         
         int intValue1 = p.getValueOf("Optional1");
         int intValue2 = p.getValueOf("Optional2");
@@ -852,10 +859,40 @@ public class ArgumentParserTest{
         
         p.getDefaultValueOf("Optional Argument");
     }
+    
     @Test(expected = InvalidArgumentException.class)
     public void testGetDefaultValueOfPositionalArgumentInvalidThrowsException(){
         p.addPositionalArgument("Pos", "Description", ArgumentParser.Types.STRING);
         
         p.getDefaultValueOf("Pos");
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetNumberRestrictedValuesOfNonRestrictedPositionalArgumentThrowsException(){
+        p.addPositionalArgument("test", "test", ArgumentParser.Types.STRING);
+        
+        p.getNumberOfRestrictedArguments("test");
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetNumberRestrictedValuesOfNonRestrictedNamedArgumentThrowsException(){
+        p.addNamedArgument("test", "test", ArgumentParser.Types.STRING, "test");
+        
+        p.getNumberOfRestrictedArguments("test");
+    }
+    
+    @Test(expected = UnknownArgumentException.class)
+    public void testGetNumberRestrictedValuesOfUnknownArgumentThrowsException(){
+        p.getNumberOfRestrictedArguments("test");        
+    }
+    
+    @Test(expected = UnknownArgumentException.class)
+    public void testGetRestrictedValuesOfUnknownArgumentThrowsException(){
+        p.getRestrictedNamedValues("test");
+    }
+    
+    @Test(expected = UnknownArgumentException.class)
+    public void testGetRestrictedValueOfUnknownArgumentThrowsException(){
+        p.getRestrictedValue("test", 0);
     }
 }

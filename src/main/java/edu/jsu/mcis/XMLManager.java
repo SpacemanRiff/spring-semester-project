@@ -63,14 +63,12 @@ public class XMLManager{
                 writer.write("\t\t<" + DESCRIPTION + ">" + p.getArgumentDescription(argNames.get(i)) 
                                 + "</" + DESCRIPTION + ">\n");
                 writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(argNames.get(i))
-                                + "</" + TYPE + ">\n");
-                if(positionalArgMap.get(argNames.get(i)) != null){
-                    if(positionalArgMap.get(argNames.get(i)).containsRestrictedValues()){
-                        writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(argNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
-                        Object[] objArr = new Object[positionalArgMap.get(argNames.get(i)).numOfRestrictedValues()];
-                        for(int j = 0; j < objArr.length; j++){
-                            writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(argNames.get(i), j) + "</" + RESTRICTED + ">\n");
-                        }
+                                + "</" + TYPE + ">\n");                
+                if(positionalArgMap.get(argNames.get(i)).containsRestrictedValues()){
+                    writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(argNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
+                    Object[] objArr = new Object[positionalArgMap.get(argNames.get(i)).numOfRestrictedValues()];
+                    for(int j = 0; j < objArr.length; j++){
+                        writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(argNames.get(i), j) + "</" + RESTRICTED + ">\n");
                     }
                 }
                 writer.write("\t</" + ARGUMENT + ">\n");
@@ -91,14 +89,12 @@ public class XMLManager{
                                 + "</" + DESCRIPTION + ">\n");
                 writer.write("\t\t<" + TYPE + ">" + p.getArgumentTypeAsString(namedArgNames.get(i))
                                 + "</" + TYPE + ">\n");                
-                if(namedArgMap.get(namedArgNames.get(i)) != null){
-                    if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
-                        writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(namedArgNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
-                        Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
-                        for(int j = 0; j < objArr.length; j++){
-                            writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(namedArgNames.get(i), j) + "</" + RESTRICTED + ">\n");
+                if(namedArgMap.get(namedArgNames.get(i)).containsRestrictedValues()){
+                    writer.write("\t\t<" + RESTRICTED_COUNT + ">" + p.getNumberOfRestrictedArguments(namedArgNames.get(i)) + "</" + RESTRICTED_COUNT + ">\n");
+                    Object[] objArr = new Object[namedArgMap.get(namedArgNames.get(i)).numOfRestrictedValues()];
+                    for(int j = 0; j < objArr.length; j++){
+                        writer.write("\t\t<" + RESTRICTED + ">" + p.getRestrictedValue(namedArgNames.get(i), j) + "</" + RESTRICTED + ">\n");
 
-                        }
                     }
                 }
                 writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
