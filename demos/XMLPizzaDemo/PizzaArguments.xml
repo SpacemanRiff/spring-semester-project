@@ -4,12 +4,13 @@
 		<name>size</name>
 		<description>The size of the pizza (Small, Medium, or Large)</description>
 		<type>STRING</type>
-		<restricted value = "small">
-		<restricted value = "Small">
-		<restricted value = "medium">
-		<restricted value = "Medium">
-		<restricted value = "large">
-		<restricted value = "Large">
+		<restrictedcount>6</restrictedcount>
+		<restricted>small</restricted>
+		<restricted>Small</restricted>
+		<restricted>medium</restricted>
+		<restricted>Medium</restricted>
+		<restricted>large</restricted>
+		<restricted>Large</restricted>
 	</argument>
 
 	<argument type = "positional">

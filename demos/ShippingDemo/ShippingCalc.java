@@ -1,4 +1,6 @@
 import edu.jsu.mcis.*;
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
 
 public class ShippingCalc{		
 	public static void main(String[] args){
@@ -25,9 +27,13 @@ public class ShippingCalc{
 		
 		float shipping = p.getValueOf("Shipping Cost");
 		float price = p.getValueOf("Price 1");
-		float total = shipping + price;
-		
-		System.out.println("\n\nTotal cost: $" + total);
+        int quantity = p.getValueOf("quantity");
+		float total = (shipping + price) * quantity;
+        
+        DecimalFormat df = new DecimalFormat("##.##");
+        df.setRoundingMode(RoundingMode.UP);
+        
+		System.out.println("\n\nTotal cost: $" + df.format(total));
 		
         if(local){
             System.out.println("This will be shipped locally");
