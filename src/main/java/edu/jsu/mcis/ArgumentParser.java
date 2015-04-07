@@ -416,19 +416,19 @@ public class ArgumentParser{
         }
         if(namedArgumentNames.size()-numberOfFlags-numberOfRequiredArguments > 0){
             System.out.println("\n***Named Arguments***");
-            System.out.printf("%-18s %-10s %-32s %-7s \n", "Name", "Data Type", "Description", "Group"); 
-            System.out.printf("%-18s %-10s %-32s %-7s \n", "----", "---- ----", "-----------", "-----"); 
+            System.out.printf("%-18s %-10s %-10s %-32s \n", "Name", "Data Type", "Group", "Description"); 
+            System.out.printf("%-18s %-10s %-10s %-32s \n", "----", "---- ----", "-----", "-----------"); 
         }
         for(int i = 0; i < namedArgumentNames.size(); i++){
-            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN && !namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){
+            if(getArgumentType(namedArgumentNames.get(i)) != Types.BOOLEAN 
+                    && !namedArgumentMap.get(namedArgumentNames.get(i)).isThisRequired()){
                 String groupName = "[none]";
                 if(argumentGroupValues.get(namedArgumentNames.get(i)) != null){
                     groupName = argumentGroupValues.get(namedArgumentNames.get(i));
                 }
-                System.out.printf("%-18s %-10s %-32s %-7s \n", namedArgumentNames.get(i), 
-                    namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(), 
-                    namedArgumentMap.get(namedArgumentNames.get(i)).getDescription(),
-                    groupName);
+                System.out.printf("%-18s %-10s %-10s %-32s \n", namedArgumentNames.get(i), 
+                    namedArgumentMap.get(namedArgumentNames.get(i)).getTypeAsString(),
+                    groupName, namedArgumentMap.get(namedArgumentNames.get(i)).getDescription());
             }
         }
         
