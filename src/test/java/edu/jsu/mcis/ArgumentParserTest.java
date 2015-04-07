@@ -682,6 +682,9 @@ public class ArgumentParserTest{
         p.addNamedArgument("Color", "C", "The color of the shape", ArgumentParser.Types.STRING, "red");
         p.addNamedArgument("Flag", "Is there a flag", ArgumentParser.Types.BOOLEAN, false);
         
+        p.addArgumentToGroup("Color","Group 1");
+        p.addArgumentToGroup("Flag", "Group 1");
+        
         String[] args = {"3", "-C", "red"};
         p.parse(args);
         p.printProgramInformation();
@@ -696,10 +699,12 @@ public class ArgumentParserTest{
         assertEquals("The color of the shape", p.getArgumentDescription("Color"));
         assertEquals(ArgumentParser.Types.STRING, p.getArgumentType("Color"));
         assertEquals("red", p.getDefaultValueOf("Color"));
+        assertEquals("Group 1", p.getArgumentGroup("Color"));
         
         assertEquals("Is there a flag", p.getArgumentDescription("Flag"));
         assertEquals(ArgumentParser.Types.BOOLEAN, p.getArgumentType("Flag"));
-        assertEquals(false, p.getDefaultValueOf("Flag"));        
+        assertEquals(false, p.getDefaultValueOf("Flag"));     
+        assertEquals("Group 1", p.getArgumentGroup("Flag"));   
     }
     
     @Test
@@ -856,6 +861,8 @@ public class ArgumentParserTest{
     @Test(expected = UnknownArgumentException.class)
     public void testGetDefaultValueOfArgumentDoesNotExistsThrowsException(){
         p.addNamedArgument("Optional", "Optional argument description", ArgumentParser.Types.STRING, "Default");
+        
+        p.printProgramInformation();
         
         p.getDefaultValueOf("Optional Argument");
     }

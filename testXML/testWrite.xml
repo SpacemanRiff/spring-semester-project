@@ -8,6 +8,7 @@
 
 	<argument type = "named">
 		<name>Color</name>
+		<group>Group 1</group>
 		<shorthand>C</shorthand>
 		<description>The color of the shape</description>
 		<type>STRING</type>
@@ -16,6 +17,7 @@
 
 	<argument type = "named">
 		<name>Flag</name>
+		<group>Group 1</group>
 		<description>Is there a flag</description>
 		<type>BOOLEAN</type>
 		<default>false</default>

@@ -24,13 +24,13 @@ import java.util.Map;
 
 public class XMLManager{
     private static final String ARGUMENT = "argument";
-    private static final String OPTIONAL = "optional";
     private static final String NAMED_ARGUMENT = "named";
     private static final String POS_ARGUMENT = "positional";
     private static final String REQUIRED_ARGUMENT = "required";
     private static final String RESTRICTED = "restricted";
     private static final String RESTRICTED_COUNT = "restrictedcount";
     private static final String NAME = "name";
+    private static final String GROUP = "group";
     private static final String SHORTHAND = "shorthand";
     private static final String DESCRIPTION = "description";
     private static final String TYPE = "type";
@@ -82,6 +82,9 @@ public class XMLManager{
                     writer.write("\t<" + ARGUMENT +  " type = \"named\"" + ">\n");
                 }
                 writer.write("\t\t<" + NAME + ">" + namedArgNames.get(i) + "</" + NAME + ">\n");
+                if(namedArgMap.get(namedArgNames.get(i)).isInAGroup()){
+                    writer.write("\t\t<" + GROUP + ">" + p.getArgumentGroup(namedArgNames.get(i)) + "</" + GROUP + ">\n");
+                }
                 if(namedArgMap.get(namedArgNames.get(i)).isArgumentShorthand()){
                         writer.write("\t\t<" + SHORTHAND + ">" + namedArgShorthand.get(namedArgNames.get(i)) + "</" + SHORTHAND + ">\n");
                 }
@@ -119,6 +122,8 @@ public class XMLManager{
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
             
             String name = "";
+            boolean isInGroup = false;
+            String groupName = "";
             String description = "";
             Types type = Types.valueOf("STRING");
             String value = "";
@@ -152,6 +157,12 @@ public class XMLManager{
                         }
                         continue;
                         
+                    }
+                    if (startElement.getName().getLocalPart().equals(GROUP)) {
+                        event = eventReader.nextEvent();
+                        groupName = event.asCharacters().getData();
+                        isInGroup = true;
+                        continue;
                     }
                     if (startElement.getName().getLocalPart().equals(DESCRIPTION)) {
                         event = eventReader.nextEvent();
@@ -191,10 +202,15 @@ public class XMLManager{
                         } else if (argumentType.equals(REQUIRED_ARGUMENT)){
                             p.addRequiredNamedArgument(name, description, type, value);
                         }
+                        if(isInGroup){
+                            p.addArgumentToGroup(name, groupName);
+                        }
                         if(hasRestrictedValues){
                             p.setRestrictedValues(name, restrictedValues);
                         }
                         name = "";
+                        isInGroup = false;
+                        groupName = "";
                         description = "";
                         type = Types.valueOf("STRING");
                         value = "";
