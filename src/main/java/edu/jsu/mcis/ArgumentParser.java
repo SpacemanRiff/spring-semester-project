@@ -14,6 +14,9 @@ public class ArgumentParser{
     private int numberOfGroups;
     public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
 	
+    /**
+     *  Creates an Argument Parser object, used to parse command line arguments into usable values.
+     */
 	public ArgumentParser(){
         positionalArgumentMap = new HashMap<String, Argument>();
         namedArgumentMap = new HashMap<String, NamedArgument>();
@@ -25,35 +28,80 @@ public class ArgumentParser{
         
         programDescription = "";
     }
-
+    
+    /**
+     *  Sets the program description to a user specified value.
+     *
+     *  @param programDescription a string containing the program description
+     */
     public void setProgramDescription(String programDescription){
         this.programDescription = programDescription;
     }
     
+    /**
+     *  Returns the program description specificied by the user. 
+     *  <p> If The description has not been specificied, this method returns an empty string.
+     *
+     *  @return the program description, or a blank string if the description has not be specified                
+     */
     public String getProgramDescription(){
         return programDescription;
     }
 	
+    /**
+     *  Returns a list of strings containing all of the positional argument names that have been specified.
+     *
+     *  @return a list of strings with all positional argument names
+     */
     public List<String> getPositionalArgumentNames(){
         return positionalArgumentNames;
     }
-    
+	
+    /**
+     *  Returns a list of strings containing all of the named argument names that have been specified.
+     *
+     *  @return a list of strings with all named argument names
+     */    
     public List<String> getNamedArgumentNames(){
         return namedArgumentNames;
     }
-    
-    public Map<String, String> getNamedArgumentShorthand(){
-        return namedArgumentShorthand;
-    }
-    
-    public Map<String, NamedArgument> getNamedArgumentMap(){
-        return namedArgumentMap;
-    }
-    
+	
+    /**
+     *  Returns a map of strings to Argument objects mapping argument names to their respective Argument object.
+     *
+     *  @return a map that pairs argument names to argument objects
+     */     
     public Map<String, Argument> getPositionalArgumentMap(){
         return positionalArgumentMap;
     }
-    
+	
+    /**
+     *  Returns a map of strings to NamedArgument objects mapping argument names to their respective NamedArgument object.
+     *
+     *  @return a map that pairs argument names to NamedArgument objects
+     */ 
+    public Map<String, NamedArgument> getNamedArgumentMap(){
+        return namedArgumentMap;
+    }
+	
+    /**
+     *  Returns a map of strings to strings containing all of the shorthand 
+     *  arguments paired with their full named counterparts that have been specified.
+     *
+     *  @return a map that pairs shorthand names to the respective full name
+     */ 
+    public Map<String, String> getNamedArgumentShorthand(){
+        return namedArgumentShorthand;
+    }
+	
+    /**
+     *  Returns the number of restricted values assigned to a certain argument.
+     *  
+     *  @param argName a string representing the name of the argument to be looked up
+     *  @return an integer representing the number of restricted values that the requested variable has
+     *  @throws InvalidArgumentException if the argument requested doesn't have restricted arguments
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */     
     public int getNumberOfRestrictedArguments(String argName){
         if(namedArgumentMap.get(argName) != null){
             if(namedArgumentMap.get(argName).containsRestrictedValues()){
@@ -71,7 +119,16 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }       
     }
-    
+	
+    /**
+     *  Returns the value of the requested restricted argument.
+     *  
+     *  @param argName a string representing the name of the argument to be looked up
+     *  @param i an integer representing which specific restricted value that is wanted
+     *  @return an object representing the value of the requested restricted value
+     *  @throws InvalidArgumentException if the argument requested doesn't have restricted arguments
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */    
     public Object getRestrictedValue(String argName, int i){
         Object returnObj;
         if(namedArgumentMap.get(argName) != null){
@@ -83,7 +140,15 @@ public class ArgumentParser{
         }
         return returnObj;
     }
-    
+	
+    /**
+     *  Returns all of the restricted values for the specified argument.
+     *  
+     *  @param argName a string representing the name of the argument to be looked up
+     *  @return an array containing all of the restricted value for the requested argument
+     *  @throws InvalidArgumentException if the argument requested doesn't have restricted arguments
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */    
     public Object[] getRestrictedNamedValues(String argName){
         Object[] objArr;
         if(namedArgumentMap.get(argName) != null){
@@ -98,23 +163,55 @@ public class ArgumentParser{
         return objArr;
     }
     
+    /**
+     *  Adds a positional argument with the specified description, and type to this ArgumentParser
+     *
+     *  @param argName a string representing the desired name for the argument
+     *  @param argDescription a string representing the desired description for the argument
+     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     */
 	public void addPositionalArgument(String argName, String argDescription, Types type){
         positionalArgumentMap.put(argName, new Argument(argDescription, type));
         positionalArgumentNames.add(argName);
 	}
     
+    /**
+     *  Adds a named argument with the specified description, type, and default value to this ArgumentParser
+     *
+     *  @param argName a string representing the desired name for the argument
+     *  @param argDescription a string representing the desired description for the argument
+     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param defaultValue a value to be set as the default value for the argument
+     */
     public void addNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);        
     }
     
+    /**
+     *  Adds a named argument with the specified description, type, and default value to this ArgumentParser that has a shorthand value.
+     *
+     *  @param argName a string representing the desired name for the argument
+     *  @param shorthand a string representing the desired shorthand name for the argument
+     *  @param argDescription a string representing the desired description for the argument
+     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param defaultValue a value to be set as the default value for the argument
+     */
     public void addNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentNames.add(argName);
         namedArgumentShorthand.put(argName, shorthand);
         namedArgumentMap.get(argName).setShorthand();
     }
-
+    
+    /**
+     *  Adds a named argument that is required to be used by the user with the specified description, type, and default value to this ArgumentParser
+     *
+     *  @param argName a string representing the desired name for the argument
+     *  @param argDescription a string representing the desired description for the argument
+     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param defaultValue a value to be set as the default value for the argument
+     */
     public void addRequiredNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentMap.get(argName).setRequired();
@@ -122,6 +219,15 @@ public class ArgumentParser{
         totalRequiredArguments++;
     }
     
+    /**
+     *  Adds a named argument that is required to be used by the user with the specified description, type, and default value to this ArgumentParser
+     *
+     *  @param argName a string representing the desired name for the argument
+     *  @param shorthand a string representing the desired shorthand name for the argument
+     *  @param argDescription a string representing the desired description for the argument
+     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param defaultValue a value to be set as the default value for the argument
+     */    
     public void addRequiredNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
         namedArgumentMap.put(argName, new NamedArgument(argDescription, type, defaultValue));
         namedArgumentMap.get(argName).setRequired();
