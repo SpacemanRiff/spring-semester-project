@@ -289,6 +289,23 @@ public class ArgumentParserTest{
     }
     
     @Test
+    public void testAddMultipleFlagShorthandsAsOneString(){
+        p.addNamedArgument("Raining", "R", "Is it raining?", ArgumentParser.Types.BOOLEAN, false);
+        p.addNamedArgument("Cloudy", "C", "Is it cloudy?", ArgumentParser.Types.BOOLEAN, false);
+        p.addNamedArgument("Windy", "W", "Is it windy?", ArgumentParser.Types.BOOLEAN, false);
+        
+        String[] args = {"-RCW"};
+        
+        boolean isRaining = p.getValueOf("Raining");
+        boolean isCloudy = p.getValueOf("Cloudy");
+        boolean isWindy = p.getValueOf("Windy");
+        
+        assertEquals(true, isRaining);
+        assertEquals(true, isCloudy);
+        assertEquals(true, isWindy);
+    }
+    
+    @Test
     public void testGetValueOfMultipleOptionalArguments(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
