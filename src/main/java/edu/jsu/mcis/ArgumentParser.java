@@ -12,7 +12,27 @@ public class ArgumentParser{
     private String programDescription;
     private int totalRequiredArguments;
     private int numberOfGroups;
-    public enum Types {INTEGER, STRING, FLOAT, BOOLEAN};
+    /**
+     *  The types that can be used by arguments.
+     */
+    public enum Types {
+        /**
+         *  Used to specify an integer value
+         */
+        INTEGER, 
+        /**
+         *  Used to specify a string value
+         */
+        STRING, 
+        /**
+         *  Used to specify a float value
+         */
+        FLOAT, 
+        /**
+         *  Used to specify a boolean value
+         */
+        BOOLEAN
+    };
 	
     /**
      *  Creates an Argument Parser object, used to parse command line arguments into usable values.
@@ -40,7 +60,7 @@ public class ArgumentParser{
     
     /**
      *  Returns the program description specificied by the user. 
-     *  <p> If The description has not been specificied, this method returns an empty string.
+     *  If The description has not been specificied, this method returns an empty string.
      *
      *  @return the program description, or a blank string if the description has not be specified                
      */
@@ -124,17 +144,25 @@ public class ArgumentParser{
      *  Returns the value of the requested restricted argument.
      *  
      *  @param argName a string representing the name of the argument to be looked up
-     *  @param i an integer representing which specific restricted value that is wanted
+     *  @param index an integer representing which specific restricted value that is wanted
      *  @return an object representing the value of the requested restricted value
      *  @throws InvalidArgumentException if the argument requested doesn't have restricted arguments
      *  @throws UnknownArgumentException if the argument requested doesn't exist
      */    
-    public Object getRestrictedValue(String argName, int i){
+    public Object getRestrictedValue(String argName, int index){
         Object returnObj;
         if(namedArgumentMap.get(argName) != null){
-            returnObj = namedArgumentMap.get(argName).getRestrictedObject(i);
+            if(namedArgumentMap.get(argName).containsRestrictedValues()){
+                returnObj = namedArgumentMap.get(argName).getRestrictedObject(index);
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
         }else if(positionalArgumentMap.get(argName) != null){
-            returnObj = positionalArgumentMap.get(argName).getRestrictedObject(i);
+            if(positionalArgumentMap.get(argName).containsRestrictedValues()){
+                returnObj = positionalArgumentMap.get(argName).getRestrictedObject(index);
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
@@ -149,14 +177,22 @@ public class ArgumentParser{
      *  @throws InvalidArgumentException if the argument requested doesn't have restricted arguments
      *  @throws UnknownArgumentException if the argument requested doesn't exist
      */    
-    public Object[] getRestrictedNamedValues(String argName){
+    public Object[] getAllRestrictedValues(String argName){
         Object[] objArr;
         if(namedArgumentMap.get(argName) != null){
-            objArr = new Object[namedArgumentMap.get(argName).numOfRestrictedValues()];
-            objArr = namedArgumentMap.get(argName).getRestrictedValues();
+            if(namedArgumentMap.get(argName).containsRestrictedValues()){
+                objArr = new Object[namedArgumentMap.get(argName).numOfRestrictedValues()];
+                objArr = namedArgumentMap.get(argName).getRestrictedValues();
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
         }else if(positionalArgumentMap.get(argName) != null){
-            objArr = new Object[positionalArgumentMap.get(argName).numOfRestrictedValues()];
-            objArr = positionalArgumentMap.get(argName).getRestrictedValues();
+            if(positionalArgumentMap.get(argName).containsRestrictedValues()){
+                objArr = new Object[positionalArgumentMap.get(argName).numOfRestrictedValues()];
+                objArr = positionalArgumentMap.get(argName).getRestrictedValues();
+            }else{
+                throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
+            }
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
@@ -168,7 +204,7 @@ public class ArgumentParser{
      *
      *  @param argName a string representing the desired name for the argument
      *  @param argDescription a string representing the desired description for the argument
-     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param type a value from the Types enum contained in ArgumentParser to define the object type for the argument
      */
 	public void addPositionalArgument(String argName, String argDescription, Types type){
         positionalArgumentMap.put(argName, new Argument(argDescription, type));
@@ -180,7 +216,7 @@ public class ArgumentParser{
      *
      *  @param argName a string representing the desired name for the argument
      *  @param argDescription a string representing the desired description for the argument
-     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param type a value from the Types enum contained in ArgumentParser to define the object type for the argument
      *  @param defaultValue a value to be set as the default value for the argument
      */
     public void addNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
@@ -194,7 +230,7 @@ public class ArgumentParser{
      *  @param argName a string representing the desired name for the argument
      *  @param shorthand a string representing the desired shorthand name for the argument
      *  @param argDescription a string representing the desired description for the argument
-     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param type a value from the Types enum contained in ArgumentParser to define the object type for the argument
      *  @param defaultValue a value to be set as the default value for the argument
      */
     public void addNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
@@ -209,7 +245,7 @@ public class ArgumentParser{
      *
      *  @param argName a string representing the desired name for the argument
      *  @param argDescription a string representing the desired description for the argument
-     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param type a value from the Types enum contained in ArgumentParser to define the object type for the argument
      *  @param defaultValue a value to be set as the default value for the argument
      */
     public void addRequiredNamedArgument(String argName, String argDescription, Types type, Object defaultValue){
@@ -225,7 +261,7 @@ public class ArgumentParser{
      *  @param argName a string representing the desired name for the argument
      *  @param shorthand a string representing the desired shorthand name for the argument
      *  @param argDescription a string representing the desired description for the argument
-     *  @param types a value from the Types enum contained in ArgumentParser to define the object type for the argument
+     *  @param type a value from the Types enum contained in ArgumentParser to define the object type for the argument
      *  @param defaultValue a value to be set as the default value for the argument
      */    
     public void addRequiredNamedArgument(String argName, String shorthand, String argDescription, Types type, Object defaultValue){
@@ -236,17 +272,38 @@ public class ArgumentParser{
         totalRequiredArguments++;
     }
     
+    /**
+     *  Adds the specified named argument to the specified group to allow for mutual exclusion
+     *
+     *  @param argName a string representing the name of the named argument to be added to the group
+     *  @param groupName a string representing the name of the group that the argument will be added to
+     *  @throws InvalidArgumentException if the specified argument is a positional argument, because positional arguments can't be in a group
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     *  @throws ArgumentAlreadyInGroupException if the specified argument is already in a group
+     */
     public void addArgumentToGroup(String argName, String groupName){
-		if(namedArgumentMap.get(argName) != null){
-            namedArgumentMap.get(argName).setGroupName(groupName);
-            argumentGroupValues.put(argName, groupName);
-        }else if(positionalArgumentMap.get(argName) != null){
-            throw new InvalidArgumentException("\n\nCannot add positional argument to a group\n");      
+        if(argumentGroupValues.get(argName) == null){
+            if(namedArgumentMap.get(argName) != null){
+                namedArgumentMap.get(argName).setGroupName(groupName);
+                argumentGroupValues.put(argName, groupName);
+            }else if(positionalArgumentMap.get(argName) != null){
+                throw new InvalidArgumentException("\n\nCannot add positional argument to a group\n");      
+            }else{
+                throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            }    
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
-        }        
+            throw new ArgumentAlreadyInGroupException("\n\n\"" + argName + "\" is already in a group.\n");
+        }            
     }
     
+    /**
+     *  Assigns an array of restricted values to the specified argument. 
+     *  If the argument already has restricted values, they will be replaced with the new values.
+     *
+     *  @param argName a string representing the name of the named argument to be added to the group
+     *  @param values an array of objects that should match the value type assigned to the argument to be assigned as the restricted values
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     public void setRestrictedValues(String argName, Object[] values){
 		if(positionalArgumentMap.get(argName) != null){
             positionalArgumentMap.get(argName).setRestrictedValues(values);
@@ -257,10 +314,31 @@ public class ArgumentParser{
         }        
     }
     
+    /**
+     *  Returns the number of positional arguments.
+     *
+     *  @return an integer representing the number of positional arguments
+     */
     public int getNumberOfArguments(){
         return positionalArgumentMap.size();
     }
     
+    /**
+     *  Returns the number of named arguments.
+     *
+     *  @return an integer representing the number of named arguments
+     */
+    public int getNumberOfOptionalArguments(){
+        return namedArgumentMap.size();
+    }
+    
+    /**
+     *  Returns the description of the requested argument.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @return a string containing the description of the specified argument
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     public String getArgumentDescription(String argName){
 		if(positionalArgumentMap.get(argName) != null){
             return positionalArgumentMap.get(argName).getDescription();
@@ -271,6 +349,13 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Returns the type of the requested argument.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @return the type of the specified argument as an ArgumentParser.Types enum object
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */    
     public Types getArgumentType(String argName){
 		if(positionalArgumentMap.get(argName) != null){
             return positionalArgumentMap.get(argName).getType();
@@ -281,6 +366,13 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Returns the type of the requested argument as a string.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @return the type of the specified argument as a string
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */ 
     public String getArgumentTypeAsString(String argName){
 		if(positionalArgumentMap.get(argName) != null){
             return positionalArgumentMap.get(argName).getTypeAsString();
@@ -291,6 +383,14 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Returns the value of the requested argument.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @param <T> the type that the returning value will be saved into
+     *  @return an object that matches the type of the specified argument that represents the value
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     @SuppressWarnings("unchecked")
 	public <T> T getValueOf(String argName){
 		if(positionalArgumentMap.get(argName) != null){
@@ -302,6 +402,15 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Returns the default value of the requested argument.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @param <T> the type that the returning value will be saved into
+     *  @return an object that matches the type of the specified argument that represents the default value
+     *  @throws InvalidArgumentException if the argument requested isn't a named argument
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     @SuppressWarnings("unchecked")
     public <T> T getDefaultValueOf(String argName){
         if(namedArgumentMap.get(argName) != null){
@@ -311,12 +420,17 @@ public class ArgumentParser{
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
-    }
-    
-    public int getNumberOfOptionalArguments(){
-        return namedArgumentMap.size();
     }	
     
+    /**
+     *  Returns the name of the group the argument is in.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @return a string representing the group the requested argument is in
+     *  @throws NotInGroupException if the argument requested isn't in a group
+     *  @throws InvalidArgumentException if the argument requested is a positional argument
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     public String getArgumentGroup(String argName){
 		if(namedArgumentMap.get(argName) != null){
             if(namedArgumentMap.get(argName).isInAGroup()){
@@ -330,7 +444,18 @@ public class ArgumentParser{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }        
     }
-	
+    
+    /**
+     *  Parses arguments and assigns values to their respected arguments.
+     *  
+     *  @param args the array of strings that is going to be parsed
+     *  @throws NotEnoughArgumentsException if there are not enough positional values to fill the positional arguments
+     *  @throws TooManyArgumentsException if there are too many positional values to fill the positional arguments
+     *  @throws NotInTheSameGroupException if multiple named arguments were called, but they are not in the same group
+     *  @throws MissingArgumentValueException if a named argument was called but not given a value
+     *  @throws UnknownArgumentException if there is a named argument specified that does not exist
+     *  @throws NotAllArgumentsUsedException if not all required named arguments were used
+     */
 	public void parse(String[] args){           
 		getHelp(args);
         
@@ -423,7 +548,7 @@ public class ArgumentParser{
                             args.remove(i);
                             i--;
                         }catch(IndexOutOfBoundsException ex){
-                            throw new InvalidArgumentException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
+                            throw new MissingArgumentValueException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
                         }
                     }else{
                         namedArgumentMap.get(lookUpString).setValue("true");
@@ -439,7 +564,7 @@ public class ArgumentParser{
             }
         }
         if(usedRequiredArguments.size() != totalRequiredArguments){
-            throw new NotEnoughArgumentsException("\n\nDid not use all required arguments.\nExpected " + totalRequiredArguments + ", but only got " + usedRequiredArguments.size());
+            throw new NotAllArgumentsUsedException("\n\nDid not use all required arguments.\nExpected " + totalRequiredArguments + ", but only got " + usedRequiredArguments.size());
         }
     }
     
@@ -458,6 +583,10 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Prints a formatted and organized table containing all of the arguments and their respective values 
+     *  like name, description, and type, as well as default value and group where applicable
+     */
     public void printProgramInformation(){
         System.out.println("\n" + programDescription + "\n");     
         int numberOfFlags = 0;
@@ -469,7 +598,7 @@ public class ArgumentParser{
                 System.out.print(" ");
             }else{
                 System.out.print("(");
-                Object[] objectArray = getRestrictedNamedValues(positionalArgumentNames.get(i));
+                Object[] objectArray = getAllRestrictedValues(positionalArgumentNames.get(i));
                 for(int j = 0; j < objectArray.length; j++){
                     if(j != objectArray.length-1)
                         System.out.print(objectArray[j] + "/");
@@ -495,7 +624,7 @@ public class ArgumentParser{
                         System.out.print("(req)[--" + namedArgumentNames.get(i) + " (");
                         numberOfRequiredArguments++;
                     }
-                    Object[] objectArray = getRestrictedNamedValues(namedArgumentNames.get(i));
+                    Object[] objectArray = getAllRestrictedValues(namedArgumentNames.get(i));
                     for(int j = 0; j < objectArray.length; j++){
                         if(j != objectArray.length-1)
                             System.out.print(objectArray[j] + "/");

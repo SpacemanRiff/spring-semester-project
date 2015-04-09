@@ -510,7 +510,7 @@ public class ArgumentParserTest{
         p.parse(args); 
     }
     
-    @Test(expected=NotEnoughArgumentsException.class)
+    @Test(expected=NotAllArgumentsUsedException.class)
     public void testRequiredArgumentsThrowExceptionWhenNotUsed(){
         p.addPositionalArgument("Argument Name", "Argument Description", ArgumentParser.Types.INTEGER);  
         p.addRequiredNamedArgument("Optional1", "Optional Argument Description 1", ArgumentParser.Types.INTEGER, 10);        
@@ -520,7 +520,7 @@ public class ArgumentParserTest{
         p.parse(args);      
     }
     
-    @Test(expected=InvalidArgumentException.class)
+    @Test(expected=MissingArgumentValueException.class)
     public void testOptionalArgumentAtEndOfTheListWithNoValueThrowsException(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
@@ -912,11 +912,42 @@ public class ArgumentParserTest{
     
     @Test(expected = UnknownArgumentException.class)
     public void testGetRestrictedValuesOfUnknownArgumentThrowsException(){
-        p.getRestrictedNamedValues("test");
+        p.getAllRestrictedValues("test");
     }
     
     @Test(expected = UnknownArgumentException.class)
     public void testGetRestrictedValueOfUnknownArgumentThrowsException(){
         p.getRestrictedValue("test", 0);
+    }
+    
+    @Test(expected = ArgumentAlreadyInGroupException.class)
+    public void testAddArgumentAlreadyInGroupThrowsException(){
+        p.addNamedArgument("test", "test", ArgumentParser.Types.STRING, "test");
+        p.addArgumentToGroup("test", "test group");
+        p.addArgumentToGroup("test", "test group");
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetRestrictedValueOfNonRestrictedPositionalArgumentThrowsException(){        
+        p.addPositionalArgument("test", "test", ArgumentParser.Types.STRING);
+        p.getRestrictedValue("test", 0);
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetRestrictedValueOfNonRestrictedNamedArgumentThrowsException(){        
+        p.addNamedArgument("test", "test", ArgumentParser.Types.STRING, "test");
+        p.getRestrictedValue("test", 0);
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetAllRestrictedValuesOfNonRestrictedPositionalArgumentThrowsException(){        
+        p.addPositionalArgument("test", "test", ArgumentParser.Types.STRING);
+        p.getAllRestrictedValues("test");
+    }
+    
+    @Test(expected = InvalidArgumentException.class)
+    public void testGetAllRestrictedValuesOfNonRestrictedNamedArgumentThrowsException(){        
+        p.addNamedArgument("test", "test", ArgumentParser.Types.STRING, "test");
+        p.getAllRestrictedValues("test");
     }
 }
