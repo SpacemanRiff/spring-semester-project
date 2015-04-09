@@ -16,7 +16,6 @@ public class WritePizzaArgs{
 		p.addRequiredNamedArgument("quantity", "Allows you to order multiple of the same pizza", ArgumentParser.Types.INTEGER, 1);
 		p.addNamedArgument("drink", "The drink you will have with your pizza", ArgumentParser.Types.STRING, "No Drink");
 		
-		p.parse(args);
         
         XMLManager.writeArguments("PizzaArguments.xml", p);
         

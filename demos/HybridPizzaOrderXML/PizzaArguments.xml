@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<arguments>
+	<argument type = "positional">
+		<name>Size</name>
+		<description>The size of the pizza (Small, Medium, or Large)</description>
+		<type>STRING</type>
+		<restrictedcount>6</restrictedcount>
+		<restricted>small</restricted>
+		<restricted>Small</restricted>
+		<restricted>medium</restricted>
+		<restricted>Medium</restricted>
+		<restricted>large</restricted>
+		<restricted>Large</restricted>
+	</argument>
+
+	<argument type = "positional">
+		<name>Crust</name>
+		<description>The style of pizza crust</description>
+		<type>STRING</type>
+	</argument>
+
+	<argument type = "positional">
+		<name>Toppings</name>
+		<description>The number of toppings for the pizza</description>
+		<type>INTEGER</type>
+	</argument>
+
+	<argument type = "required">
+		<name>quantity</name>
+		<description>Allows you to order multiple of the same pizza</description>
+		<type>INTEGER</type>
+		<default>1</default>
+	</argument>
+
+	<argument type = "named">
+		<name>drink</name>
+		<description>The drink you will have with your pizza</description>
+		<type>STRING</type>
+		<default>No Drink</default>
+	</argument>
+
+	<argument type = "named">
+		<name>togo</name>
+		<description>Is the order to go?</description>
+		<type>BOOLEAN</type>
+		<default>false</default>
+	</argument>
+
+</arguments>
