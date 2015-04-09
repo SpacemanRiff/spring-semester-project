@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Used to read or write argument information into an ArgumentParser object */
 public class XMLManager{
     private static final String ARGUMENT = "argument";
     private static final String NAMED_ARGUMENT = "named";
@@ -38,7 +39,13 @@ public class XMLManager{
     private static final String FLAG = "flag";
     private static final String VALUE = "value";
     private static PrintWriter writer;
-        
+    
+    /**
+     *  Writes all information from the provided ArgumentParser object to a file
+     *
+     *  @param fileName the name of the file to be written to
+     *  @param p the ArgumentParser object to be written
+     */
     public static void writeArguments(String fileName, ArgumentParser p){
         try{
             writer = new PrintWriter(fileName);
@@ -104,16 +111,20 @@ public class XMLManager{
                                 + "</" + DEFAULT + ">\n");                    
                 writer.write("\t</" + ARGUMENT + ">\n");
                 writer.write("\n");
-            }
-            
+            }            
             writer.write("</arguments>");
-            writer.close();
-            
+            writer.close();            
         }catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
     
+    /**
+     *  Loads information from a file to the provided ArgumentParser object
+     *
+     *  @param fileName the name of the file to be read from
+     *  @param p the ArgumentParser object to be loaded to
+     */
     @SuppressWarnings("unchecked")
     public static void loadArguments(String fileName, ArgumentParser p){
         try{

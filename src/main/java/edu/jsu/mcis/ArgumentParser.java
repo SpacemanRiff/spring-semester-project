@@ -2,6 +2,7 @@ package edu.jsu.mcis;
 
 import java.util.*;
 
+/** Used to parse command line arguments into usable, storable values. */
 public class ArgumentParser{
     private Map<String, Argument> positionalArgumentMap;
     private Map<String, NamedArgument> namedArgumentMap;
@@ -59,8 +60,8 @@ public class ArgumentParser{
     }
     
     /**
-     *  Returns the program description specificied by the user. 
-     *  If The description has not been specificied, this method returns an empty string.
+     *  Returns the program description specified by the user. 
+     *  If The description has not been specified, this method returns an empty string.
      *
      *  @return the program description, or a blank string if the description has not be specified                
      */

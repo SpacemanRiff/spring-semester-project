@@ -2,6 +2,7 @@ package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
 
+/** Stores information about a Named Argument */
 public class NamedArgument extends Argument{   
     private Object defaultValue;
     private boolean isRequired;

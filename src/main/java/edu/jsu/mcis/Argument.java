@@ -3,6 +3,7 @@ package edu.jsu.mcis;
 import edu.jsu.mcis.ArgumentParser.Types;
 import java.lang.*;
 
+/** Stores information about a positional argument. */
 public class Argument{
     private String description;
     private Types type;
