@@ -137,7 +137,7 @@ public class ArgumentParser{
                 throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
             }
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException(argName);
         }       
     }
 	
@@ -165,7 +165,7 @@ public class ArgumentParser{
                 throw new InvalidArgumentException("\n\n" + argName + " does not have restricted values.\n");
             }
         }else{
-            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+            throw new UnknownArgumentException(argName);
         }
         return returnObj;
     }
@@ -481,35 +481,24 @@ public class ArgumentParser{
 		}
 	}
     
-    private boolean isNotCharacterLength(String s){
-        if(s.length() > 1)
-            return true;
-        else
-            return false;
+    private boolean isNotSingleCharacter(String s){
+        return s.length() > 1;
     }
     
     private boolean isShortArgument(String s){
-        if(s.substring(0,1).equals("-") && !s.substring(1,2).equals("-"))
-            return true;
-        else
-            return false;
+        return s.length() >= 2 && s.substring(0,1).equals("-") && !s.substring(1,2).equals("-");
     }
     
     private boolean isLongArgument(String s){
-        if(s.substring(0,2).equals("--"))
-            return true;
-        else
-            return false;
+        return s.length() >= 3 && s.substring(0,2).equals("--");
     }
     
     private void setShortArguments(List<String> args){
         for(int i = 0; i < args.size(); i++){
             String compareString = args.get(i);
-            if(isNotCharacterLength(compareString)){
-                if(isShortArgument(compareString)){
-                    String replaceString = renameShortArgument(compareString.substring(1));
-                    args.set(i, "--".concat(replaceString));
-                }
+            if(isShortArgument(compareString)){
+                String replaceString = renameShortArgument(compareString.substring(1));
+                args.set(i, "--".concat(replaceString));
             }
         }
     }
@@ -529,7 +518,7 @@ public class ArgumentParser{
         boolean usingGroups = false;
         String usedGroup = "";
         for(int i = 0; i < args.size(); i++){
-            if(isNotCharacterLength(args.get(i)) && isLongArgument(args.get(i))){
+            if(isLongArgument(args.get(i))){
                 String lookUpString = args.get(i).substring(2);
                 if(namedArgumentMap.get(lookUpString) != null){
                     if(namedArgumentMap.get(lookUpString).isInAGroup()){
