@@ -2,6 +2,8 @@ package edu.jsu.mcis;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArgumentParserTest{       
     ArgumentParser p;
@@ -289,20 +291,26 @@ public class ArgumentParserTest{
     }
     
     @Test
-    public void testAddMultipleFlagShorthandsAsOneString(){
-        p.addNamedArgument("Raining", "R", "Is it raining?", ArgumentParser.Types.BOOLEAN, false);
-        p.addNamedArgument("Cloudy", "C", "Is it cloudy?", ArgumentParser.Types.BOOLEAN, false);
-        p.addNamedArgument("Windy", "W", "Is it windy?", ArgumentParser.Types.BOOLEAN, false);
+    public void testCallMultipleArgumentsFromOneArgument(){
+        p.addNamedArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER, 0);
+        p.addNamedArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER, 0);
+        p.addNamedArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER, 0);
+        p.addPositionalArgument("Box", "The length, width, height of the box", ArgumentParser.Types.INTEGER);
         
-        String[] args = {"-RCW"};
+        p.addArgumentToGroup("Length", "Shape");
+        p.addArgumentToGroup("Width", "Shape");
+        p.addArgumentToGroup("Height", "Shape");
         
-        boolean isRaining = p.getValueOf("Raining");
-        boolean isCloudy = p.getValueOf("Cloudy");
-        boolean isWindy = p.getValueOf("Windy");
+        p.addGroupToArgument("Shape", "Box");
+
+        List<String> argNames = new ArrayList<String>();
+        argNames.add("Length");
+        argNames.add("Width");
+        argNames.add("Height");
+        assertEquals(argNames,  p.getGroupedArgumentsFromArgument("Box"));
         
-        assertEquals(true, isRaining);
-        assertEquals(true, isCloudy);
-        assertEquals(true, isWindy);
+        String[] args = {"Box", "1", "2", "3"};
+        p.parse(args);
     }
     
     @Test

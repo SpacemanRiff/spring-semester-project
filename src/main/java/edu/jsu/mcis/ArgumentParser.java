@@ -7,8 +7,10 @@ public class ArgumentParser{
     private Map<String, Argument> positionalArgumentMap;
     private Map<String, NamedArgument> namedArgumentMap;
     private Map<String, String> argumentGroupValues;
+    private Map<String, String> multipleArgumentsMap;
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
+    private List<String> groupArgumentNames;
     private Map<String, String> namedArgumentShorthand;
     private String programDescription;
     private int totalRequiredArguments;
@@ -42,6 +44,8 @@ public class ArgumentParser{
         positionalArgumentMap = new HashMap<String, Argument>();
         namedArgumentMap = new HashMap<String, NamedArgument>();
         argumentGroupValues = new HashMap<String, String>();
+        groupArgumentNames = new ArrayList<String>();
+        multipleArgumentsMap = new HashMap<String, String>();
         positionalArgumentNames = new ArrayList<String>();
         namedArgumentNames = new ArrayList<String>();
         namedArgumentShorthand = new HashMap<String, String>();
@@ -287,6 +291,7 @@ public class ArgumentParser{
             if(namedArgumentMap.get(argName) != null){
                 namedArgumentMap.get(argName).setGroupName(groupName);
                 argumentGroupValues.put(argName, groupName);
+                groupArgumentNames.add(argName);
             }else if(positionalArgumentMap.get(argName) != null){
                 throw new InvalidArgumentException("\n\nCannot add positional argument to a group\n");      
             }else{
@@ -382,6 +387,36 @@ public class ArgumentParser{
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
+    }
+    
+    public void addGroupToArgument(String groupName, String argName){
+        if(positionalArgumentMap.get(argName) != null){
+            multipleArgumentsMap.put(argName, groupName);
+        }else if(namedArgumentMap.get(argName) != null){
+            multipleArgumentsMap.put(argName, groupName);
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }
+        
+    }
+    
+    private String getGroupFromArgument(String argName){
+        String group = "";
+        if(multipleArgumentsMap.get(argName) != null){
+            group = multipleArgumentsMap.get(argName);
+        }
+        return group;
+    }
+    
+    public List<String> getGroupedArgumentsFromArgument(String argName){
+        String groupName = getGroupFromArgument(argName);
+        List<String> argNames = new ArrayList<String>();
+        for(int i = 0; i < argumentGroupValues.size(); i++){
+            if(argumentGroupValues.get(groupArgumentNames.get(i)).equals(groupName)){
+                argNames.add(groupArgumentNames.get(i));
+            }
+        }
+        return argNames;
     }
     
     /**
