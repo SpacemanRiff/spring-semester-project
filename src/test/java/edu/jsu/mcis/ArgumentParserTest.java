@@ -292,24 +292,11 @@ public class ArgumentParserTest{
     
     @Test
     public void testCallMultipleArgumentsFromOneArgument(){
-        p.addNamedArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER, 0);
-        p.addNamedArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER, 0);
-        p.addNamedArgument("Height", "The height of the box", ArgumentParser.Types.INTEGER, 0);
-        p.addPositionalArgument("Box", "The length, width, height of the box", ArgumentParser.Types.INTEGER);
+        p.addNamedArgument("Box", "The length, width, height of the box", ArgumentParser.Types.INTEGER, 0);
         
-        p.addArgumentToGroup("Length", "Shape");
-        p.addArgumentToGroup("Width", "Shape");
-        p.addArgumentToGroup("Height", "Shape");
+        p.readyAdditionalValues("Box", 3);
         
-        p.addGroupToArgument("Shape", "Box");
-
-        List<String> argNames = new ArrayList<String>();
-        argNames.add("Length");
-        argNames.add("Width");
-        argNames.add("Height");
-        assertEquals(argNames,  p.getGroupedArgumentsFromArgument("Box"));
-        
-        String[] args = {"Box", "1", "2", "3"};
+        String[] args = {"--Box", "10", "20", "30"};
         p.parse(args);
     }
     

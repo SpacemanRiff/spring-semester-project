@@ -1,6 +1,7 @@
 package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
+import java.util.ArrayList;
 
 /** Stores information about a Named Argument */
 public class NamedArgument extends Argument{   
@@ -25,6 +26,7 @@ public class NamedArgument extends Argument{
         isRequired = false;
         isInGroup = false;
         isShorthand = false;
+        allowableNumberOfValues = 1;
     }
     
     private void setDefaultValue(String defaultValue){

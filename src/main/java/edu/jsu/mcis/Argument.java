@@ -2,6 +2,8 @@ package edu.jsu.mcis;
 
 import edu.jsu.mcis.ArgumentParser.Types;
 import java.lang.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /** Stores information about a positional argument. */
 public class Argument{
@@ -10,6 +12,7 @@ public class Argument{
     private Object value;
     private boolean hasRestrictedValues;
     private Object[] restrictedValues;
+    protected int allowableNumberOfValues;
     private int numOfValues;
     
     /**
@@ -24,6 +27,7 @@ public class Argument{
         restrictedValues = new Object[0];
         hasRestrictedValues = false;
         this.type = type;
+        allowableNumberOfValues = 1;
     }
     
     /**
@@ -187,5 +191,13 @@ public class Argument{
      */
     public int numOfRestrictedValues(){
         return numOfValues;
+    }
+    
+    public void setAllowableNumberOfValues(int allowableNumberOfValues){
+        this.allowableNumberOfValues = allowableNumberOfValues;
+    }
+    
+    public int getAllowableNumberOfValues(){
+        return allowableNumberOfValues;
     }
 }

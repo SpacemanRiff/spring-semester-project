@@ -7,10 +7,8 @@ public class ArgumentParser{
     private Map<String, Argument> positionalArgumentMap;
     private Map<String, NamedArgument> namedArgumentMap;
     private Map<String, String> argumentGroupValues;
-    private Map<String, String> multipleArgumentsMap;
     private List<String> positionalArgumentNames;
     private List<String> namedArgumentNames;
-    private List<String> groupArgumentNames;
     private Map<String, String> namedArgumentShorthand;
     private String programDescription;
     private int totalRequiredArguments;
@@ -44,8 +42,6 @@ public class ArgumentParser{
         positionalArgumentMap = new HashMap<String, Argument>();
         namedArgumentMap = new HashMap<String, NamedArgument>();
         argumentGroupValues = new HashMap<String, String>();
-        groupArgumentNames = new ArrayList<String>();
-        multipleArgumentsMap = new HashMap<String, String>();
         positionalArgumentNames = new ArrayList<String>();
         namedArgumentNames = new ArrayList<String>();
         namedArgumentShorthand = new HashMap<String, String>();
@@ -291,7 +287,6 @@ public class ArgumentParser{
             if(namedArgumentMap.get(argName) != null){
                 namedArgumentMap.get(argName).setGroupName(groupName);
                 argumentGroupValues.put(argName, groupName);
-                groupArgumentNames.add(argName);
             }else if(positionalArgumentMap.get(argName) != null){
                 throw new InvalidArgumentException("\n\nCannot add positional argument to a group\n");      
             }else{
@@ -389,34 +384,21 @@ public class ArgumentParser{
         }
     }
     
-    public void addGroupToArgument(String groupName, String argName){
-        if(positionalArgumentMap.get(argName) != null){
-            multipleArgumentsMap.put(argName, groupName);
-        }else if(namedArgumentMap.get(argName) != null){
-            multipleArgumentsMap.put(argName, groupName);
+    public void readyAdditionalValues(String argName, int numOfArgs){
+        if(namedArgumentMap.get(argName) != null){
+            namedArgumentMap.get(argName).setAllowableNumberOfValues(numOfArgs);
+        }else if(positionalArgumentMap.get(argName) != null){
+            throw new InvalidArgumentException("\n\nPositional Argument \"" + argName + "\" cannot have additional values added.");
         }else{
             throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
         }
-        
     }
     
-    private String getGroupFromArgument(String argName){
-        String group = "";
-        if(multipleArgumentsMap.get(argName) != null){
-            group = multipleArgumentsMap.get(argName);
-        }
-        return group;
-    }
-    
-    public List<String> getGroupedArgumentsFromArgument(String argName){
-        String groupName = getGroupFromArgument(argName);
-        List<String> argNames = new ArrayList<String>();
-        for(int i = 0; i < argumentGroupValues.size(); i++){
-            if(argumentGroupValues.get(groupArgumentNames.get(i)).equals(groupName)){
-                argNames.add(groupArgumentNames.get(i));
-            }
-        }
-        return argNames;
+    public int getNumberOfAdditionalValues(String argName){
+        if(namedArgumentMap.get(argName) != null)
+            return namedArgumentMap.get(argName).getAllowableNumberOfValues();
+        else
+            return -1;
     }
     
     /**
@@ -500,6 +482,7 @@ public class ArgumentParser{
         for(int i = 0; i < args.length; i++){
             argumentValuesList.add(args[i]);
         }
+        
         pullNamedArguments(argumentValuesList);
         
         int numArgs = getNumberOfArguments();
@@ -516,39 +499,8 @@ public class ArgumentParser{
 		}
 	}
     
-    private boolean isNotSingleCharacter(String s){
-        return s.length() > 1;
-    }
-    
-    private boolean isShortArgument(String s){
-        return s.length() >= 2 && s.substring(0,1).equals("-") && !s.substring(1,2).equals("-");
-    }
-    
-    private boolean isLongArgument(String s){
-        return s.length() >= 3 && s.substring(0,2).equals("--");
-    }
-    
-    private void setShortArguments(List<String> args){
-        for(int i = 0; i < args.size(); i++){
-            String compareString = args.get(i);
-            if(isShortArgument(compareString)){
-                String replaceString = renameShortArgument(compareString.substring(1));
-                args.set(i, "--".concat(replaceString));
-            }
-        }
-    }
-    
-    private String renameShortArgument(String s){
-        for(int i = 0; i < namedArgumentNames.size(); i++){
-            if(s.equals(namedArgumentShorthand.get(namedArgumentNames.get(i)))){
-                s = namedArgumentNames.get(i);
-            }
-        }
-        return s;
-    }
-    
     private void pullNamedArguments(List<String> args){
-        setShortArguments(args);
+        setShortArguments(args);    
         List<String> usedRequiredArguments = new ArrayList<String>();
         boolean usingGroups = false;
         String usedGroup = "";
@@ -566,12 +518,22 @@ public class ArgumentParser{
                             }
                         }
                     }
+                    
                     if(getArgumentType(lookUpString) != Types.BOOLEAN){
                         try{
+                            if(namedArgumentMap.get(lookUpString).getAllowableNumberOfValues() > 1){
+                                for(int n = 0; n < namedArgumentMap.get(lookUpString).getAllowableNumberOfValues(); n++){
+                                    namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                                    args.remove(i + 1);
+                                }
+                                args.remove(i);
+                                i--;
+                            }else{
                             namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
                             args.remove(i);
                             args.remove(i);
                             i--;
+                            }
                         }catch(IndexOutOfBoundsException ex){
                             throw new MissingArgumentValueException("\n\n" + "\nExpected a value following \"" + args.get(i) + "\"");
                         }
@@ -592,6 +554,37 @@ public class ArgumentParser{
             throw new NotAllArgumentsUsedException("\n\nDid not use all required arguments.\nExpected " + totalRequiredArguments + ", but only got " + usedRequiredArguments.size());
         }
     }
+    
+    private void setShortArguments(List<String> args){
+        for(int i = 0; i < args.size(); i++){
+            String compareString = args.get(i);
+            if(isShortArgument(compareString)){
+                String replaceString = renameShortArgument(compareString.substring(1));
+                args.set(i, "--".concat(replaceString));
+            }
+        }
+    }
+    
+    private String renameShortArgument(String s){
+        for(int i = 0; i < namedArgumentNames.size(); i++){
+            if(s.equals(namedArgumentShorthand.get(namedArgumentNames.get(i)))){
+                s = namedArgumentNames.get(i);
+            }
+        }
+        return s;
+    }
+  
+    private boolean isNotSingleCharacter(String s){
+        return s.length() > 1;
+    }
+    
+    private boolean isShortArgument(String s){
+        return s.length() >= 2 && s.substring(0,1).equals("-") && !s.substring(1,2).equals("-");
+    }
+    
+    private boolean isLongArgument(String s){
+        return s.length() >= 3 && s.substring(0,2).equals("--");
+    }  
     
     private void getHelp(String[] args){
         boolean isHelpNeeded = false;
