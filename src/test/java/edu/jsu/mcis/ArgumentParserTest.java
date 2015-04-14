@@ -298,6 +298,15 @@ public class ArgumentParserTest{
         
         String[] args = {"--Box", "10", "20", "30"};
         p.parse(args);
+        
+        int[] compare = {10, 20, 30};
+        int value1 = p.getValueOf("Box", 0);
+        int value2 = p.getValueOf("Box", 1);
+        int value3 = p.getValueOf("Box", 2);
+        assertEquals(compare[0], value1);
+        assertEquals(compare[1], value2);
+        assertEquals(compare[2], value3);
+
     }
     
     @Test

@@ -420,6 +420,16 @@ public class ArgumentParser{
         }
     }
     
+    @SuppressWarnings("unchecked")
+	public <T> T getValueOf(String argName, int i){
+		if(positionalArgumentMap.get(argName) != null){
+            return (T)positionalArgumentMap.get(argName).getValue(i);
+        }else if(namedArgumentMap.get(argName) != null){
+            return (T)namedArgumentMap.get(argName).getValue(i);
+        }else{
+            throw new UnknownArgumentException("\n\nCould not find argument \"" + argName + "\"\n");
+        }
+    }
     /**
      *  Returns the default value of the requested argument.
      *  
@@ -521,11 +531,14 @@ public class ArgumentParser{
                     
                     if(getArgumentType(lookUpString) != Types.BOOLEAN){
                         try{
-                            if(namedArgumentMap.get(lookUpString).getAllowableNumberOfValues() > 1){
-                                for(int n = 0; n < namedArgumentMap.get(lookUpString).getAllowableNumberOfValues(); n++){
-                                    namedArgumentMap.get(lookUpString).setValue(args.get(i+1));
+                            int allowableNumOfValues = namedArgumentMap.get(lookUpString).getAllowableNumberOfValues();
+                            if(allowableNumOfValues > 1){
+                                String[] extraValues = new String[allowableNumOfValues];
+                                for(int n = 0; n < allowableNumOfValues; n++){
+                                    extraValues[n] = args.get(i+1);
                                     args.remove(i + 1);
                                 }
+                                namedArgumentMap.get(lookUpString).setValue(extraValues);
                                 args.remove(i);
                                 i--;
                             }else{

@@ -10,6 +10,7 @@ public class Argument{
     private String description;
     private Types type;
     private Object value;
+    private Object[] values;
     private boolean hasRestrictedValues;
     private Object[] restrictedValues;
     protected int allowableNumberOfValues;
@@ -25,6 +26,7 @@ public class Argument{
     public Argument(String description, Types type){
         this.description = description;
         restrictedValues = new Object[0];
+        values = new Object[0];
         hasRestrictedValues = false;
         this.type = type;
         allowableNumberOfValues = 1;
@@ -37,7 +39,7 @@ public class Argument{
      *  @throws InvalidArgumentException if the value sent in does not match the type specified, or it does not match one of the restricted values
      */
     public void setValue(String value){
-        Object holdValue;        
+        Object holdValue;
         try{
             switch(type){
                 case INTEGER:
@@ -81,6 +83,54 @@ public class Argument{
         this.value = holdValue;
     }
     
+    public void setValue(String[] value){
+        values = new Object[value.length];
+        for(int n = 0; n < value.length; n++){
+            Object holdValue;
+            try{
+                switch(type){
+                    case INTEGER:
+                        holdValue = Integer.parseInt(value[n]);
+                        break;
+                    case FLOAT:
+                        holdValue = Float.parseFloat(value[n]);
+                        break;
+                    case BOOLEAN:
+                        holdValue = Boolean.parseBoolean(value[n]);
+                        break;
+                    default:
+                        holdValue = value;
+                        break;
+                }
+            }catch(IllegalArgumentException ex){
+                throw new InvalidArgumentException("\n\nInvalid argument \"" + value + "\"\n\"" + value + "\" does not match the type " + getTypeAsString() + "\n");
+            }   
+            
+            if(hasRestrictedValues){
+                boolean foundValue = false;
+                int i = 0;
+                while(i < restrictedValues.length && !foundValue){
+                    if(holdValue == restrictedValues[i]){
+                        foundValue = true;
+                    }else if(type == ArgumentParser.Types.FLOAT){
+                        if(Float.compare((float)holdValue, (float)restrictedValues[i]) == 0){
+                            foundValue = true;
+                        }
+                    }else if(type == ArgumentParser.Types.STRING){
+                        if(holdValue.equals(restrictedValues[i])){
+                            foundValue = true;                        
+                        }
+                    }
+                    i++;
+                }
+                if(!foundValue){
+                    throw new InvalidArgumentException("\n\n\"" + value + "\" is not using one of the restricted value\nPlease use one of the following values: " + restrictedValues.toString() + "\n");
+                }
+            }
+            values[n] = holdValue;
+        }
+    }
+    
     /**
      *  Returns the value that has been stored in this Argument.
      *
@@ -88,6 +138,10 @@ public class Argument{
      */
     public Object getValue(){
         return value;
+    }
+    
+    public Object getValue(int i){
+        return values[i];
     }
     
     /**
