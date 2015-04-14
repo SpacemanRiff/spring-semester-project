@@ -10,7 +10,7 @@ public class Argument{
     private String description;
     private Types type;
     private Object value;
-    private Object[] values;
+    private List<Object> values;
     private boolean hasRestrictedValues;
     private Object[] restrictedValues;
     protected int allowableNumberOfValues;
@@ -26,7 +26,7 @@ public class Argument{
     public Argument(String description, Types type){
         this.description = description;
         restrictedValues = new Object[0];
-        values = new Object[0];
+        values = new ArrayList<Object>();
         hasRestrictedValues = false;
         this.type = type;
         allowableNumberOfValues = 1;
@@ -84,9 +84,8 @@ public class Argument{
     }
     
     public void setValue(String[] value){
-        values = new Object[value.length];
         for(int n = 0; n < value.length; n++){
-            Object holdValue;
+            Object holdValue = new Object();
             try{
                 switch(type){
                     case INTEGER:
@@ -95,11 +94,8 @@ public class Argument{
                     case FLOAT:
                         holdValue = Float.parseFloat(value[n]);
                         break;
-                    case BOOLEAN:
-                        holdValue = Boolean.parseBoolean(value[n]);
-                        break;
                     default:
-                        holdValue = value;
+                        holdValue = value[n] + "";
                         break;
                 }
             }catch(IllegalArgumentException ex){
@@ -127,7 +123,7 @@ public class Argument{
                     throw new InvalidArgumentException("\n\n\"" + value + "\" is not using one of the restricted value\nPlease use one of the following values: " + restrictedValues.toString() + "\n");
                 }
             }
-            values[n] = holdValue;
+            values.add(holdValue);
         }
     }
     
@@ -141,7 +137,8 @@ public class Argument{
     }
     
     public Object getValue(int i){
-        return values[i];
+        Object returnValue = values.get(i);
+        return returnValue;
     }
     
     /**

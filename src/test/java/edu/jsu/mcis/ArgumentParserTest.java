@@ -310,7 +310,7 @@ public class ArgumentParserTest{
     }
     
     @Test
-    public void testWriteMultipleArgumentFromOneArgument(){
+    public void testWriteMultipleArgumentFromOneArgumentTypeInteger(){
         p.addNamedArgument("Box", "The length, width, height of the box", ArgumentParser.Types.INTEGER, 0);
         
         p.readyAdditionalValues("Box", 3);
@@ -323,6 +323,33 @@ public class ArgumentParserTest{
         
         int numOfValues = p.getNumberOfAdditionalValues("Box");
         assertEquals(3, numOfValues);
+    }
+    
+    @Test
+    public void testWriteMultipleArgumentFromOneArgumentTypeString(){
+        p.addNamedArgument("Named", "Named Argument", ArgumentParser.Types.STRING, "Name");
+        p.readyAdditionalValues("Named", 2);
+        
+        String[] args = {"--Named", "A", "B"};
+        p.parse(args);
+        String value1 = p.getValueOf("Named", 0);
+        String value2 = p.getValueOf("Named", 1);
+        assertEquals("A", value1);
+        assertEquals("B", value2);
+        
+    }
+    
+    @Test
+    public void testWriteMultipleArgumentFromOneArgumentTypeFloat(){
+        p.addNamedArgument("Float", "f", "Float argument", ArgumentParser.Types.FLOAT, 0.0f);
+        p.readyAdditionalValues("Float", 2);
+        
+        String[] args = {"-f", "1.0f", "2.0f"};
+        p.parse(args);
+        float value1 = p.getValueOf("Float", 0);
+        float value2 = p.getValueOf("Float", 1);
+        assertEquals(1.0f, value1, 0.1f);
+        assertEquals(2.0f, value2, 0.1f);
     }
     
     @Test
