@@ -310,6 +310,22 @@ public class ArgumentParserTest{
     }
     
     @Test
+    public void testWriteMultipleArgumentFromOneArgument(){
+        p.addNamedArgument("Box", "The length, width, height of the box", ArgumentParser.Types.INTEGER, 0);
+        
+        p.readyAdditionalValues("Box", 3);
+        
+        String[] args = {"--Box", "10", "20", "30"};
+        p.parse(args);
+        XMLManager.writeArguments("testXML/testMultipleArguments.xml", p);
+        p = new ArgumentParser();
+        XMLManager.loadArguments("testXML/testMultipleArguments.xml", p);
+        
+        int numOfValues = p.getNumberOfAdditionalValues("Box");
+        assertEquals(3, numOfValues);
+    }
+    
+    @Test
     public void testGetValueOfMultipleOptionalArguments(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);

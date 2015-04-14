@@ -38,7 +38,7 @@ public class XMLManager{
     private static final String DEFAULT = "default";
     private static final String FLAG = "flag";
     private static final String VALUE = "value";
-    private static PrintWriter writer;
+    private static final String COUNT_OF_VALUES = "count_of_values";
     
     /**
      *  Writes all information from the provided ArgumentParser object to a file
@@ -48,18 +48,12 @@ public class XMLManager{
      */
     public static void writeArguments(String fileName, ArgumentParser p){
         try{
-            writer = new PrintWriter(fileName);
-            List<String> argNames = new ArrayList<String>();
-            List<String> namedArgNames = new ArrayList<String>();
-            Map<String, String> namedArgShorthand = new HashMap<String, String>();
-            Map<String, NamedArgument> namedArgMap = new HashMap<String, NamedArgument>();
-            Map<String, Argument> positionalArgMap = new HashMap<String, Argument>();
-            
-            argNames = p.getPositionalArgumentNames();
-            namedArgNames = p.getNamedArgumentNames();
-            namedArgShorthand = p.getNamedArgumentShorthand();
-            namedArgMap = p.getNamedArgumentMap();
-            positionalArgMap = p.getPositionalArgumentMap();
+            PrintWriter writer = new PrintWriter(fileName);
+            List<String> argNames = p.getPositionalArgumentNames();
+            List<String> namedArgNames = p.getNamedArgumentNames();
+            Map<String, String> namedArgShorthand = p.getNamedArgumentShorthand();
+            Map<String, NamedArgument> namedArgMap = p.getNamedArgumentMap();
+            Map<String, Argument> positionalArgMap = p.getPositionalArgumentMap();
             
             writer.write("<?xml version=\"1.0\"?>\n");
             writer.write("<arguments>\n");
@@ -107,6 +101,8 @@ public class XMLManager{
 
                     }
                 }
+                writer.write("\t\t<" + COUNT_OF_VALUES + ">" + p.getNumberOfAdditionalValues(namedArgNames.get(i))
+                                + "</" + COUNT_OF_VALUES + ">\n"); 
                 writer.write("\t\t<" + DEFAULT + ">" + p.getDefaultValueOf(namedArgNames.get(i))
                                 + "</" + DEFAULT + ">\n");                    
                 writer.write("\t</" + ARGUMENT + ">\n");
@@ -142,6 +138,7 @@ public class XMLManager{
             Object[] restrictedValues = new Object[1];
             int currentRestrictedValue = 0;
             String argumentType = "";
+            int numOfValues = 0;
                 
             System.out.println("\n");
             
@@ -202,6 +199,11 @@ public class XMLManager{
                         currentRestrictedValue++;
                         continue;
                     }
+                    if (startElement.getName().getLocalPart().equals(COUNT_OF_VALUES)){                        
+                        event = eventReader.nextEvent();
+                        numOfValues = Integer.valueOf(event.asCharacters().getData());
+                        continue;
+                    }
                 }
                 if (event.isEndElement()) {
                     EndElement endElement = event.asEndElement();
@@ -218,6 +220,9 @@ public class XMLManager{
                         }
                         if(hasRestrictedValues){
                             p.setRestrictedValues(name, restrictedValues);
+                        }
+                        if(numOfValues > 1){
+                            p.readyAdditionalValues(name, numOfValues);
                         }
                         name = "";
                         isInGroup = false;

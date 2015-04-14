@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<arguments>
+	<argument type = "named">
+		<name>Box</name>
+		<description>The length, width, height of the box</description>
+		<type>INTEGER</type>
+		<count_of_values>3</count_of_values>
+		<default>0</default>
+	</argument>
+
+</arguments>
