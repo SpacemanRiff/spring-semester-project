@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified">
+<xs:schema targetNamespace="http://www.w3schools.com"
+		   attributeFormDefault="unqualified" 
+		   elementFormDefault="qualified"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns="http://www.w3schools.com PizzaArguments.xsd">
+		   
   <xs:element name="arguments">
     <xs:complexType>
       <xs:sequence>

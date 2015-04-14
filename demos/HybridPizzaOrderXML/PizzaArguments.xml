@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<arguments>
+
+
+<arguments xmlns="http://www.w3schools.com"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://www.w3schools.com PizzaArguments.xsd">
+		   
 	<argument type = "positional">
 		<name>Size</name>
 		<description>The size of the pizza (Small, Medium, or Large)</description>
