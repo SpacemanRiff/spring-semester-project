@@ -83,6 +83,12 @@ public class Argument{
         this.value = holdValue;
     }
     
+    /**
+     *  Used to set the values of the argument if it stores more than one value.
+     *
+     *  @param value the values to be parsed, as strings
+     *  @throws InvalidArgumentException if the value sent in does not match the type specified, or it does not match one of the restricted values
+     */
     public void setValue(String[] value){
         for(int n = 0; n < value.length; n++){
             Object holdValue = new Object();
@@ -136,6 +142,12 @@ public class Argument{
         return value;
     }
     
+    /**
+     *  Returns a specific value that has been stored in this Argument, if this argument supports multiple values.
+     *
+     *  @param i the index of the specified value
+     *  @return the value, as an object, that has been stored
+     */
     public Object getValue(int i){
         Object returnValue = values.get(i);
         return returnValue;
@@ -244,10 +256,20 @@ public class Argument{
         return numOfValues;
     }
     
+    /**
+     *  Sets the number of values that the argument can hold.
+     *
+     *  @param allowableNumberOfValues the number of values that the argument can hold
+     */
     public void setAllowableNumberOfValues(int allowableNumberOfValues){
         this.allowableNumberOfValues = allowableNumberOfValues;
     }
     
+    /**
+     *  Returns the number of values that the argument can hold.
+     *
+     *  @return the number of values that the argument can hold
+     */
     public int getAllowableNumberOfValues(){
         return allowableNumberOfValues;
     }

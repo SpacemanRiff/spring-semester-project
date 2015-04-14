@@ -384,6 +384,14 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Allows the user to set the number of values a specific argument can hold.
+     *
+     *  @param argName the name of the argument that will have multiple values
+     *  @param numOfArgs the number of values that that argument will store
+     *  @throws InvalidArgumentException if the user tries to give a positional argument, because positional arguments can't have multiple values
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     public void readyAdditionalValues(String argName, int numOfArgs){
         if(namedArgumentMap.get(argName) != null){
             namedArgumentMap.get(argName).setAllowableNumberOfValues(numOfArgs);
@@ -394,6 +402,12 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Allows the user to set the number of values a specific argument can hold.
+     *
+     *  @param argName the name of the argument the user wants to find out about
+     *  @return the number of values that argument can store
+     */
     public int getNumberOfAdditionalValues(String argName){
         if(namedArgumentMap.get(argName) != null)
             return namedArgumentMap.get(argName).getAllowableNumberOfValues();
@@ -420,6 +434,15 @@ public class ArgumentParser{
         }
     }
     
+    /**
+     *  Returns the selected value of the requested argument.
+     *  
+     *  @param argName a string representing the name of the desired argument
+     *  @param i the index of the desired value
+     *  @param <T> the type that the returning value will be saved into
+     *  @return an object that matches the type of the specified argument that represents the value
+     *  @throws UnknownArgumentException if the argument requested doesn't exist
+     */
     @SuppressWarnings("unchecked")
 	public <T> T getValueOf(String argName, int i){
 		if(positionalArgumentMap.get(argName) != null){
