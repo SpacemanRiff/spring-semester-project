@@ -353,6 +353,62 @@ public class ArgumentParserTest{
     }
     
     @Test
+    public void testWriteMultipleArgumentsHasRestrictedValuesTypeString(){
+        Object[] values = {"Yes", "No", "Maybe"};
+        p.addNamedArgument("String", "String argument", ArgumentParser.Types.STRING, "String");
+        p.readyAdditionalValues("String", 2);
+        p.setRestrictedValues("String", values);
+        
+        String[] args = {"--String", "Yes", "No"};
+        p.parse(args);
+        
+        String value1 = p.getValueOf("String", 0);
+        String value2 = p.getValueOf("String", 1);
+        
+        assertEquals("Yes", value1);
+        assertEquals("No", value2);
+    }
+    
+    @Test
+    public void testWriteMultipleArgumentsHasRestrictedValuesTypeFloat(){
+        Object[] values = {2f, 3f, 4f};
+        p.addNamedArgument("Float", "Float argument", ArgumentParser.Types.FLOAT, 0f);
+        p.readyAdditionalValues("Float", 3);
+        p.setRestrictedValues("Float", values);
+        
+        String[] args = {"--Float", "2f", "3f", "4f"};
+        p.parse(args);
+        
+        float value1 = p.getValueOf("Float", 0);
+        float value2 = p.getValueOf("Float", 1);
+        float value3 = p.getValueOf("Float", 2);
+        
+        assertEquals(2f, value1, 0.1f);
+        assertEquals(3f, value2, 0.1f);
+        assertEquals(4f, value3, 0.1f);
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testWriteMultipleArgumentValuesThrowsException(){
+        p.addNamedArgument("Int", "Int argument", ArgumentParser.Types.INTEGER, 10);
+        p.readyAdditionalValues("Int", 2);
+        
+        String[] args = {"--Int", "2f", "3f"};
+        p.parse(args);
+    }
+    
+    @Test(expected=InvalidArgumentException.class)
+    public void testWriteMultipleArgumentsHasRestrictedValuesThrowsException(){
+        Object[] values = {2f, 3f};
+        p.addNamedArgument("String", "String argument", ArgumentParser.Types.STRING, "String");
+        p.readyAdditionalValues("String", 2);
+        p.setRestrictedValues("String", values);
+        
+        String[] args = {"--String", "2", "3"};
+        p.parse(args);
+    }
+    
+    @Test
     public void testGetValueOfMultipleOptionalArguments(){
         p.addPositionalArgument("Length", "The length of the box", ArgumentParser.Types.INTEGER);
         p.addPositionalArgument("Width", "The width of the box", ArgumentParser.Types.INTEGER);
