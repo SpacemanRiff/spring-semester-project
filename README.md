@@ -75,4 +75,7 @@ Here is an example of one of the demos, in this case, a program that uses argume
     }
 ```
 In this code, you can see examples of how to add arguments using the addPositionalArgument method, the addRequiredNamedArgument, and the addNamedArgument.
-You can also see how to access values stored in arguments.
+
+You can also see how to access values stored in arguments using the getValueOf method.
+
+There are other examples such as ones that show saving and loading XML files.
