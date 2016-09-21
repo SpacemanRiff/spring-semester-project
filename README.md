@@ -1,5 +1,9 @@
 #Argument Parser
 #####Written by Scott Troutman, Adam Ingram, Jonnie Hosler, Brandon Taylor, Elgin Bowman, Penzheng Yang and Zachary Alwine
+
+###This does not serve as proper documentation for this program, this is merely here to provide a general overview.
+###Every method and class has complete JavaDoc coverage for more in depth descriptions, syntax, and usage for the user.
+
 ===========
 ##Description
 ===========
