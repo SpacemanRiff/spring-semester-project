@@ -35,6 +35,8 @@ Examples of code in use can be found in the [demos folder](https://github.com/Sp
 
 Examples show off all features including adding all different arguments types, saving and loading to XML, as well as showing a few of the including error messages and cases where they appear.
 
+
+Here is an example of one of the demos, in this case, a program that uses argument parser to manage a pizza shop's orders.
 ```
     import edu.jsu.mcis.*;
 
@@ -72,3 +74,5 @@ Examples show off all features including adding all different arguments types, s
         }
     }
 ```
+In this code, you can see examples of how to add arguments using the addPositionalArgument method, the addRequiredNamedArgument, and the addNamedArgument.
+You can also see how to access values stored in arguments.
