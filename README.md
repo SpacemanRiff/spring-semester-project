@@ -4,6 +4,16 @@
 ###This does not serve as proper documentation for this program, this is merely here to provide a general overview.
 ###Every method and class has complete JavaDoc coverage for more in depth descriptions, syntax, and usage for the user.
 
+##What Was Learned In The Process of Writing This Code
+===========
+Throughout the course of writing this code, I learned how to work in a group using Scrum, how to write an API, and how to use the test-first method of coding, among other things.
+
+Scrum is a very powerful tool that many major companies impliment in order to have more efficient enviroment. We learned how to go about assigning weights to every feature we were going to impliment, and make sure those weights were meaningful, so that we didn't overburden ourselves with work.
+
+Learning to write an API and properly document it is in incredibly important thing to understand how to do if you plan on working on code that exists in the public domain. Making sure every method, every class, every error is properly documented can make both your life and everyone else who plans on using your code's life dramatically easier down the road.
+
+The test-first style of coding is imperative in writing solid code with as few bugs as possible. It is also useful in that it provides a solid beginning and end for every method you write. Knowing what output to expect from the method helps expedite the code writing process so you aren't left guessing as to what the code's output should be.
+
 ##Description
 ===========
 This software is designed to allow the user to let their program to take in arguments through the command line and then be parsed into usable values.
